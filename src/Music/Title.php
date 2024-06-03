@@ -38,9 +38,9 @@ class Title extends MdbBase
      * @param string $id musicBrainz id
      * @param Config $config OPTIONAL override default config
      */
-    public function __construct($id, Config $config = null)
+    public function __construct($id, Config $config = null, LoggerInterface $logger = null)
     {
-        parent::__construct($config);
+        parent::__construct($config, $logger);
         $this->setid($id);
     }
 
