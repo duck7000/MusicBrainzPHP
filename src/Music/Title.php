@@ -31,6 +31,8 @@ class Title extends MdbBase
     protected $totalLength = 0;
     protected $extUrls = array();
     protected $coverArt = array();
+    protected $annotation = null;
+    protected $disambiguation = null;
 
     /**
      * @param string $id musicBrainz id
@@ -59,6 +61,8 @@ class Title extends MdbBase
             * [country] => Europe
             * [length] => 2288
             * [barcode] => 4007192534814
+            * [annotation] => Manufactured in Germany by Record Service GmbH, Alsdorf.
+            * [disambiguation] => price code CA 835
             * [status] => Official
             * [packaging] => Jewel Case
             * [type] => Album
@@ -147,6 +151,8 @@ class Title extends MdbBase
         $this->year = isset($data->date) ? strtok($data->date, '-') : null;
         $this->country = isset($data->{'release-events'}[0]->area->name) ? $data->{'release-events'}[0]->area->name : null;
         $this->type = isset($data->{'release-group'}->{'primary-type'}) ? $data->{'release-group'}->{'primary-type'} : null;
+        $this->annotion = isset($data->annotion) ? $data->annotion : null;
+        $this->disambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
 
         // Genres
         if (isset($data->genres) && !empty($data->genres)) {
@@ -219,7 +225,9 @@ class Title extends MdbBase
             'genres' => $this->genres,
             'labels' => $this->labels,
             'media' => $this->media,
-            'extUrls' => $this->extUrls
+            'extUrls' => $this->extUrls,
+            'annotation' => $this->annotion,
+            'disambiguation' => $this->disambiguation
         );
         return $results;
     }
