@@ -103,14 +103,14 @@ class Api
             if (200 == $request2->getStatus()) {
                 return json_decode($request2->getResponseBody());
             } else {
-                return new \StdClass();
+                throw new \Exception("Failed to retrieve query");
             }
         } else {
             $this->logger->error(
                 "[API] Failed to retrieve query. Response headers:{headers}. Response body:{body}",
                 array('headers' => $request->getLastResponseHeaders(), 'body' => $request->getResponseBody())
             );
-            return new \StdClass();
+            throw new \Exception("Failed to retrieve query");
         }
     }
 
