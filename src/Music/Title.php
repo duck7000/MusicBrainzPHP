@@ -26,6 +26,8 @@ class Title extends MdbBase
     protected $packaging = null;
     protected $type = null;
     protected $genres = array();
+    protected $releaseGroupGenres = array();
+    protected $tags = array();
     protected $labels = array();
     protected $media = array();
     protected $totalLength = 0;
@@ -56,7 +58,6 @@ class Title extends MdbBase
                     * [name] => Grace Jones
                     * [id] => b1c124b3-cf60-41a6-8699-92728c8a3fe0
                 * )
-            * 
             * [year] => 1987
             * [country] => Europe
             * [length] => 2288
@@ -71,7 +72,17 @@ class Title extends MdbBase
                     * [0] => art pop
                     * [1] => dub
                 * )
-                * 
+            * [releaseGroupGenres] => Array
+                * (
+                    * [0] => ballad
+                    * [1] => pop
+                    * [2] => schlager
+                * )
+            * [tags] => Array
+                * (
+                    * [0] => art pop
+                    * [1] => dub
+                * )
             * [labels] => Array
                 * (
                     * [0] => Array
@@ -93,7 +104,6 @@ class Title extends MdbBase
                         * )
                         * 
                 * )
-                * 
             * [media] => Array
                 * (
                     * [0] => Array
@@ -109,7 +119,6 @@ class Title extends MdbBase
                                             * [artist] => Grace Jones
                                             * [length] => 258
                                         * )
-                                        * 
                                     * [1] => Array
                                         * (
                                             * [id] => 85d1e29e-b8cc-4ead-8337-f376a4e967ed
@@ -118,13 +127,9 @@ class Title extends MdbBase
                                             * [artist] => Grace Jones
                                             * [length] => 281
                                         * )
-                                        * 
                                 * )
-                                * 
                         * )
-                        * 
                 * )
-                * 
             * [extUrls] => Array
                 * (
                     * [0] => Array
@@ -132,9 +137,7 @@ class Title extends MdbBase
                             * [name] => discogs
                             * [url] => https://www.discogs.com/release/3999066
                         * )
-                        * 
                 * )
-                * 
         * )
      */
     public function fetchData()
@@ -160,7 +163,21 @@ class Title extends MdbBase
                 $this->genres[] = isset($genre->name) ? $genre->name : null;
             }
         }
-        
+
+        // Release-group Genres
+        if (isset($data->{'release-group'}->genres) && !empty($data->{'release-group'}->genres)) {
+            foreach ($data->{'release-group'}->genres as $relGenre) {
+                $this->releaseGroupGenres[] = isset($relGenre->name) ? $relGenre->name : null;
+            }
+        }
+
+        // Tags
+        if (isset($data->tags) && !empty($data->tags)) {
+            foreach ($data->tags as $tag) {
+                $this->tags[] = isset($tag->name) ? $tag->name : null;
+            }
+        }
+
         // External Urls
         if (isset($data->relations) && !empty($data->relations)) {
             foreach ($data->relations as $value) {
@@ -223,6 +240,8 @@ class Title extends MdbBase
             'packaging' => $this->packaging,
             'type' => $this->type,
             'genres' => $this->genres,
+            'releaseGroupGenres' => $this->releaseGroupGenres,
+            'tags' => $this->tags,
             'labels' => $this->labels,
             'media' => $this->media,
             'extUrls' => $this->extUrls,
@@ -258,18 +277,19 @@ class Title extends MdbBase
 
         $this->coverArt['front'] = array();
         $this->coverArt['back'] = array();
+        $small = strval(250);
         if (!empty($data->images) && $data->images != null) {
             foreach ($data->images as $value) {
                 if ($value->front == 1) {
                     $this->coverArt['front']['id'] = isset($value->id) ? $value->id : null;
                     $this->coverArt['front']['originalUrl'] = isset($value->image) ? $value->image : null;
-                    $this->coverArt['front']['thumbUrl'] = isset($value->thumbnails->small) ? $value->thumbnails->small : null;
+                    $this->coverArt['front']['thumbUrl'] = isset($value->thumbnails->$small) ? $value->thumbnails->$small : null;
                     continue;
                 }
                 if ($value->back == 1) {
                     $this->coverArt['back']['id'] = isset($value->id) ? $value->id : null;
                     $this->coverArt['back']['originalUrl'] = isset($value->image) ? $value->image : null;
-                    $this->coverArt['back']['thumbUrl'] = isset($value->thumbnails->small) ? $value->thumbnails->small : null;
+                    $this->coverArt['back']['thumbUrl'] = isset($value->thumbnails->$small) ? $value->thumbnails->$small : null;
                     continue;
                 }
             }
