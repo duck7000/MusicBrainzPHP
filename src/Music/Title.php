@@ -19,6 +19,7 @@ class Title extends MdbBase
     protected $title = null;
     protected $artist = array();
     protected $year = null;
+    protected $date = null;
     protected $country = null;
     protected $length = null;
     protected $barcode = null;
@@ -59,6 +60,7 @@ class Title extends MdbBase
                     * [id] => b1c124b3-cf60-41a6-8699-92728c8a3fe0
                 * )
             * [year] => 1987
+            * [date] => 1987-10-01
             * [country] => Europe
             * [length] => 2288
             * [barcode] => 4007192534814
@@ -152,6 +154,7 @@ class Title extends MdbBase
         $this->status = isset($data->status) ? $data->status : null;
         $this->packaging = isset($data->packaging) ? $data->packaging : null;
         $this->year = isset($data->date) ? strtok($data->date, '-') : null;
+        $this->date = isset($data->date) ? $data->date : null;
         $this->country = isset($data->{'release-events'}[0]->area->name) ? $data->{'release-events'}[0]->area->name : null;
         $this->type = isset($data->{'release-group'}->{'primary-type'}) ? $data->{'release-group'}->{'primary-type'} : null;
         $this->annotion = isset($data->annotion) ? $data->annotion : null;
@@ -233,6 +236,7 @@ class Title extends MdbBase
             'title' => $this->title,
             'aritst' => $this->artist,
             'year' => $this->year,
+            'date' => $this->date,
             'country' => $this->country,
             'length' => $this->totalLength,
             'barcode' => $this->barcode,
