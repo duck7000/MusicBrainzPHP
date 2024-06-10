@@ -15,6 +15,8 @@ year (release year)<br>
 label<br>
 country (release country, can also be a continent XE for Europe or XW for WorldWide)<br>
 genres<br>
+releaseGroupGenres<br>
+tags<br>
 length (total play length<br>
 coverArt (front and back image url)<br>
 tracks (get track information, id, number, title, artist and length)<br>
@@ -24,6 +26,8 @@ format (like CD)<br>
 packaging (like jewel case)<br>
 type (like Album)
 extUrls (like Discogs or Amazon)<br>
+annotation<br>
+disambiguation<br>
 
 
 Quick Start
@@ -54,14 +58,14 @@ Get the files with one of:
 * PHP cURL extension
 
 
-Configuration
+Options
 =============
 
-musicBrainz needs no configuration but there are some options in config:
+musicBrainz has a few options in config:
 
-Default user agent (this must be something that identifies the user and program!) possible ban!
-Default search: CD (this can be others too like vinyl)
-Default search limit: 25 (range = 1-100 including 1 and 100)
+Default user agent (this must be something that identifies the user and program!) possible ban!<br>
+Default search: CD (this can be others too like vinyl)<br>
+Default search limit: 25 (range = 1-100 including 1 and 100)<br>
 
 
 Fetching data from a CD title
