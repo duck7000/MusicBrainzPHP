@@ -17,7 +17,7 @@ country (release country, can also be a continent XE for Europe or XW for WorldW
 genres<br>
 releaseGroupGenres<br>
 tags<br>
-length (total play length<br>
+length (total play length)<br>
 coverArt (front and back image url)<br>
 tracks (get track information, id, number, title, artist and length)<br>
 status (Original or bootleg<br>
