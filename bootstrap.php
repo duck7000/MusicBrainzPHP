@@ -16,3 +16,4 @@ require_once __DIR__ . '/src/Music/API.php';
 require_once __DIR__ . '/src/Music/MdbBase.php';
 require_once __DIR__ . '/src/Music/Title.php';
 require_once __DIR__ . '/src/Music/TitleSearch.php';
+require_once __DIR__ . '/src/Music/TitleSearchAdvanced.php';
