@@ -20,7 +20,7 @@ tags<br>
 length (total play length)<br>
 coverArt (front and back image url)<br>
 tracks (get track information, id, number, title, artist and length)<br>
-status (Original or bootleg<br>
+status (Original or bootleg)<br>
 barcode<br>
 format (like CD)<br>
 packaging (like jewel case)<br>
