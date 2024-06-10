@@ -53,7 +53,22 @@ class TitleSearchAdvanced extends MdbBase
 
     /**
      * Fetch discography release groups from artist (albums only)
-     * @param $artistId artist id found with searchArtist()
+     * @param string $artistId artist id found with searchArtist()
+     * @param string $type Include only this type in search, exclude all others
+     * values for $type:
+     *      album
+     *      single
+     *      ep
+     *      broadcast
+     *      other
+     *      live
+     *      compilation
+     *      remix
+     *      interview
+     *      soundtrack
+     *      spokenword
+     *      audiobook
+     *      demo
      * @return array
      * Array
      *   (
