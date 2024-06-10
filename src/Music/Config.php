@@ -16,18 +16,7 @@ namespace Music;
  */
 class Config
 {
-    /**
-     * Default base url for musicBrainz api
-     * @var string
-     */
-    public $baseUrl = 'http://musicbrainz.org/ws/2/release/';
-    
-    /**
-     * Default base url for coverart api
-     * @var string
-     */
-    public $baseCoverArtUrl = 'http://ia600903.us.archive.org/6/items/mbid-';
-    
+
     /**
      * Default userAgent to use in request, for musicBrainz must be something that identifys the user and program
      * @var string
@@ -56,11 +45,11 @@ class Config
      *      Other
      *      Blu-ray
      *      miniDisc
-     *      12" Vinyl
      * @var string
      */
     public $titleSearchFormat = "cd";
 
+    // Debug config
     /**
      * Debug mode true or false
      * @var boolean
