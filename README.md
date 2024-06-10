@@ -2,32 +2,23 @@ musicBrainzPHP
 =======
 
 PHP library for retrieving CD information from musicBrainz API.<br>
-Retrieve most of the information you can see on musicBrainz page of specific CD.<br>
-Search for titles on musicBrainz by barcode or text etc.<br>
+Retrieve most of the information you can see on musicBrainz page of specific title.<br>
+Search for titles on musicBrainz by barcode, artist or title<br>
 Get front and back cover art image urls. from coverartarchive.org<br>
-Search is default for CD.<br>
+Search is default for CD (change in config).<br>
 For each title found by search there are these return values available:<br>
 
 id<br>
 artist<br>
 title<br>
-year (release year)<br>
+date (release date eg. 1987-10-12)<br>
 label<br>
-country (release country, can also be a continent XE for Europe or XW for WorldWide)<br>
-genres<br>
-releaseGroupGenres<br>
-tags<br>
-length (total play length)<br>
-coverArt (front and back image url)<br>
-tracks (get track information, id, number, title, artist and length)<br>
+countryCode (release country code) can also be a continent (XE for Europe or XW for WorldWide)<br>
 status (Original or bootleg)<br>
 barcode<br>
 format (like CD)<br>
-packaging (like jewel case)<br>
 type (like Album)
-extUrls (like Discogs or Amazon)<br>
-annotation<br>
-disambiguation<br>
+catalogNumber<br>
 
 
 Quick Start
@@ -54,7 +45,7 @@ Get the files with one of:
 * [Zip/Tar download]
 
 ### Requirements
-* PHP >= 7.4 - 8.1 (untested with lower versions)
+* PHP >= 7.4 - 8.1 (all versions < 8.0 are end of life)
 * PHP cURL extension
 
 
@@ -68,7 +59,7 @@ Default search: CD (this can be others too like vinyl)<br>
 Default search limit: 25 (range = 1-100 including 1 and 100)<br>
 
 
-Fetching data from a CD title
+Fetching data from a title
 ====================
 
 ```php
@@ -76,6 +67,28 @@ include "bootstrap.php"; // Load the class if you're not using an autoloader
 $music = new \Music\Title("095e2e2e-60c4-4f9f-a14a-2cc1b468bf66"); // parameter is the found musicBrainz id from search)
 $results = $music->fetchData(); // This returns a array with all available info of this title
 $results = $music->fetchCoverArt(); // This returns a array with front and back image urls
-
 ```
-Credits to imdbphp, musicBrainzPHP is based on it.
+Return array values:<br>
+id<br>
+artist<br>
+title<br>
+year (release year)<br>
+date (release date eg. 1987-10-12)<br>
+label<br>
+country (release country) can also be a continent (XE for Europe or XW for WorldWide)<br>
+genres<br>
+releaseGroupGenres<br>
+tags<br>
+length (total play length)<br>
+coverArt (front and back image url)<br>
+tracks (get track information, id, number, title, artist and length)<br>
+status (Original or bootleg)<br>
+barcode<br>
+format (like CD)<br>
+packaging (like jewel case)<br>
+type (like Album)
+extUrls (like Discogs or Amazon)<br>
+annotation<br>
+disambiguation<br><br>
+
+Credits to imdbphp, musicBrainzPHP is loosly based on it.
