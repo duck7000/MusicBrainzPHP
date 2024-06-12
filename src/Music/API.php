@@ -150,6 +150,7 @@ class Api
                         '+tags' .
                         '+url-rels' .
                         '+annotation' .
+                        '+artist-rels' .
                         '&fmt=json';
         $url = $baseUrl . $mbID . $incUrl;
         return $this->execRequest($url);
