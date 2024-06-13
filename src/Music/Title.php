@@ -32,7 +32,7 @@ class Title extends MdbBase
     protected $labels = array();
     protected $media = array();
     protected $totalLength = 0;
-    protected $extUrls = array();
+    protected $relations = array();
     protected $coverArt = array();
     protected $annotation = null;
     protected $disambiguation = null;
@@ -118,6 +118,7 @@ class Title extends MdbBase
                                             * [id] => 5f76ca86-a0ab-4674-acdf-aa8a19042100
                                             * [number] => 1
                                             * [title] => Walking in the Rain
+                                            * [artistId] => 66c662b6-6e2f-4930-8610-912e24c63ed1
                                             * [artist] => Grace Jones
                                             * [length] => 258
                                         * )
@@ -126,18 +127,47 @@ class Title extends MdbBase
                                             * [id] => 85d1e29e-b8cc-4ead-8337-f376a4e967ed
                                             * [number] => 2
                                             * [title] => Pull Up to the Bumper
+                                            * [artistId] => 66c662b6-6e2f-4930-8610-912e24c63e33
                                             * [artist] => Grace Jones
                                             * [length] => 281
                                         * )
                                 * )
                         * )
                 * )
-            * [extUrls] => Array
+            * [relations] => Array
                 * (
-                    * [0] => Array
+                    * [artist] => Array
                         * (
-                            * [name] => discogs
-                            * [url] => https://www.discogs.com/release/3999066
+                            * [0] => Array
+                                * (
+                                    * [type] => instrument
+                                    * [begin] => 1977-01
+                                    * [end] => 1977-02
+                                    * [artist] => Array
+                                        * (
+                                            * [name] => Mark Evans
+                                            * [id] => 6d3da6cf-d443-4ebc-9eac-98456bc2def3
+                                            * [disambiguation] => Australian bass guitarist
+                                        * )
+                                    * [attributes] => Array
+                                        * (
+                                            * [0] => bass guitar
+                                        * )
+                                * )
+                        * )
+
+                    * [url] => Array
+                        * (
+                            * [0] => Array
+                                * (
+                                    * [type] => amazon asin
+                                    * [url] => https://www.amazon.com/gp/product/B00008WT5C
+                                * )
+                            * [1] => Array
+                                * (
+                                    * [type] => discogs
+                                    * [url] => https://www.discogs.com/release/473692
+                                * )
                         * )
                 * )
         * )
@@ -181,14 +211,43 @@ class Title extends MdbBase
             }
         }
 
-        // External Urls
+        // Relations
         if (isset($data->relations) && !empty($data->relations)) {
-            foreach ($data->relations as $value) {
-                $relation = array(
-                    'name' => isset($value->type) ? $value->type : null,
-                    'url' => isset($value->url->resource) ? $value->url->resource : null
-                );
-                $this->extUrls[] = $relation;
+            foreach ($data->relations as $relation) {
+                if ($relation->{'target-type'} == "artist") {
+
+                    // attributes
+                    $attributes = array();
+                    if (isset($relation->attributes) && !empty($relation->attributes)) {
+                        foreach ($relation->attributes as $attribute) {
+                            $attributes[] = $attribute;
+                        }
+                    }
+
+                    // Artist
+                    $artist = array();
+                    if (isset($relation->artist) && !empty($relation->artist)) {
+                        $artist = array(
+                            'name' => isset($relation->artist->name) ? $relation->artist->name : null,
+                            'id' => isset($relation->artist->id) ? $relation->artist->id : null,
+                            'disambiguation' => isset($relation->artist->disambiguation) ? $relation->artist->disambiguation : null
+                        );
+                    }
+                    
+                    $this->relations['artist'][] = array(
+                        'type' => isset($relation->type) ? $relation->type : null,
+                        'begin' => isset($relation->begin) ? $relation->begin : null,
+                        'end' => isset($relation->end) ? $relation->end : null,
+                        'artist' => $artist,
+                        'attributes' => $attributes
+                    );
+                }
+                if ($relation->{'target-type'} == "url") {
+                    $this->relations['url'][] = array(
+                        'type' => isset($relation->type) ? $relation->type : null,
+                        'url' => isset($relation->url->resource) ? $relation->url->resource : null
+                    );
+                }
             }
         }
 
@@ -217,6 +276,7 @@ class Title extends MdbBase
                             'id' => isset($track->id) ? $track->id : null,
                             'number' => isset($track->number) ? $track->number : null,
                             'title' => isset($track->title) ? $track->title : null,
+                            'artistId' => isset($track->{'artist-credit'}[0]->artist->id) ? $track->{'artist-credit'}[0]->artist->id : null,
                             'artist' => isset($track->{'artist-credit'}[0]->artist->name) ? $track->{'artist-credit'}[0]->artist->name : null,
                             'length' => isset($track->length) ? round($track->length / 1000) : null
                         );
@@ -248,7 +308,7 @@ class Title extends MdbBase
             'tags' => $this->tags,
             'labels' => $this->labels,
             'media' => $this->media,
-            'extUrls' => $this->extUrls,
+            'relations' => $this->relations,
             'annotation' => $this->annotion,
             'disambiguation' => $this->disambiguation
         );
