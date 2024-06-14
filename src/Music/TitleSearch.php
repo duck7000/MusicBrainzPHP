@@ -22,13 +22,13 @@ class TitleSearch extends MdbBase
      * artist and/or title can be used together or separate.
      * 
      * @return results[] array of Titles
-     *  id: string cd title id
-     *  title: string cd title
-     *  artist: string matching artist for cd title (cd with multiple artists returns Various Artists)
+     *  id: string title id
+     *  title: string title
+     *  artist: string matching artist for cd title (multiple artists returns Various Artists)
      *  format: string format of the title e.g CD
      *  countryCode: string countryCode of release e.g US (or Continent: XE for Europe, XW for WorldWide)
      *  date: string date of release (can be year, month or day) e.g 1988, 1988-10-01, 1988-10
-     *  label: array() all labels of this title
+     *  label: string first label of this title
      *  catalogNumber: string catalognumber found on the back cover for this title
      *  barcode: string barcode found on the back cover for this title
      *  type: string type of this title e.g Album
