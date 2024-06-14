@@ -6,19 +6,6 @@ Retrieve most of the information you can see on musicBrainz page of specific tit
 Search for titles on musicBrainz by barcode, artist or title<br>
 Get front and back cover art image urls. from coverartarchive.org<br>
 Search is default for CD (change in config).<br>
-For each title found by search there are these return values available:<br>
-
-id<br>
-artist<br>
-title<br>
-date (release date eg. 1987-10-12)<br>
-label<br>
-countryCode (release country code) can also be a continent (XE for Europe or XW for WorldWide)<br>
-status (Original or bootleg)<br>
-barcode<br>
-format (like CD)<br>
-type (like Album)
-catalogNumber<br>
 
 
 Quick Start
@@ -68,27 +55,5 @@ $music = new \Music\Title("095e2e2e-60c4-4f9f-a14a-2cc1b468bf66"); // parameter 
 $results = $music->fetchData(); // This returns a array with all available info of this title
 $results = $music->fetchCoverArt(); // This returns a array with front and back image urls
 ```
-Return array values:<br>
-id<br>
-artist<br>
-title<br>
-year (release year)<br>
-date (release date eg. 1987-10-12)<br>
-label<br>
-country (release country) can also be a continent (XE for Europe or XW for WorldWide)<br>
-genres<br>
-releaseGroupGenres<br>
-tags<br>
-length (total play length)<br>
-coverArt (front and back image url)<br>
-tracks (get track information, id, number, title, artist and length)<br>
-status (Original or bootleg)<br>
-barcode<br>
-format (like CD)<br>
-packaging (like jewel case)<br>
-type (like Album)
-extUrls (like Discogs or Amazon)<br>
-annotation<br>
-disambiguation<br><br>
 
 Credits to imdbphp, musicBrainzPHP is loosly based on it.
