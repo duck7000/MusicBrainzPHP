@@ -79,6 +79,7 @@ class TitleSearchAdvanced extends MdbBase
      *               [aritst] => AC/DC
      *               [date] => 1975-02-17
      *               [totalReleasesCount] => 8
+     *               [primaryType] => Album
      *           )
      *     )
      */
@@ -94,13 +95,15 @@ class TitleSearchAdvanced extends MdbBase
             $artist = isset($releaseGroup->{'artist-credit'}[0]->name) ? $releaseGroup->{'artist-credit'}[0]->name : null;
             $date = isset($releaseGroup->{'first-release-date'}) ? $releaseGroup->{'first-release-date'} : null;
             $totalReleasesCount = isset($releaseGroup->count) ? $releaseGroup->count : null;
+            $primaryType = isset($releaseGroup->{'primary-type'}) ? $releaseGroup->{'primary-type'} : null;
 
             $results[] = array(
                 'id' => $id,
                 'title' => $title,
                 'aritst' => $artist,
                 'date' => $date,
-                'totalReleasesCount' => $totalReleasesCount
+                'totalReleasesCount' => $totalReleasesCount,
+                'primaryType' => $primaryType
             );
         }
         return $this->sortByDate($results);
