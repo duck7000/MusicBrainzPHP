@@ -89,7 +89,7 @@ class Api
      *      demo
      *      mixtape/street
      *      dj-mix
-     *      audio drama
+     *      audio%20drama
      * @return \stdClass
      */
     public function doReleaseGroupSearch($artistId, $type)
@@ -111,7 +111,7 @@ class Api
             "secondarytype:demo",
             "secondarytype:mixtape/street",
             "secondarytype:dj-mix",
-            "secondarytype:audio drama"
+            "secondarytype:audio%20drama"
         );
         foreach ($releaseTypes as $releaseType) {
             if (stripos($releaseType, $type) === false) {
