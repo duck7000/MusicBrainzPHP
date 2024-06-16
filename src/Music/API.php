@@ -91,6 +91,7 @@ class Api
      */
     public function doReleaseGroupSearch($artistId, $type)
     {
+        $incUrl = '%20AND%20primarytype:' . $type;
         $releaseTypes = array(
             "primarytype:album",
             "primarytype:single",
@@ -106,16 +107,14 @@ class Api
             "secondarytype:audiobook",
             "secondarytype:demo"
         );
-        $incUrl = '';
         foreach ($releaseTypes as $releaseType) {
-            if (stripos($releaseType, $type) !== false) {
-                $incUrl .= '%20AND%20' . $releaseType;
-            } else {
+            if (stripos($releaseType, $type) === false) {
                 $incUrl .= '%20NOT%20' . $releaseType;
             }
         }
         $incUrl .= '&limit=100&fmt=json';
         $baseUrl = 'https://musicbrainz.org/ws/2/release-group?query=arid:';
+
         $url = $baseUrl . $artistId . $incUrl;
         return $this->execRequest($url);
     }
