@@ -87,6 +87,9 @@ class Api
      *      spokenword
      *      audiobook
      *      demo
+     *      mixtape/street
+     *      dj-mix
+     *      audio drama
      * @return \stdClass
      */
     public function doReleaseGroupSearch($artistId, $type)
@@ -105,7 +108,10 @@ class Api
             "secondarytype:soundtrack",
             "secondarytype:spokenword",
             "secondarytype:audiobook",
-            "secondarytype:demo"
+            "secondarytype:demo",
+            "secondarytype:mixtape/street",
+            "secondarytype:dj-mix",
+            "secondarytype:audio drama"
         );
         foreach ($releaseTypes as $releaseType) {
             if (stripos($releaseType, $type) === false) {
