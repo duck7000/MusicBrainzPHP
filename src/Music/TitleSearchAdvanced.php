@@ -80,6 +80,10 @@ class TitleSearchAdvanced extends MdbBase
      *               [date] => 1975-02-17
      *               [totalReleasesCount] => 8
      *               [primaryType] => Album
+     *               [secondaryType] => Array
+     *                  (
+     *                      [0] => Live
+     *                  )
      *           )
      *     )
      */
@@ -97,13 +101,22 @@ class TitleSearchAdvanced extends MdbBase
             $totalReleasesCount = isset($releaseGroup->count) ? $releaseGroup->count : null;
             $primaryType = isset($releaseGroup->{'primary-type'}) ? $releaseGroup->{'primary-type'} : null;
 
+            // Secondary Types
+            $secTypes = array();
+            if (isset($releaseGroup->{'secondary-types'}) && !empty($releaseGroup->{'secondary-types'})) {
+                foreach ($releaseGroup->{'secondary-types'} as $secType) {
+                    $secTypes[] = $secType;
+                }
+            }
+
             $results[] = array(
                 'id' => $id,
                 'title' => $title,
                 'aritst' => $artist,
                 'date' => $date,
                 'totalReleasesCount' => $totalReleasesCount,
-                'primaryType' => $primaryType
+                'primaryType' => $primaryType,
+                'secondaryType' => $secTypes
             );
         }
         return $this->sortByDate($results);
