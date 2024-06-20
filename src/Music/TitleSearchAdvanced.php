@@ -52,23 +52,13 @@ class TitleSearchAdvanced extends MdbBase
     }
 
     /**
-     * Fetch discography release groups from artist (albums only)
-     * @param string $artistId artist id found with searchArtist()
+     * Search for all releasegroups of specific artistId
+     * @param string $artistId
      * @param string $type Include only this type in search, exclude all others
      * values for $type:
-     *      album
-     *      single
-     *      ep
-     *      broadcast
-     *      other
-     *      live
-     *      compilation
-     *      remix
-     *      interview
-     *      soundtrack
-     *      spokenword
-     *      audiobook
-     *      demo
+     *      album (only studio albums with primarytype album)
+     *      discography (only offical, EP and musicBrainz website defaults are included)
+     *      all (all releasegroups)
      * @return array
      * Array
      *   (
@@ -87,13 +77,13 @@ class TitleSearchAdvanced extends MdbBase
      *           )
      *     )
      */
-    public function fetchReleaseGroups($artistId, $type)
+    public function fetchReleaseGroups($artistId, $type = "discography")
     {
         // Data request
         $data = $this->api->doReleaseGroupSearch($artistId, $type);
 
         $results = array();
-        foreach ($data->{'release-groups'} as $releaseGroup) {
+        foreach ($data as $releaseGroup) {
             $id = isset($releaseGroup->id) ? $releaseGroup->id : null;
             $title = isset($releaseGroup->title) ? $releaseGroup->title : null;
             $artist = isset($releaseGroup->{'artist-credit'}[0]->name) ? $releaseGroup->{'artist-credit'}[0]->name : null;

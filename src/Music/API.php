@@ -74,55 +74,52 @@ class Api
      * @param string $artistId
      * @param string $type Include only this type in search, exclude all others
      * values for $type:
-     *      album
-     *      single
-     *      ep
-     *      broadcast
-     *      other
-     *      live
-     *      compilation
-     *      remix
-     *      interview
-     *      soundtrack
-     *      spokenword
-     *      audiobook
-     *      demo
-     *      mixtape/street
-     *      dj-mix
-     *      audio%20drama
-     * @return \stdClass
+     *      album (only studio albums with primarytype album)
+     *      discography (only offical, EP and musicBrainz website defaults are included)
+     *      all (all releasegroups)
+     * if more than 100 items paging is required and will take a long time!)
+     * @return array()
      */
     public function doReleaseGroupSearch($artistId, $type)
     {
-        $incUrl = '%20AND%20primarytype:' . $type;
-        $releaseTypes = array(
-            "primarytype:album",
-            "primarytype:single",
-            "primarytype:ep",
-            "primarytype:broadcast",
-            "primarytype:other",
-            "secondarytype:live",
-            "secondarytype:compilation",
-            "secondarytype:remix",
-            "secondarytype:interview",
-            "secondarytype:soundtrack",
-            "secondarytype:spokenword",
-            "secondarytype:audiobook",
-            "secondarytype:demo",
-            "secondarytype:mixtape/street",
-            "secondarytype:dj-mix",
-            "secondarytype:audio%20drama"
-        );
-        foreach ($releaseTypes as $releaseType) {
-            if (stripos($releaseType, $type) === false) {
-                $incUrl .= '%20NOT%20' . $releaseType;
-            }
+        if ($type == "album") {
+            $incUrl = '%20AND%20primarytype:album'.
+                      '%20NOT%20primarytype:single'.
+                      '%20NOT%20primarytype:ep'.
+                      '%20NOT%20primarytype:broadcast'.
+                      '%20NOT%20primarytype:other'.
+                      '%20NOT%20secondarytype:live'.
+                      '%20NOT%20secondarytype:compilation'.
+                      '%20NOT%20secondarytype:remix'.
+                      '%20NOT%20secondarytype:interview'.
+                      '%20NOT%20secondarytype:soundtrack'.
+                      '%20NOT%20secondarytype:spokenword'.
+                      '%20NOT%20secondarytype:audiobook'.
+                      '%20NOT%20secondarytype:demo'.
+                      '%20NOT%20secondarytype:mixtape/street'.
+                      '%20NOT%20secondarytype:dj-mix'.
+                      '%20NOT%20secondarytype:audio%20drama'.
+                      '&limit=100';
         }
-        $incUrl .= '&limit=100&fmt=json';
+        if ($type == "discography") {
+            $incUrl = '%20AND%20status:official'.
+                      '%20NOT%20primarytype:single'.
+                      '%20NOT%20primarytype:broadcast'.
+                      '%20NOT%20primarytype:other'.
+                      '&release-group-status:website-default'.
+                      '&limit=100';
+        }
+        if ($type == "all") {
+            $incUrl = '&limit=100';
+        }
         $baseUrl = 'https://musicbrainz.org/ws/2/release-group?query=arid:';
-
         $url = $baseUrl . $artistId . $incUrl;
-        return $this->execRequest($url);
+        $data = $this->execRequest($url . '&fmt=json');
+        if ($data->count <= 100) {
+            return $data->{'release-groups'};
+        } else {
+            return $this->paging($data, $url);
+        }
     }
 
     /**
@@ -197,6 +194,30 @@ class Api
                 array('headers' => $request->getLastResponseHeaders(), 'body' => $request->getResponseBody())
             );
             throw new \Exception("Failed to retrieve query");
+        }
+    }
+
+    /**
+     * If more than 100 items paging is required to get all items
+     * @param object $data initial result of start query
+     * @param string $url the complete url from initial request
+     * @array
+     */
+    public function paging($data, $url)
+    {
+        $totalCount = $data->count;
+        $initReleaseCount = count($data->{'release-groups'});
+        $ReleaseGroups = array();
+        $ReleaseGroups = array_merge($ReleaseGroups, $data->{'release-groups'});
+        for ($offset = $initReleaseCount; $offset < $totalCount; $offset += 100) {
+            sleep(1);
+            $request = $this->execRequest($url . '&offset=' . $offset . '&fmt=json');
+            $ReleaseGroups = array_merge($ReleaseGroups, $request->{'release-groups'});
+        }
+        if (count($ReleaseGroups) == $totalCount) {
+            return $ReleaseGroups;
+        } else {
+            throw new \Exception("Failed to retrieve all release groups");
         }
     }
 
