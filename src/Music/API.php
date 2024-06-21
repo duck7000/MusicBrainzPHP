@@ -130,7 +130,7 @@ class Api
     public function doReleaseGroupReleases($relGroupId)
     {
         $baseRelGroupUrl = 'https://musicbrainz.org/ws/2/release?query=rgid:';
-        $incUrl = '&fmt=json';
+        $incUrl = '&limit=100&fmt=json';
         $url = $baseRelGroupUrl . $relGroupId . $incUrl;
         return $this->execRequest($url);
     }
