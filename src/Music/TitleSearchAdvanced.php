@@ -102,7 +102,7 @@ class TitleSearchAdvanced extends MdbBase
             $results[] = array(
                 'id' => $id,
                 'title' => $title,
-                'aritst' => $artist,
+                'artist' => $artist,
                 'date' => $date,
                 'totalReleasesCount' => $totalReleasesCount,
                 'primaryType' => $primaryType,
