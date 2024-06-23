@@ -172,6 +172,21 @@ class Title extends MdbBase
                                 * )
                         * )
                 * )
+                * [coverArt] => Array
+                * (
+                    *   [front] array
+                        * (
+                        *   [id] => 22307139959
+                        *   [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+                        *   [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+                        * )
+                    *   [back]  array
+                        * (
+                        *   [id] => 22307139959
+                        *   [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+                        *   [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+                        * )
+                * )
         * )
      */
     public function fetchData()
@@ -301,6 +316,11 @@ class Title extends MdbBase
             }
         }
 
+        // CoverArt
+        if (isset($data->{'cover-art-archive'}->count) && $data->{'cover-art-archive'}->count > 0) {
+            $this->coverArt = $this->fetchCoverArt();
+        }
+
         // results array
         $results = array(
             'id' => $this->mbID,
@@ -322,7 +342,8 @@ class Title extends MdbBase
             'media' => $this->media,
             'relations' => $this->relations,
             'annotation' => $this->annotion,
-            'disambiguation' => $this->disambiguation
+            'disambiguation' => $this->disambiguation,
+            'coverArt' => $this->coverArt
         );
         return $results;
     }
@@ -346,7 +367,7 @@ class Title extends MdbBase
      *           )
      *   )
      */
-        public function fetchCoverArt()
+    private function fetchCoverArt()
     {
         // Data request
         $data = $this->api->doCoverArtLookup($this->mbID);
