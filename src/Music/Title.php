@@ -120,18 +120,22 @@ class Title extends MdbBase
                                             * [id] => 5f76ca86-a0ab-4674-acdf-aa8a19042100
                                             * [number] => 1
                                             * [title] => Walking in the Rain
-                                            * [artistId] => 66c662b6-6e2f-4930-8610-912e24c63ed1
-                                            * [artist] => Grace Jones
+                                            * [artist] => Array
+                                               * (
+                                                   * [0] => Array
+                                                       * (
+                                                           * [name] => Kutmasta Kurt
+                                                           * [id] => abf9f319-da2f-4fdf-a3e4-40c4d0b0075d
+                                                           * [joinphrase] =>  feat. 
+                                                       * )
+                                                   * [1] => Array
+                                                       * (
+                                                           * [name] => Motion Man
+                                                           * [id] => 1cee1f74-179d-446d-8347-de31e8202f2b
+                                                           * [joinphrase] =>
+                                                       * )
+                                               * )
                                             * [length] => 258
-                                        * )
-                                    * [1] => Array
-                                        * (
-                                            * [id] => 85d1e29e-b8cc-4ead-8337-f376a4e967ed
-                                            * [number] => 2
-                                            * [title] => Pull Up to the Bumper
-                                            * [artistId] => 66c662b6-6e2f-4930-8610-912e24c63e33
-                                            * [artist] => Grace Jones
-                                            * [length] => 281
                                         * )
                                 * )
                         * )
@@ -298,12 +302,23 @@ class Title extends MdbBase
                 $cdTracks = array();
                 if (isset($medium->tracks) && !empty($medium->tracks)) {
                     foreach ($medium->tracks as $track) {
+
+                        // Artist
+                        $artistTrackCredit = array();
+                        if (isset($track->{'artist-credit'}) && !empty($track->{'artist-credit'})) {
+                            foreach ($track->{'artist-credit'} as $trackCredit) {
+                                $artistTrackCredit[] = array(
+                                    'name' => isset($trackCredit->artist->name) ? $trackCredit->artist->name : null,
+                                    'id' => isset($trackCredit->artist->id) ? $trackCredit->artist->id : null,
+                                    'joinphrase' => isset($trackCredit->joinphrase) ? $trackCredit->joinphrase : null
+                                );
+                            }
+                        }
                         $cdTracks[] = array(
                             'id' => isset($track->id) ? $track->id : null,
                             'number' => isset($track->number) ? $track->number : null,
                             'title' => isset($track->title) ? $track->title : null,
-                            'artistId' => isset($track->{'artist-credit'}[0]->artist->id) ? $track->{'artist-credit'}[0]->artist->id : null,
-                            'artist' => isset($track->{'artist-credit'}[0]->artist->name) ? $track->{'artist-credit'}[0]->artist->name : null,
+                            'artist' => $artistTrackCredit,
                             'length' => isset($track->length) ? round($track->length / 1000) : null
                         );
                         $this->totalLength = $this->totalLength + round($track->length / 1000);
