@@ -11,6 +11,7 @@
 namespace Music;
 
 use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Accessing cd album information through musicBrainz API
@@ -18,6 +19,11 @@ use Psr\Log\LoggerInterface;
  */
 class Api
 {
+
+    /**
+     * @var CacheInterface
+     */
+    private $cache;
 
     /**
      * @var LoggerInterface
@@ -31,11 +37,13 @@ class Api
 
     /**
      * API constructor.
+     * @param CacheInterface $cache
      * @param LoggerInterface $logger
      * @param Config $config
      */
-    public function __construct($logger, $config)
+    public function __construct($cache, $logger, $config)
     {
+        $this->cache = $cache;
         $this->logger = $logger;
         $this->config = $config;
     }

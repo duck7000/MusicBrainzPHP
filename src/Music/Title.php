@@ -9,6 +9,8 @@
 
 namespace Music;
 
+use Psr\SimpleCache\CacheInterface;
+
 /**
  * A title on musicBrainz API
  * @author ed (github user: duck7000)
@@ -41,10 +43,11 @@ class Title extends MdbBase
     /**
      * @param string $id musicBrainz id
      * @param Config $config OPTIONAL override default config
+     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
-    public function __construct($id, Config $config = null, LoggerInterface $logger = null)
+    public function __construct($id, Config $config = null, LoggerInterface $logger = null, CacheInterface $cache = null)
     {
-        parent::__construct($config, $logger);
+        parent::__construct($config, $logger, $cache);
         $this->setid($id);
     }
 

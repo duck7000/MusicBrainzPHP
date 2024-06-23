@@ -9,6 +9,9 @@
 
 namespace Music;
 
+use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
+
 /**
  * A title on musicBrainz API
  * @author ed (github user: duck7000)
@@ -16,6 +19,11 @@ namespace Music;
 class MdbBase extends Config
 {
     public $version = '1.0.0';
+
+    /**
+     * @var CacheInterface
+     */
+    protected $cache;
 
     /**
      * @var LoggerInterface
@@ -40,12 +48,14 @@ class MdbBase extends Config
     /**
      * @param Config $config OPTIONAL override default config
      * @param LoggerInterface $logger OPTIONAL override default logger `\Imdb\Logger` with a custom one
+     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
-    public function __construct(Config $config = null, LoggerInterface $logger = null)
+    public function __construct(Config $config = null, LoggerInterface $logger = null, CacheInterface $cache = null)
     {
         $this->config = $config ?: $this;
         $this->logger = empty($logger) ? new Logger($this->debug) : $logger;
-        $this->api = new Api($this->logger, $this->config);
+        $this->cache = empty($cache) ? new Cache($this->config, $this->logger) : $cache;
+        $this->api = new Api($this->cache, $this->logger, $this->config);
     }
 
     /**
