@@ -26,6 +26,7 @@ class Title extends MdbBase
     protected $status = null;
     protected $packaging = null;
     protected $type = null;
+    protected $releaseGroupId = null;
     protected $genres = array();
     protected $releaseGroupGenres = array();
     protected $tags = array();
@@ -69,6 +70,7 @@ class Title extends MdbBase
             * [status] => Official
             * [packaging] => Jewel Case
             * [type] => Album
+            * [releaseGroupId] => c9673ff0-15b5-394d-a5ec-3d2a27dfce83
             * [genres] => Array
                 * (
                     * [0] => art pop
@@ -185,6 +187,7 @@ class Title extends MdbBase
         $this->date = isset($data->date) ? $data->date : null;
         $this->country = isset($data->{'release-events'}[0]->area->name) ? $data->{'release-events'}[0]->area->name : null;
         $this->type = isset($data->{'release-group'}->{'primary-type'}) ? $data->{'release-group'}->{'primary-type'} : null;
+        $this->releaseGroupId = isset($data->{'release-group'}->id) ? $data->{'release-group'}->id : null;
         $this->annotion = isset($data->annotion) ? $data->annotion : null;
         $this->disambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
 
@@ -311,6 +314,7 @@ class Title extends MdbBase
             'status' => $this->status,
             'packaging' => $this->packaging,
             'type' => $this->type,
+            'releaseGroupId' => $this->releaseGroupId,
             'genres' => $this->genres,
             'releaseGroupGenres' => $this->releaseGroupGenres,
             'tags' => $this->tags,
