@@ -6,6 +6,7 @@ Retrieve most of the information you can see on musicBrainz page of specific tit
 Search for titles on musicBrainz by barcode, artist or title<br>
 Get front and back cover art image urls. from coverartarchive.org<br>
 Search is default for CD (change in config).<br>
+All info is in the wikipages, every class and method is described there!
 
 
 Quick Start
@@ -53,7 +54,6 @@ Fetching data from a title
 include "bootstrap.php"; // Load the class if you're not using an autoloader
 $music = new \Music\Title("095e2e2e-60c4-4f9f-a14a-2cc1b468bf66"); // parameter is the found musicBrainz id from search)
 $results = $music->fetchData(); // This returns a array with all available info of this title
-$results = $music->fetchCoverArt(); // This returns a array with front and back image urls
 ```
 
 Credits to imdbphp, musicBrainzPHP is loosly based on it.
