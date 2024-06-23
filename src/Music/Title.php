@@ -54,7 +54,7 @@ class Title extends MdbBase
         * (
             * [id] => 095e2e2e-60c4-4f9f-a14a-2cc1b468bf66
             * [title] => Nightclubbing
-            * [aritst] => Array
+            * [artist] => Array
                 * (
                     * [name] => Grace Jones
                     * [id] => b1c124b3-cf60-41a6-8699-92728c8a3fe0
@@ -178,8 +178,6 @@ class Title extends MdbBase
         $data = $this->api->doLookup($this->mbID);
 
         $this->title = isset($data->title) ? $data->title : null;
-        $this->artist['name'] = isset($data->{'artist-credit'}[0]->name) ? $data->{'artist-credit'}[0]->name : null;
-        $this->artist['id'] = isset($data->{'artist-credit'}[0]->artist->id) ? $data->{'artist-credit'}[0]->artist->id : null;
         $this->barcode = isset($data->barcode) ? $data->barcode : null;
         $this->status = isset($data->status) ? $data->status : null;
         $this->packaging = isset($data->packaging) ? $data->packaging : null;
@@ -189,6 +187,16 @@ class Title extends MdbBase
         $this->type = isset($data->{'release-group'}->{'primary-type'}) ? $data->{'release-group'}->{'primary-type'} : null;
         $this->annotion = isset($data->annotion) ? $data->annotion : null;
         $this->disambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
+
+        // Artist
+        if (isset($data->{'artist-credit'}) && !empty($data->{'artist-credit'})) {
+            foreach ($data->{'artist-credit'} as $credit) {
+                $this->artist[] = array(
+                    'name' => isset($credit->artist->name) ? $credit->artist->name : null,
+                    'id' => isset($credit->artist->id) ? $credit->artist->id : null
+                );
+            }
+        }
 
         // Genres
         if (isset($data->genres) && !empty($data->genres)) {
