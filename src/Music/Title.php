@@ -186,12 +186,14 @@ class Title extends MdbBase
                         *   [id] => 22307139959
                         *   [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
                         *   [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+                        *   [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837628851-500.jpg
                         * )
                     *   [back]  array
                         * (
                         *   [id] => 22307139959
                         *   [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
                         *   [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+                        *   [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837629318-500.jpg
                         * )
                 * )
         * )
@@ -376,12 +378,14 @@ class Title extends MdbBase
      *               [id] => 22307139959
      *               [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
      *               [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *               [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837628851-500.jpg
      *           )
      *       [back] => Array
      *           (
      *               [id] => 22307143843
      *               [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843.jpg
      *               [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-250.jpg
+     *               [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837629318-500.jpg
      *           )
      *   )
      */
@@ -393,18 +397,21 @@ class Title extends MdbBase
         $this->coverArt['front'] = array();
         $this->coverArt['back'] = array();
         $small = strval(250);
+        $medium = strval(500);
         if (!empty($data->images) && $data->images != null) {
             foreach ($data->images as $value) {
                 if ($value->front == 1) {
                     $this->coverArt['front']['id'] = isset($value->id) ? $value->id : null;
                     $this->coverArt['front']['originalUrl'] = isset($value->image) ? $value->image : null;
                     $this->coverArt['front']['thumbUrl'] = isset($value->thumbnails->$small) ? $value->thumbnails->$small : null;
+                    $this->coverArt['front']['mediumUrl'] = isset($value->thumbnails->$medium) ? $value->thumbnails->$medium : null;
                     continue;
                 }
                 if ($value->back == 1) {
                     $this->coverArt['back']['id'] = isset($value->id) ? $value->id : null;
                     $this->coverArt['back']['originalUrl'] = isset($value->image) ? $value->image : null;
                     $this->coverArt['back']['thumbUrl'] = isset($value->thumbnails->$small) ? $value->thumbnails->$small : null;
+                    $this->coverArt['back']['mediumUrl'] = isset($value->thumbnails->$medium) ? $value->thumbnails->$medium : null;
                     continue;
                 }
             }
