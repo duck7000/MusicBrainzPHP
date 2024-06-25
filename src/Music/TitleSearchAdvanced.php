@@ -66,7 +66,7 @@ class TitleSearchAdvanced extends MdbBase
      *           (
      *               [id] => 2b81e645-4586-4456-843a-9bc19a217470
      *               [title] => High Voltage
-     *               [aritst] => AC/DC
+     *               [artist] => AC/DC
      *               [date] => 1975-02-17
      *               [totalReleasesCount] => 8
      *               [primaryType] => Album
@@ -122,7 +122,7 @@ class TitleSearchAdvanced extends MdbBase
                 * (
                     * [id] => ddee5911-8a13-41e6-88db-6534a5f4fc46
                     *[title] => High Voltage
-                    * [aritst] => AC/DC
+                    * [artist] => AC/DC
                     * [date] => 1975-02-17
                     * [status] => Official
                     * [barcode] => 

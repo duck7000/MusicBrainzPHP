@@ -345,7 +345,7 @@ class Title extends MdbBase
         $results = array(
             'id' => $this->mbID,
             'title' => $this->title,
-            'aritst' => $this->artist,
+            'artist' => $this->artist,
             'year' => $this->year,
             'date' => $this->date,
             'country' => $this->country,
