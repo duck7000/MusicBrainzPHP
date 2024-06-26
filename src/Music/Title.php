@@ -115,6 +115,7 @@ class Title extends MdbBase
                 * (
                     * [0] => Array
                         * (
+                            * [mediumTitle] => live from atlantic studios
                             * [format] => CD
                             * [tracks] => Array
                                 * (
@@ -304,6 +305,7 @@ class Title extends MdbBase
         if (isset($data->media) && !empty($data->media)) {
             foreach ($data->media as $medium) {
                 $format = isset($medium->format) ? $medium->format : null;
+                $mediumTitle = isset($medium->title) ? $medium->title : null;
                 $cdTracks = array();
                 if (isset($medium->tracks) && !empty($medium->tracks)) {
                     foreach ($medium->tracks as $track) {
@@ -330,6 +332,7 @@ class Title extends MdbBase
                     }
                 }
                 $this->media[] = array(
+                    'mediumTitle' => $mediumTitle,
                     'format' => $format,
                     'tracks' => $cdTracks
                 );
