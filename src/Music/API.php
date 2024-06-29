@@ -229,4 +229,33 @@ class Api
         }
     }
 
+    /**
+     * Check if caching can be used
+     * @param string $artistId artist id from doArtistSearch()
+     * @param string $url exec url
+     * @param string $releaseType release type from url string like release or release-groups
+     * @return \stdClass
+     */
+    public function checkCache($id, $url, $releaseType)
+    {
+        $key = $id . '.json';
+        $fromCache = $this->cache->get($key);
+
+        if ($fromCache != null) {
+            return json_decode($fromCache);
+        }
+
+        $data = $this->execRequest($url . '&fmt=json');
+
+        if ($data->count <= 100) {
+            $results = $data->$releaseType;
+            $this->cache->set($key, json_encode($results));
+            return $results;
+        } else {
+            $results = $this->paging($data, $url, $releaseType);
+            $this->cache->set($key, json_encode($results));
+            return $results;
+        }
+    }
+
 }
