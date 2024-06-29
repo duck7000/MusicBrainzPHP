@@ -153,7 +153,7 @@ class TitleSearchAdvanced extends MdbBase
         $data = $this->api->doReleaseGroupReleases($relGroupId);
 
         $results = array();
-        foreach ($data->releases as $release) {
+        foreach ($data as $release) {
             $id = isset($release->id) ? $release->id : null;
             $title = isset($release->title) ? $release->title : null;
             $artist = isset($release->{'artist-credit'}[0]->name) ? $release->{'artist-credit'}[0]->name : null;

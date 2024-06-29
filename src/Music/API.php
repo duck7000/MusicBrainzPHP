@@ -122,12 +122,8 @@ class Api
         }
         $baseUrl = 'https://musicbrainz.org/ws/2/release-group?query=arid:';
         $url = $baseUrl . $artistId . $incUrl;
-        $data = $this->execRequest($url . '&fmt=json');
-        if ($data->count <= 100) {
-            return $data->{'release-groups'};
-        } else {
-            return $this->paging($data, $url);
-        }
+        $releaseType = "release-groups";
+        return $this->checkCache($artistId, $url, $releaseType);
     }
 
     /**
@@ -138,9 +134,10 @@ class Api
     public function doReleaseGroupReleases($relGroupId)
     {
         $baseRelGroupUrl = 'https://musicbrainz.org/ws/2/release?query=rgid:';
-        $incUrl = '&limit=100&fmt=json';
+        $incUrl = '&limit=100';
         $url = $baseRelGroupUrl . $relGroupId . $incUrl;
-        return $this->execRequest($url);
+        $releaseType = "releases";
+        return $this->checkCache($relGroupId, $url, $releaseType);
     }
 
     /**
@@ -209,18 +206,19 @@ class Api
      * If more than 100 items paging is required to get all items
      * @param object $data initial result of start query
      * @param string $url the complete url from initial request
+     * @param string $releaseType release type from url string like release or release-groups
      * @array
      */
-    public function paging($data, $url)
+    public function paging($data, $url, $releaseType)
     {
         $totalCount = $data->count;
-        $initReleaseCount = count($data->{'release-groups'});
+        $initReleaseCount = count($data->$releaseType);
         $ReleaseGroups = array();
-        $ReleaseGroups = array_merge($ReleaseGroups, $data->{'release-groups'});
+        $ReleaseGroups = array_merge($ReleaseGroups, $data->$releaseType);
         for ($offset = $initReleaseCount; $offset < $totalCount; $offset += 100) {
             sleep(1);
             $request = $this->execRequest($url . '&offset=' . $offset . '&fmt=json');
-            $ReleaseGroups = array_merge($ReleaseGroups, $request->{'release-groups'});
+            $ReleaseGroups = array_merge($ReleaseGroups, $request->$releaseType);
         }
         if (count($ReleaseGroups) == $totalCount) {
             return $ReleaseGroups;
