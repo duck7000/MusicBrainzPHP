@@ -406,20 +406,74 @@ class Title extends MdbBase
                 if ($value->front == 1) {
                     $this->coverArt['front']['id'] = isset($value->id) ? $value->id : null;
                     $this->coverArt['front']['originalUrl'] = isset($value->image) ? $value->image : null;
-                    $this->coverArt['front']['thumbUrl'] = isset($value->thumbnails->$small) ? $value->thumbnails->$small : null;
-                    $this->coverArt['front']['mediumUrl'] = isset($value->thumbnails->$medium) ? $value->thumbnails->$medium : null;
+
+                    // thumbnail 250
+                    $checkSmall = $this->checkCoverArtThumb($value, 250);
+                    if ($checkSmall != false) {
+                        $this->coverArt['front']['thumbUrl'] = $value->thumbnails->$checkSmall;
+                    }
+
+                    // thumbnail 500
+                    $checkLarge = $this->checkCoverArtThumb($value, 500);
+                    if ($checkLarge != false) {
+                        $this->coverArt['front']['mediumUrl'] = $value->thumbnails->$checkLarge;
+                    }
                     continue;
                 }
                 if ($value->back == 1) {
                     $this->coverArt['back']['id'] = isset($value->id) ? $value->id : null;
                     $this->coverArt['back']['originalUrl'] = isset($value->image) ? $value->image : null;
-                    $this->coverArt['back']['thumbUrl'] = isset($value->thumbnails->$small) ? $value->thumbnails->$small : null;
-                    $this->coverArt['back']['mediumUrl'] = isset($value->thumbnails->$medium) ? $value->thumbnails->$medium : null;
+
+                    // thumbnail 250
+                    $checkSmall = $this->checkCoverArtThumb($value, 250);
+                    if ($checkSmall != false) {
+                        $this->coverArt['back']['thumbUrl'] = $value->thumbnails->$checkSmall;
+                    }
+
+                    // thumbnail 500
+                    $checkLarge = $this->checkCoverArtThumb($value, 500);
+                    if ($checkLarge != false) {
+                        $this->coverArt['back']['mediumUrl'] = $value->thumbnails->$checkLarge;
+                    }
                     continue;
                 }
             }
         }
         return $this->coverArt;
+    }
+
+    /**
+     * Check if array thumbnails has text or number keys e.g (small versus 250 or large versus 500)
+     * @return thumbnail fieldname
+     */
+    private function checkCoverArtThumb($value, $size)
+    {
+        $thumbNumber = strval(250);
+        $small = 'small';
+        $mediumNumber = strval(500);
+        $medium = 'large';
+        if(isset($value->thumbnails) && !empty($value->thumbnails)) {
+            if ($size == 250) {
+                if (isset($value->thumbnails->$thumbNumber)) {
+                    var_dump($thumbNumber);
+                    return $thumbNumber;
+                } elseif (isset($value->thumbnails->small)) {
+                    return $small;
+                } else {
+                    return false;
+                }
+            } else {
+                if (isset($value->thumbnails->$mediumNumber)) {
+                    return $mediumNumber;
+                } elseif (isset($value->thumbnails->large)) {
+                    return $medium;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
     }
 
 }

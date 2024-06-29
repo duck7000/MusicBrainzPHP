@@ -170,7 +170,7 @@ class Api
      */
     public function doCoverArtLookup($mbID)
     {
-        $url = 'https://ia600903.us.archive.org/6/items/mbid-' . $mbID . '/index.json';
+        $url = 'https://coverartarchive.org/release/' . $mbID;
         return $this->execRequest($url);
     }
 
@@ -183,16 +183,8 @@ class Api
     {
         $request = new Request($url, $this->config);
         $request->sendRequest();
-        if (200 == $request->getStatus()) {
+        if (200 == $request->getStatus() || 307 == $request->getStatus()) {
             return json_decode($request->getResponseBody());
-        } elseif ($redirectUrl = $request->getRedirect()) {
-            $request2 = new Request($redirectUrl, $this->config);
-            $request2->sendRequest();
-            if (200 == $request2->getStatus()) {
-                return json_decode($request2->getResponseBody());
-            } else {
-                throw new \Exception("Failed to retrieve query");
-            }
         } else {
             $this->logger->error(
                 "[API] Failed to retrieve query. Response headers:{headers}. Response body:{body}",
