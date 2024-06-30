@@ -123,7 +123,8 @@ class Api
         $baseUrl = 'https://musicbrainz.org/ws/2/release-group?query=arid:';
         $url = $baseUrl . $artistId . $incUrl;
         $releaseType = "release-groups";
-        return $this->checkCache($artistId, $url, $releaseType);
+        $cacheNameExtension = '_' . $type;
+        return $this->checkCache($artistId, $url, $releaseType, $cacheNameExtension);
     }
 
     /**
@@ -224,11 +225,12 @@ class Api
      * @param string $artistId artist id from doArtistSearch()
      * @param string $url exec url
      * @param string $releaseType release type from url string like release or release-groups
+     * @param string $cacheNameExtension filename extension for different options e.g _all (for option all)
      * @return \stdClass
      */
-    public function checkCache($id, $url, $releaseType)
+    public function checkCache($id, $url, $releaseType, $cacheNameExtension = '')
     {
-        $key = $id . '.json';
+        $key = $id . $cacheNameExtension . '.json';
         $fromCache = $this->cache->get($key);
 
         if ($fromCache != null) {
