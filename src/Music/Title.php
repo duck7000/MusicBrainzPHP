@@ -455,7 +455,6 @@ class Title extends MdbBase
         if(isset($value->thumbnails) && !empty($value->thumbnails)) {
             if ($size == 250) {
                 if (isset($value->thumbnails->$thumbNumber)) {
-                    var_dump($thumbNumber);
                     return $thumbNumber;
                 } elseif (isset($value->thumbnails->small)) {
                     return $small;
