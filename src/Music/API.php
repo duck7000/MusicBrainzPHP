@@ -176,6 +176,17 @@ class Api
     }
 
     /**
+     * Cover art lookup in Title Class for release group images
+     * @param string $rgid release group id
+     * @return \stdClass
+     */
+    public function doCoverArtLookupRelGroup($rgid)
+    {
+        $url = 'https://coverartarchive.org/release-group/' . $rgid;
+        return $this->execRequest($url);
+    }
+
+    /**
      * Execute request
      * @param string $url
      * @return \stdClass

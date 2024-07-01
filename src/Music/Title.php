@@ -37,6 +37,7 @@ class Title extends MdbBase
     protected $totalLength = 0;
     protected $relations = array();
     protected $coverArt = array();
+    protected $releaseGroupcoverArt = array();
     protected $annotation = null;
     protected $disambiguation = null;
 
@@ -197,6 +198,23 @@ class Title extends MdbBase
                         *   [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837629318-500.jpg
                         * )
                 * )
+                * [releaseGroupcoverArt] => Array
+                * (
+                    *   [front] array
+                        * (
+                        *   [id] => 22307139959
+                        *   [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+                        *   [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+                        *   [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837628851-500.jpg
+                        * )
+                    *   [back]  array
+                        * (
+                        *   [id] => 22307139959
+                        *   [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+                        *   [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+                        *   [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837629318-500.jpg
+                        * )
+                * )
         * )
      */
     public function fetchData()
@@ -341,7 +359,12 @@ class Title extends MdbBase
 
         // CoverArt
         if (isset($data->{'cover-art-archive'}->count) && $data->{'cover-art-archive'}->count > 0) {
-            $this->coverArt = $this->fetchCoverArt();
+            $this->coverArt = $this->fetchCoverArt(false);
+        }
+
+        // Release Group Cover Art
+        if ($this->releaseGroupId != null) {
+            $this->releaseGroupcoverArt = $this->fetchCoverArt(true);
         }
 
         // results array
@@ -366,13 +389,15 @@ class Title extends MdbBase
             'relations' => $this->relations,
             'annotation' => $this->annotion,
             'disambiguation' => $this->disambiguation,
-            'coverArt' => $this->coverArt
+            'coverArt' => $this->coverArt,
+            'releaseGroupcoverArt' => $this->releaseGroupcoverArt
         );
         return $results;
     }
 
     /**
      * Fetch Cover art from coverartarchive.org
+     * @param boolean $group true: get release group cover urls, false: get release cover urls
      * @return array
      * Array
      *   (
@@ -392,58 +417,63 @@ class Title extends MdbBase
      *           )
      *   )
      */
-    private function fetchCoverArt()
+    private function fetchCoverArt($group)
     {
         // Data request
-        $data = $this->api->doCoverArtLookup($this->mbID);
+        if ($group !== false) {
+            $data = $this->api->doCoverArtLookupRelGroup($this->releaseGroupId);
+            $arrayName = 'releaseGroupcoverArt';
+        } else {
+            $data = $this->api->doCoverArtLookup($this->mbID);
+            $arrayName = 'coverArt';
+        }
 
-        $this->coverArt['front'] = array();
-        $this->coverArt['back'] = array();
-        $small = strval(250);
-        $medium = strval(500);
+        $this->$arrayName['front'] = array();
+        $this->$arrayName['back'] = array();
         if (!empty($data->images) && $data->images != null) {
             foreach ($data->images as $value) {
                 if ($value->front == 1) {
-                    $this->coverArt['front']['id'] = isset($value->id) ? $value->id : null;
-                    $this->coverArt['front']['originalUrl'] = isset($value->image) ? $value->image : null;
+                    $this->$arrayName['front']['id'] = isset($value->id) ? $value->id : null;
+                    $this->$arrayName['front']['originalUrl'] = isset($value->image) ? $value->image : null;
 
                     // thumbnail 250
                     $checkSmall = $this->checkCoverArtThumb($value, 250);
                     if ($checkSmall != false) {
-                        $this->coverArt['front']['thumbUrl'] = $value->thumbnails->$checkSmall;
+                        $this->$arrayName['front']['thumbUrl'] = $value->thumbnails->$checkSmall;
                     }
 
                     // thumbnail 500
                     $checkLarge = $this->checkCoverArtThumb($value, 500);
                     if ($checkLarge != false) {
-                        $this->coverArt['front']['mediumUrl'] = $value->thumbnails->$checkLarge;
+                        $this->$arrayName['front']['mediumUrl'] = $value->thumbnails->$checkLarge;
                     }
                     continue;
                 }
                 if ($value->back == 1) {
-                    $this->coverArt['back']['id'] = isset($value->id) ? $value->id : null;
-                    $this->coverArt['back']['originalUrl'] = isset($value->image) ? $value->image : null;
+                    $this->$arrayName['back']['id'] = isset($value->id) ? $value->id : null;
+                    $this->$arrayName['back']['originalUrl'] = isset($value->image) ? $value->image : null;
 
                     // thumbnail 250
                     $checkSmall = $this->checkCoverArtThumb($value, 250);
                     if ($checkSmall != false) {
-                        $this->coverArt['back']['thumbUrl'] = $value->thumbnails->$checkSmall;
+                        $this->$arrayName['back']['thumbUrl'] = $value->thumbnails->$checkSmall;
                     }
 
                     // thumbnail 500
                     $checkLarge = $this->checkCoverArtThumb($value, 500);
                     if ($checkLarge != false) {
-                        $this->coverArt['back']['mediumUrl'] = $value->thumbnails->$checkLarge;
+                        $this->$arrayName['back']['mediumUrl'] = $value->thumbnails->$checkLarge;
                     }
                     continue;
                 }
             }
         }
-        return $this->coverArt;
+        return $this->$arrayName;
     }
 
     /**
      * Check if array thumbnails has text or number keys e.g (small versus 250 or large versus 500)
+     * @param int $size wanted size like 250 or 500
      * @return thumbnail fieldname
      */
     private function checkCoverArtThumb($value, $size)
