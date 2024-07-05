@@ -224,11 +224,7 @@ class Api
             $request = $this->execRequest($url . '&offset=' . $offset . '&fmt=json');
             $ReleaseGroups = array_merge($ReleaseGroups, $request->$releaseType);
         }
-        if (count($ReleaseGroups) == $totalCount) {
-            return $ReleaseGroups;
-        } else {
-            throw new \Exception("Failed to retrieve all release groups");
-        }
+        return $ReleaseGroups;
     }
 
     /**
