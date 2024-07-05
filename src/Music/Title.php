@@ -428,9 +428,9 @@ class Title extends MdbBase
             $arrayName = 'coverArt';
         }
 
-        $this->$arrayName['front'] = array();
-        $this->$arrayName['back'] = array();
         if (!empty($data->images) && $data->images != null) {
+            $this->$arrayName['front'] = array();
+            $this->$arrayName['back'] = array();
             foreach ($data->images as $value) {
                 if ($value->front == 1) {
                     $this->$arrayName['front']['id'] = isset($value->id) ? $value->id : null;
