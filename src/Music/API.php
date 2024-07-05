@@ -183,7 +183,7 @@ class Api
     public function doCoverArtLookupRelGroup($rgid)
     {
         $url = 'https://coverartarchive.org/release-group/' . $rgid;
-        return $this->execRequest($url);
+        return $this->execRequest($url, true);
     }
 
     /**
@@ -191,7 +191,7 @@ class Api
      * @param string $url
      * @return \stdClass
      */
-    protected function execRequest($url)
+    protected function execRequest($url, $cover = false)
     {
         $request = new Request($url, $this->config);
         $request->sendRequest();
@@ -202,7 +202,11 @@ class Api
                 "[API] Failed to retrieve query. Response headers:{headers}. Response body:{body}",
                 array('headers' => $request->getLastResponseHeaders(), 'body' => $request->getResponseBody())
             );
-            throw new \Exception("Failed to retrieve query");
+            if ($cover !== false) {
+                return false;
+            } else {
+                throw new \Exception("Failed to retrieve query");
+            }
         }
     }
 

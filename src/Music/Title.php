@@ -420,9 +420,12 @@ class Title extends MdbBase
     private function fetchCoverArt($group)
     {
         // Data request
-        if ($group !== false) {
+        if ($group != false) {
             $data = $this->api->doCoverArtLookupRelGroup($this->releaseGroupId);
             $arrayName = 'releaseGroupcoverArt';
+            if ($data === false) {
+                return $this->$arrayName;
+            }
         } else {
             $data = $this->api->doCoverArtLookup($this->mbID);
             $arrayName = 'coverArt';
