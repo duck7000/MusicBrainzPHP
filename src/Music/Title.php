@@ -27,7 +27,8 @@ class Title extends MdbBase
     protected $barcode = null;
     protected $status = null;
     protected $packaging = null;
-    protected $type = null;
+    protected $primaryType = null;
+    protected $secondaryTypes = array();
     protected $releaseGroupId = null;
     protected $genres = array();
     protected $releaseGroupGenres = array();
@@ -73,7 +74,11 @@ class Title extends MdbBase
             * [disambiguation] => price code CA 835
             * [status] => Official
             * [packaging] => Jewel Case
-            * [type] => Album
+            * [primaryType] => Album
+            * [secondaryTypes] => Array
+                * (
+                    * [0] => Compilation
+                * )
             * [releaseGroupId] => c9673ff0-15b5-394d-a5ec-3d2a27dfce83
             * [genres] => Array
                 * (
@@ -229,10 +234,17 @@ class Title extends MdbBase
         $this->year = isset($data->date) ? strtok($data->date, '-') : null;
         $this->date = isset($data->date) ? $data->date : null;
         $this->country = isset($data->{'release-events'}[0]->area->name) ? $data->{'release-events'}[0]->area->name : null;
-        $this->type = isset($data->{'release-group'}->{'primary-type'}) ? $data->{'release-group'}->{'primary-type'} : null;
+        $this->primaryType = isset($data->{'release-group'}->{'primary-type'}) ? $data->{'release-group'}->{'primary-type'} : null;
         $this->releaseGroupId = isset($data->{'release-group'}->id) ? $data->{'release-group'}->id : null;
         $this->annotion = isset($data->annotion) ? $data->annotion : null;
         $this->disambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
+
+        // Secondary Types
+        if (isset($data->{'release-group'}->{'secondary-types'}) && !empty($data->{'release-group'}->{'secondary-types'})) {
+            foreach ($data->{'release-group'}->{'secondary-types'} as $secType) {
+                $this->secondaryTypes[] = $secType;
+            }
+        }
 
         // Artist
         if (isset($data->{'artist-credit'}) && !empty($data->{'artist-credit'})) {
@@ -379,7 +391,8 @@ class Title extends MdbBase
             'barcode' => $this->barcode,
             'status' => $this->status,
             'packaging' => $this->packaging,
-            'type' => $this->type,
+            'primaryType' => $this->primaryType,
+            'secondaryTypes' => $this->secondaryTypes,
             'releaseGroupId' => $this->releaseGroupId,
             'genres' => $this->genres,
             'releaseGroupGenres' => $this->releaseGroupGenres,
