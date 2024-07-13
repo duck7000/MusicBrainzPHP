@@ -79,9 +79,6 @@ class Config
      * possible types:
      *      CD
      *      Vinyl
-     *      7" Vinyl
-     *      10" Vinyl
-     *      12" Vinyl
      *      Cassette
      *      SACD
      *      DVD
