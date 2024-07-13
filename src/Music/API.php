@@ -63,7 +63,6 @@ class Api
         $incUrl .= '&limit=' . $this->config->titleSearchAmount .
                    '&fmt=json';
         $url = $baseUrl . $urlSuffix . $incUrl;
-        var_dump($url);
         return $this->execRequest($url);
     }
 
