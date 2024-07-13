@@ -56,10 +56,14 @@ class Api
     public function doSearch($urlSuffix)
     {
         $baseUrl = 'https://musicbrainz.org/ws/2/release/';
-        $incUrl = '%20AND%20format:' . $this->config->titleSearchFormat .
-                  '&limit=' . $this->config->titleSearchAmount .
-                  '&fmt=json';
+        $incUrl = '%20AND%20format:' . $this->config->titleSearchFormat;
+        if ($this->config->titleSearchFormat == "All") {
+            $incUrl = '';
+        }
+        $incUrl .= '&limit=' . $this->config->titleSearchAmount .
+                   '&fmt=json';
         $url = $baseUrl . $urlSuffix . $incUrl;
+        var_dump($url);
         return $this->execRequest($url);
     }
 
