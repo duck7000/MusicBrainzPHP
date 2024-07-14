@@ -57,7 +57,7 @@ class Api
     {
         $baseUrl = 'https://musicbrainz.org/ws/2/release/';
         $incUrl = '%20AND%20format:' . $this->config->titleSearchFormat;
-        if ($this->config->titleSearchFormat == "All") {
+        if (stripos($this->config->titleSearchFormat, "all") !== false) {
             $incUrl = '';
         }
         $incUrl .= '&limit=' . $this->config->titleSearchAmount .

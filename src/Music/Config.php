@@ -77,7 +77,7 @@ class Config
      * Title search format
      * Default: cd (insensitive to case, spaces, and separators)
      * possible types:
-     *      All (returns all format types, this is case sensitive!)
+     *      All (returns all format types)
      *      CD
      *      Vinyl
      *      Cassette
@@ -88,7 +88,7 @@ class Config
      *      miniDisc
      * @var string
      */
-    public $titleSearchFormat = "cd";
+    public $titleSearchFormat = "CD";
 
     // Debug config
     /**
