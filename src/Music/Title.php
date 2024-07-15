@@ -499,7 +499,7 @@ class Title extends MdbBase
             * [gender] => 
             * [country] => Australia
             * [disambiguation] => Australian hard rock band
-            * [lifeSpan] => Array
+            * [lifespan] => Array
                 * (
                     * [begin] => 1973-11
                     * [end] => 
@@ -534,7 +534,7 @@ class Title extends MdbBase
             'gender' => $this->bioGender,
             'country' => $this->bioAreaName,
             'disambiguation' => $this->bioDisambiguation,
-            'lifeSpan' => $this->bioLifeSpan,
+            'lifespan' => $this->bioLifeSpan,
             'beginArea' => $this->bioBeginAreaName,
             'endArea' => $this->bioEndAreaName
         );
