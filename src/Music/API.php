@@ -81,6 +81,19 @@ class Api
     }
 
     /**
+     * Search for Artist bio info
+     * @param string $artistId Artist Id
+     * @return \stdClass
+     */
+    public function doArtistBio($artistId)
+    {
+        $baseArtistUrl = 'https://musicbrainz.org/ws/2/artist/';
+        $incUrl = '?&fmt=json';
+        $url = $baseArtistUrl . $artistId . $incUrl;
+        return $this->execRequest($url);
+    }
+
+    /**
      * Search for all releasegroups of specific artistId in TitleSearchAdvanced class
      * @param string $artistId
      * @param string $type Include only this type in search, exclude all others

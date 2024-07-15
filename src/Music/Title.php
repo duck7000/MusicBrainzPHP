@@ -488,6 +488,60 @@ class Title extends MdbBase
     }
 
     /**
+     * Fetch all info from artist (Bio)
+     * @param string $artistId
+     * @return array
+     * Array
+        * (
+            * [name] => AC/DC
+            * [id] => 66c662b6-6e2f-4930-8610-912e24c63ed1
+            * [type] => Group
+            * [gender] => 
+            * [country] => Australia
+            * [disambiguation] => Australian hard rock band
+            * [lifeSpan] => Array
+                * (
+                    * [begin] => 1973-11
+                    * [end] => 
+                    * [ended] => (boolean, true if artist/group is ended/died)
+                * )
+            * [beginArea] => Sydney
+            * [endArea] => 
+        * )
+     */
+    public function fetchArtistBio($artistId)
+    {
+        // Data request
+        $data = $this->api->doArtistBio($artistId);
+
+        $this->bioName = isset($data->name) ? $data->name : null;
+        $this->bioId = isset($data->id) ? $data->id : null;
+        $this->bioType = isset($data->type) ? $data->type : null;
+        $this->bioGender = isset($data->gender) ? $data->gender : null;
+        $this->bioAreaName = isset($data->area->name) ? $data->area->name : null;
+        $this->bioDisambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
+        $this->bioLifeSpan['begin'] = isset($data->{'life-span'}->begin) ? $data->{'life-span'}->begin : null;
+        $this->bioLifeSpan['end'] = isset($data->{'life-span'}->end) ? $data->{'life-span'}->end : null;
+        $this->bioLifeSpan['ended'] = isset($data->{'life-span'}->ended) ? $data->{'life-span'}->ended : false;
+        $this->bioBeginAreaName = isset($data->{'begin-area'}->name) ? $data->{'begin-area'}->name : null;
+        $this->bioEndAreaName = isset($data->{'end-area'}->name) ? $data->{'end-area'}->name : null;
+
+        // results array
+        $results = array(
+            'name' => $this->bioName,
+            'id' => $this->bioId,
+            'type' => $this->bioType,
+            'gender' => $this->bioGender,
+            'country' => $this->bioAreaName,
+            'disambiguation' => $this->bioDisambiguation,
+            'lifeSpan' => $this->bioLifeSpan,
+            'beginArea' => $this->bioBeginAreaName,
+            'endArea' => $this->bioEndAreaName
+        );
+        return $results;
+    }
+
+    /**
      * Check if array thumbnails has text or number keys e.g (small versus 250 or large versus 500)
      * @param int $size wanted size like 250 or 500
      * @return thumbnail fieldname
