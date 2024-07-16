@@ -42,6 +42,19 @@ class Title extends MdbBase
     protected $annotation = null;
     protected $disambiguation = null;
 
+    // Artist Bio
+    protected $bioName = null;
+    protected $bioId = null;
+    protected $bioType = null;
+    protected $bioGender = null;
+    protected $bioAreaName = null;
+    protected $bioDisambiguation = null;
+    protected $bioLifeSpan = array();
+    protected $bioBeginAreaName = null;
+    protected $bioEndAreaName = null;
+    protected $bioBeginAreaId = null;
+    protected $bioEndAreaId = null;
+
     /**
      * @param string $id musicBrainz id
      * @param Config $config OPTIONAL override default config
@@ -507,6 +520,8 @@ class Title extends MdbBase
                 * )
             * [beginArea] => Sydney
             * [endArea] => 
+            * [beginAreaId] => afaa40c1-2e11-4a9b-9a33-ff0603e3e312
+            * [endAreaId] => afaa40c1-2e11-4a9b-9a33-ff0603e3e313
         * )
      */
     public function fetchArtistBio($artistId)
@@ -525,6 +540,8 @@ class Title extends MdbBase
         $this->bioLifeSpan['ended'] = isset($data->{'life-span'}->ended) ? $data->{'life-span'}->ended : false;
         $this->bioBeginAreaName = isset($data->{'begin-area'}->name) ? $data->{'begin-area'}->name : null;
         $this->bioEndAreaName = isset($data->{'end-area'}->name) ? $data->{'end-area'}->name : null;
+        $this->bioBeginAreaId = isset($data->{'begin-area'}->id) ? $data->{'begin-area'}->id : null;
+        $this->bioEndAreaId = isset($data->{'end-area'}->id) ? $data->{'end-area'}->id : null;
 
         // results array
         $results = array(
@@ -536,7 +553,9 @@ class Title extends MdbBase
             'disambiguation' => $this->bioDisambiguation,
             'lifespan' => $this->bioLifeSpan,
             'beginArea' => $this->bioBeginAreaName,
-            'endArea' => $this->bioEndAreaName
+            'endArea' => $this->bioEndAreaName,
+            'beginAreaId' => $this->bioBeginAreaId,
+            'endAreaId' => $this->bioEndAreaId
         );
         return $results;
     }
