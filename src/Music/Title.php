@@ -47,13 +47,12 @@ class Title extends MdbBase
     protected $bioId = null;
     protected $bioType = null;
     protected $bioGender = null;
-    protected $bioAreaName = null;
+    protected $bioCountry = null;
+    protected $bioAreaBegin = array();
+    protected $bioAreaEnd = array();
     protected $bioDisambiguation = null;
     protected $bioLifeSpan = array();
-    protected $bioBeginAreaName = null;
-    protected $bioEndAreaName = null;
-    protected $bioBeginAreaId = null;
-    protected $bioEndAreaId = null;
+    protected $areaRelation = array();
 
     /**
      * @param string $id musicBrainz id
@@ -512,36 +511,88 @@ class Title extends MdbBase
             * [gender] => 
             * [country] => Australia
             * [disambiguation] => Australian hard rock band
-            * [lifespan] => Array
+            * [lifeSpan] => Array
                 * (
                     * [begin] => 1973-11
                     * [end] => 
                     * [ended] => (boolean, true if artist/group is ended/died)
                 * )
-            * [beginArea] => Sydney
-            * [endArea] => 
-            * [beginAreaId] => afaa40c1-2e11-4a9b-9a33-ff0603e3e312
-            * [endAreaId] => afaa40c1-2e11-4a9b-9a33-ff0603e3e313
+            * [areaBegin] => Array
+                * (
+                    * [id] => f61848ab-0ba0-4534-8b71-d9c7c03e854c
+                    * [city] => Salford
+                    * [type] => 
+                * )
+            * [areaEnd] => Array
+                * (
+                * )
+            * [areaRelation] => Array
+                * (
+                    * [0] => Array
+                        * (
+                            * [id] => 2c153e76-5497-45c8-b6df-be9d1c0f79fc
+                            * [name] => Salford
+                            * [type] => Subdivision
+                        * )
+                   * [1] => Array
+                        * (
+                            * [id] => 0009e2a2-2f2b-40e1-9f9d-f95a5f961e6f
+                            * [name] => Barton-upon-Irwell
+                            * [type] => District
+                        * )
+                * )
         * )
      */
     public function fetchArtistBio($artistId)
     {
         // Data request
-        $data = $this->api->doArtistBio($artistId);
+        $data = $this->api->doArtistBioLookup($artistId);
+        $areaData = $this->api->doAreaLookup($data->{'begin-area'}->id);
 
         $this->bioName = isset($data->name) ? $data->name : null;
         $this->bioId = isset($data->id) ? $data->id : null;
         $this->bioType = isset($data->type) ? $data->type : null;
         $this->bioGender = isset($data->gender) ? $data->gender : null;
-        $this->bioAreaName = isset($data->area->name) ? $data->area->name : null;
+        $this->bioCountry = isset($data->area->name) ? $data->area->name : null;
         $this->bioDisambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
-        $this->bioLifeSpan['begin'] = isset($data->{'life-span'}->begin) ? $data->{'life-span'}->begin : null;
-        $this->bioLifeSpan['end'] = isset($data->{'life-span'}->end) ? $data->{'life-span'}->end : null;
-        $this->bioLifeSpan['ended'] = isset($data->{'life-span'}->ended) ? $data->{'life-span'}->ended : false;
-        $this->bioBeginAreaName = isset($data->{'begin-area'}->name) ? $data->{'begin-area'}->name : null;
-        $this->bioEndAreaName = isset($data->{'end-area'}->name) ? $data->{'end-area'}->name : null;
-        $this->bioBeginAreaId = isset($data->{'begin-area'}->id) ? $data->{'begin-area'}->id : null;
-        $this->bioEndAreaId = isset($data->{'end-area'}->id) ? $data->{'end-area'}->id : null;
+
+        // Life span
+        if (isset($data->{'life-span'}) && !empty($data->{'life-span'})) {
+            $this->bioLifeSpan = array(
+                'begin' => isset($data->{'life-span'}->begin) ? $data->{'life-span'}->begin : null,
+                'end' => isset($data->{'life-span'}->end) ? $data->{'life-span'}->end : null,
+                'ended' => isset($data->{'life-span'}->ended) ? $data->{'life-span'}->ended : false
+            );
+        }
+
+        // Area releation
+        if (isset($areaData->relations) && !empty($areaData->relations)) {
+            foreach ($areaData->relations as $relation) {
+                $relationData = array();
+                $relationData['id'] = isset($relation->area->id) ? $relation->area->id : null;
+                $relationData['name'] = isset($relation->area->name) ? $relation->area->name : null;
+                $relationData['type'] = isset($relation->area->type) ? $relation->area->type : null;
+                $this->areaRelation[] = $relationData;
+            }
+        }
+
+        // Begin area
+        if (isset($data->{'begin-area'}) && !empty($data->{'begin-area'})) {
+            $this->bioAreaBegin = array(
+                'id' => isset($data->{'begin-area'}->id) ? $data->{'begin-area'}->id : null,
+                'city' => isset($data->{'begin-area'}->name) ? $data->{'begin-area'}->name : null,
+                'type' => isset($data->{'begin-area'}->type) ? $data->{'begin-area'}->type : null
+            );
+        }
+
+        // End area
+        if (isset($data->{'end-area'}) && !empty($data->{'end-area'})) {
+            $this->bioAreaEnd = array(
+                'id' => isset($data->{'end-area'}->id) ? $data->{'end-area'}->id : null,
+                'city' => isset($data->{'end-area'}->name) ? $data->{'end-area'}->name : null,
+                'type' => isset($data->{'end-area'}->type) ? $data->{'end-area'}->type : null
+            );
+        }
 
         // results array
         $results = array(
@@ -549,13 +600,12 @@ class Title extends MdbBase
             'id' => $this->bioId,
             'type' => $this->bioType,
             'gender' => $this->bioGender,
-            'country' => $this->bioAreaName,
+            'country' => $this->bioCountry,
             'disambiguation' => $this->bioDisambiguation,
-            'lifespan' => $this->bioLifeSpan,
-            'beginArea' => $this->bioBeginAreaName,
-            'endArea' => $this->bioEndAreaName,
-            'beginAreaId' => $this->bioBeginAreaId,
-            'endAreaId' => $this->bioEndAreaId
+            'lifeSpan' => $this->bioLifeSpan,
+            'areaBegin' => $this->bioAreaBegin,
+            'areaEnd' => $this->bioAreaEnd,
+            'areaRelation' => $this->areaRelation
         );
         return $results;
     }
