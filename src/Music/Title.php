@@ -533,12 +533,14 @@ class Title extends MdbBase
                             * [id] => 2c153e76-5497-45c8-b6df-be9d1c0f79fc
                             * [name] => Salford
                             * [type] => Subdivision
+                            * [state] => Ohio
                         * )
                    * [1] => Array
                         * (
                             * [id] => 0009e2a2-2f2b-40e1-9f9d-f95a5f961e6f
                             * [name] => Barton-upon-Irwell
                             * [type] => District
+                            * [state] => Ohio
                         * )
                 * )
         * )
@@ -547,6 +549,7 @@ class Title extends MdbBase
     {
         // Data request
         $data = $this->api->doArtistBioLookup($artistId);
+        sleep(1);
         $areaData = $this->api->doAreaLookup($data->{'begin-area'}->id);
 
         $this->bioName = isset($data->name) ? $data->name : null;
@@ -572,6 +575,17 @@ class Title extends MdbBase
                 $relationData['id'] = isset($relation->area->id) ? $relation->area->id : null;
                 $relationData['name'] = isset($relation->area->name) ? $relation->area->name : null;
                 $relationData['type'] = isset($relation->area->type) ? $relation->area->type : null;
+                sleep(1);
+                $areaStateData = isset($relation->area->id) ? $this->api->doAreaLookup($relation->area->id) : null;
+                $relationData['state'] = null;
+                if ($areaStateData !== null) {
+                    foreach ($areaStateData->relations as $stateData) {
+                        if (stripos($stateData->area->type, "Subdivision") !== false) {
+                            $relationData['state'] = $stateData->area->name;
+                            break;
+                        }
+                    }
+                }
                 $this->areaRelation[] = $relationData;
             }
         }
