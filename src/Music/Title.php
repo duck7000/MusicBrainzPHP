@@ -22,6 +22,7 @@ class Title extends MdbBase
     protected $artist = array();
     protected $year = null;
     protected $date = null;
+    protected $firstReleaseDate = null;
     protected $country = null;
     protected $length = null;
     protected $barcode = null;
@@ -77,7 +78,8 @@ class Title extends MdbBase
                     * [id] => b1c124b3-cf60-41a6-8699-92728c8a3fe0
                 * )
             * [year] => 1987
-            * [date] => 1987-10-01
+            * [date] => 1987-10-01 (this is the date of this specific release)
+            * [firstReleaseDate] => 1980-07-25 (this is the release group first release date)
             * [country] => Europe
             * [length] => 2288
             * [barcode] => 4007192534814
@@ -244,6 +246,7 @@ class Title extends MdbBase
         $this->packaging = isset($data->packaging) ? $data->packaging : null;
         $this->year = isset($data->date) ? strtok($data->date, '-') : null;
         $this->date = isset($data->date) ? $data->date : null;
+        $this->firstReleaseDate = isset($data->{'release-group'}->{'first-release-date'}) ? $data->{'release-group'}->{'first-release-date'} : null;
         $this->country = isset($data->{'release-events'}[0]->area->name) ? $data->{'release-events'}[0]->area->name : null;
         $this->primaryType = isset($data->{'release-group'}->{'primary-type'}) ? $data->{'release-group'}->{'primary-type'} : null;
         $this->releaseGroupId = isset($data->{'release-group'}->id) ? $data->{'release-group'}->id : null;
@@ -397,6 +400,7 @@ class Title extends MdbBase
             'artist' => $this->artist,
             'year' => $this->year,
             'date' => $this->date,
+            'firstReleaseDate' => $this->firstReleaseDate,
             'country' => $this->country,
             'length' => $this->totalLength,
             'barcode' => $this->barcode,
