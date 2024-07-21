@@ -52,7 +52,6 @@ class Title extends MdbBase
     protected $bioAreaEnd = array();
     protected $bioDisambiguation = null;
     protected $bioLifeSpan = array();
-    protected $areaRelation = array();
 
     /**
      * @param string $id musicBrainz id
@@ -526,31 +525,12 @@ class Title extends MdbBase
             * [areaEnd] => Array
                 * (
                 * )
-            * [areaRelation] => Array
-                * (
-                    * [0] => Array
-                        * (
-                            * [id] => 2c153e76-5497-45c8-b6df-be9d1c0f79fc
-                            * [name] => Salford
-                            * [type] => Subdivision
-                            * [state] => Ohio
-                        * )
-                   * [1] => Array
-                        * (
-                            * [id] => 0009e2a2-2f2b-40e1-9f9d-f95a5f961e6f
-                            * [name] => Barton-upon-Irwell
-                            * [type] => District
-                            * [state] => Ohio
-                        * )
-                * )
         * )
      */
     public function fetchArtistBio($artistId)
     {
         // Data request
         $data = $this->api->doArtistBioLookup($artistId);
-        sleep(1);
-        $areaData = $this->api->doAreaLookup($data->{'begin-area'}->id);
 
         $this->bioName = isset($data->name) ? $data->name : null;
         $this->bioId = isset($data->id) ? $data->id : null;
@@ -566,28 +546,6 @@ class Title extends MdbBase
                 'end' => isset($data->{'life-span'}->end) ? $data->{'life-span'}->end : null,
                 'ended' => isset($data->{'life-span'}->ended) ? $data->{'life-span'}->ended : false
             );
-        }
-
-        // Area releation
-        if (isset($areaData->relations) && !empty($areaData->relations)) {
-            foreach ($areaData->relations as $relation) {
-                $relationData = array();
-                $relationData['id'] = isset($relation->area->id) ? $relation->area->id : null;
-                $relationData['name'] = isset($relation->area->name) ? $relation->area->name : null;
-                $relationData['type'] = isset($relation->area->type) ? $relation->area->type : null;
-                sleep(1);
-                $areaStateData = isset($relation->area->id) ? $this->api->doAreaLookup($relation->area->id) : null;
-                $relationData['state'] = null;
-                if ($areaStateData !== null) {
-                    foreach ($areaStateData->relations as $stateData) {
-                        if (stripos($stateData->area->type, "Subdivision") !== false) {
-                            $relationData['state'] = $stateData->area->name;
-                            break;
-                        }
-                    }
-                }
-                $this->areaRelation[] = $relationData;
-            }
         }
 
         // Begin area
@@ -618,8 +576,7 @@ class Title extends MdbBase
             'disambiguation' => $this->bioDisambiguation,
             'lifeSpan' => $this->bioLifeSpan,
             'areaBegin' => $this->bioAreaBegin,
-            'areaEnd' => $this->bioAreaEnd,
-            'areaRelation' => $this->areaRelation
+            'areaEnd' => $this->bioAreaEnd
         );
         return $results;
     }
