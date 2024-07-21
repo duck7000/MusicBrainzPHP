@@ -92,20 +92,6 @@ class Api
         $url = $baseArtistUrl . $artistId . $incUrl;
         return $this->execRequest($url);
     }
-    
-    /**
-     * Search for additional Area info
-     * @param string $areaId Artist Id
-     * @return \stdClass
-     */
-    public function doAreaLookup($areaId)
-    {
-        $baseArtistUrl = 'https://musicbrainz.org/ws/2/area/';
-        $incUrl = '?inc=area-rels' .
-                  '&fmt=json';
-        $url = $baseArtistUrl . $areaId . $incUrl;
-        return $this->execRequest($url);
-    }
 
     /**
      * Search for all releasegroups of specific artistId in TitleSearchAdvanced class
