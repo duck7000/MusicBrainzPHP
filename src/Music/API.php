@@ -144,6 +144,23 @@ class Api
     }
 
     /**
+     * Search for all Various Artist releases inside releasegroup id in TitleSearchAdvanced class
+     * @param string $relGroupId
+     * @return \stdClass
+     */
+    public function doReleaseGroupReleasesVarious($artistId)
+    {
+        $baseUrl = 'https://musicbrainz.org/ws/2/artist/';
+        $incUrl = '?type=soundtrack|compilation' .
+                  '&inc=releases+various-artists' .
+                  '&status=official' .
+                  '&limit=100' .
+                  '&fmt=json';
+        $url = $baseUrl . $artistId . $incUrl;
+        return $this->execRequest($url);
+    }
+
+    /**
      * Search for all releases inside releasegroup id in TitleSearchAdvanced class
      * @param string $relGroupId
      * @return \stdClass

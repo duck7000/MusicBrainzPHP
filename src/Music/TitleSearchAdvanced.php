@@ -113,6 +113,40 @@ class TitleSearchAdvanced extends MdbBase
     }
 
     /**
+     * Search for all Various Artists releasegroups of specific artistId
+     * @param string $artistId
+     * @return array
+     * Array
+     *   (
+     *       [0] => Array
+     *           (
+     *               [id] => 2b81e645-4586-4456-843a-9bc19a217470
+     *               [title] => High Voltage
+     *               [date] => 1975-02-17
+     *           )
+     *     )
+     */
+    public function fetchReleaseGroupsVarious($artistId)
+    {
+        // Data request
+        $data = $this->api->doReleaseGroupReleasesVarious($artistId);
+
+        $results = array();
+        foreach ($data->releases as $releaseGroup) {
+            $id = isset($releaseGroup->id) ? $releaseGroup->id : null;
+            $title = isset($releaseGroup->title) ? $releaseGroup->title : null;
+            $date = isset($releaseGroup->date) ? $releaseGroup->date : null;
+
+            $results[] = array(
+                'id' => $id,
+                'title' => $title,
+                'date' => $date
+            );
+        }
+        return $this->sortByDate($results);
+    }
+
+    /**
      * Fetch all releases from specific releaseGroupId
      * @param $relGroupId releaseGroup id found with fetchReleaseGroups()
      * @return array
