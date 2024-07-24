@@ -192,11 +192,12 @@ class Api
                         '+url-rels' .
                         '+annotation' .
                         '+artist-rels' .
-                        '&fmt=json';
+                        '+area-rels';
         $url = $baseUrl . $mbID . $incUrl;
-        return $this->execRequest($url);
+        $releaseType = "title";
+        return $this->checkCache($mbID, $url, $releaseType);
     }
-    
+
     /**
      * Cover art lookup in Title Class
      * @param string $mbID
@@ -205,7 +206,9 @@ class Api
     public function doCoverArtLookup($mbID)
     {
         $url = 'https://coverartarchive.org/release/' . $mbID;
-        return $this->execRequest($url);
+        $releaseType = "title";
+        $cacheNameExtension = '_mbidCover';
+        return $this->checkCache($mbID, $url, $releaseType, $cacheNameExtension);
     }
 
     /**
@@ -216,7 +219,9 @@ class Api
     public function doCoverArtLookupRelGroup($rgid)
     {
         $url = 'https://coverartarchive.org/release-group/' . $rgid;
-        return $this->execRequest($url, true);
+        $releaseType = "title";
+        $cacheNameExtension = '_rgidCover';
+        return $this->checkCache($rgid, $url, $releaseType, $cacheNameExtension);
     }
 
     /**
@@ -281,16 +286,27 @@ class Api
             return json_decode($fromCache);
         }
 
-        $data = $this->execRequest($url . '&fmt=json');
-
-        if ($data->count <= 100) {
-            $results = $data->$releaseType;
-            $this->cache->set($key, json_encode($results));
-            return $results;
+        // check for release or cover urls
+        if (strpos($cacheNameExtension, "Cover") !== false) {
+            $data = $this->execRequest($url);
         } else {
-            $results = $this->paging($data, $url, $releaseType);
-            $this->cache->set($key, json_encode($results));
-            return $results;
+            $data = $this->execRequest($url . '&fmt=json');
+        }
+
+        // check if it is a single release or release groups
+        if ($releaseType == "title") {
+            $this->cache->set($key, json_encode($data));
+            return $data;
+        } else {
+            if ($data->count <= 100) {
+                $results = $data->$releaseType;
+                $this->cache->set($key, json_encode($results));
+                return $results;
+            } else {
+                $results = $this->paging($data, $url, $releaseType);
+                $this->cache->set($key, json_encode($results));
+                return $results;
+            }
         }
     }
 
