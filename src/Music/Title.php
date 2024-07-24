@@ -523,8 +523,7 @@ class Title extends MdbBase
             * [areaBegin] => Array
                 * (
                     * [id] => f61848ab-0ba0-4534-8b71-d9c7c03e854c
-                    * [city] => Salford
-                    * [type] => 
+                    * [name] => Salford
                 * )
             * [areaEnd] => Array
                 * (
@@ -556,8 +555,7 @@ class Title extends MdbBase
         if (isset($data->{'begin-area'}) && !empty($data->{'begin-area'})) {
             $this->bioAreaBegin = array(
                 'id' => isset($data->{'begin-area'}->id) ? $data->{'begin-area'}->id : null,
-                'city' => isset($data->{'begin-area'}->name) ? $data->{'begin-area'}->name : null,
-                'type' => isset($data->{'begin-area'}->type) ? $data->{'begin-area'}->type : null
+                'name' => isset($data->{'begin-area'}->name) ? $data->{'begin-area'}->name : null
             );
         }
 
@@ -565,8 +563,7 @@ class Title extends MdbBase
         if (isset($data->{'end-area'}) && !empty($data->{'end-area'})) {
             $this->bioAreaEnd = array(
                 'id' => isset($data->{'end-area'}->id) ? $data->{'end-area'}->id : null,
-                'city' => isset($data->{'end-area'}->name) ? $data->{'end-area'}->name : null,
-                'type' => isset($data->{'end-area'}->type) ? $data->{'end-area'}->type : null
+                'name' => isset($data->{'end-area'}->name) ? $data->{'end-area'}->name : null
             );
         }
 
