@@ -154,10 +154,11 @@ class Api
         $incUrl = '?type=soundtrack|compilation' .
                   '&inc=releases+various-artists' .
                   '&status=official' .
-                  '&limit=100' .
-                  '&fmt=json';
+                  '&limit=100';
         $url = $baseUrl . $artistId . $incUrl;
-        return $this->execRequest($url);
+        $releaseType = "title";
+        $cacheNameExtension = '_various';
+        return $this->checkCache($artistId, $url, $releaseType, $cacheNameExtension);
     }
 
     /**
