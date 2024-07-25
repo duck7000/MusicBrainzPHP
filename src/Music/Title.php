@@ -543,6 +543,7 @@ class Title extends MdbBase
         $this->bioDisambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
 
         // Life span
+        $this->bioLifeSpan = array();
         if (isset($data->{'life-span'}) && !empty($data->{'life-span'})) {
             $this->bioLifeSpan = array(
                 'begin' => isset($data->{'life-span'}->begin) ? $data->{'life-span'}->begin : null,
@@ -552,6 +553,7 @@ class Title extends MdbBase
         }
 
         // Begin area
+        $this->bioAreaBegin = array();
         if (isset($data->{'begin-area'}) && !empty($data->{'begin-area'})) {
             $this->bioAreaBegin = array(
                 'id' => isset($data->{'begin-area'}->id) ? $data->{'begin-area'}->id : null,
@@ -560,6 +562,7 @@ class Title extends MdbBase
         }
 
         // End area
+        $this->bioAreaEnd = array();
         if (isset($data->{'end-area'}) && !empty($data->{'end-area'})) {
             $this->bioAreaEnd = array(
                 'id' => isset($data->{'end-area'}->id) ? $data->{'end-area'}->id : null,
