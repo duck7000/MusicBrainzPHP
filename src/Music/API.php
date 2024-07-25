@@ -291,7 +291,7 @@ class Api
 
         // check for release or cover urls
         if (strpos($cacheNameExtension, "Cover") !== false) {
-            $data = $this->execRequest($url);
+            $data = $this->execRequest($url, true);
         } else {
             $data = $this->execRequest($url . '&fmt=json');
         }
