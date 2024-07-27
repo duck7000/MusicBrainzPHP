@@ -232,22 +232,20 @@ class Api
      * @param string $url
      * @return \stdClass
      */
-    protected function execRequest($url, $cover = false)
+    protected function execRequest($url)
     {
         $request = new Request($url, $this->config);
         $request->sendRequest();
         if (200 == $request->getStatus() || 307 == $request->getStatus()) {
             return json_decode($request->getResponseBody());
+        } elseif (404 == $request->getStatus()) {
+            return false;
         } else {
             $this->logger->error(
                 "[API] Failed to retrieve query. Response headers:{headers}. Response body:{body}",
                 array('headers' => $request->getLastResponseHeaders(), 'body' => $request->getResponseBody())
             );
-            if ($cover !== false) {
-                return false;
-            } else {
-                throw new \Exception("Failed to retrieve query");
-            }
+            throw new \Exception("Failed to retrieve query");
         }
     }
 
@@ -291,7 +289,7 @@ class Api
 
         // check for release or cover urls
         if (strpos($cacheNameExtension, "Cover") !== false) {
-            $data = $this->execRequest($url, true);
+            $data = $this->execRequest($url);
         } else {
             $data = $this->execRequest($url . '&fmt=json');
         }
