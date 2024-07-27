@@ -1,6 +1,17 @@
 
 History for musicBrainzPHP
 ====================
+V1.1.0 (27-07-2024)
+* Added option all to TitleSearch
+* Added new method fetchArtistBio() this fetches artist info
+* fetchData() add first release date
+* TitleSearchAdvanced added new method fetchReleaseGroupsVarious() this fetches various releases from specific artist
+* Added caching to fetchData() incl cover urls
+* Added caching to fetchReleaseGroupsVarious()
+* Added caching to fetchArtistBio()
+* fixed and improved bug when there is no coverart
+* Fixed bug vinyl options in config format not working
+
 
 v1.0.0 (12.07.2024)
 -----------------
