@@ -88,7 +88,7 @@ class Api
     public function doArtistBioLookup($artistId)
     {
         $baseArtistUrl = 'https://musicbrainz.org/ws/2/artist/';
-        $incUrl = '?';
+        $incUrl = '?&inc=aliases';
         $url = $baseArtistUrl . $artistId . $incUrl;
         $releaseType = "title";
         $cacheNameExtension = '_bio';

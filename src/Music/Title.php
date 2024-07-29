@@ -53,6 +53,7 @@ class Title extends MdbBase
     protected $bioAreaEnd = array();
     protected $bioDisambiguation = null;
     protected $bioLifeSpan = array();
+    protected $bioAliases = array();
 
     /**
      * @param string $id musicBrainz id
@@ -528,6 +529,14 @@ class Title extends MdbBase
             * [areaEnd] => Array
                 * (
                 * )
+            * [aliases] => array
+                * (
+                    * [name] => Manson Marilyn
+                    * [type] => Search hint
+                    * [begin] => 
+                    * [end] => 
+                    * [locale] => 
+                * )
         * )
      */
     public function fetchArtistBio($artistId)
@@ -550,6 +559,20 @@ class Title extends MdbBase
                 'end' => isset($data->{'life-span'}->end) ? $data->{'life-span'}->end : null,
                 'ended' => isset($data->{'life-span'}->ended) ? $data->{'life-span'}->ended : false
             );
+        }
+
+        // Aliases
+        $this->bioAliases = array();
+        if (isset($data->aliases) && !empty($data->aliases)) {
+            foreach ($data->aliases as $alias) {
+                $this->bioAliases[] = array(
+                    'name' => isset($alias->name) ? $alias->name : null,
+                    'type' => isset($alias->type) ? $alias->type : null,
+                    'begin' => isset($alias->begin) ? $alias->begin : null,
+                    'end' => isset($alias->end) ? $alias->end : null,
+                    'locale' => isset($alias->locale) ? $alias->locale : null
+                );
+            }
         }
 
         // Begin area
@@ -580,7 +603,8 @@ class Title extends MdbBase
             'disambiguation' => $this->bioDisambiguation,
             'lifeSpan' => $this->bioLifeSpan,
             'areaBegin' => $this->bioAreaBegin,
-            'areaEnd' => $this->bioAreaEnd
+            'areaEnd' => $this->bioAreaEnd,
+            'aliases' => $this->bioAliases
         );
         return $results;
     }
