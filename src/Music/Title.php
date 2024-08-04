@@ -48,7 +48,7 @@ class Title extends MdbBase
     protected $bioId = null;
     protected $bioType = null;
     protected $bioGender = null;
-    protected $bioCountry = null;
+    protected $bioArea = array();
     protected $bioAreaBegin = array();
     protected $bioAreaEnd = array();
     protected $bioDisambiguation = null;
@@ -521,6 +521,11 @@ class Title extends MdbBase
                     * [end] => 
                     * [ended] => (boolean, true if artist/group is ended/died)
                 * )
+            * [area] => Array
+                * (
+                    * [id] => f61848ab-0ba0-4534-8b71-d9c7c03e854c
+                    * [name] => Salford
+                * )
             * [areaBegin] => Array
                 * (
                     * [id] => f61848ab-0ba0-4534-8b71-d9c7c03e854c
@@ -548,7 +553,6 @@ class Title extends MdbBase
         $this->bioId = isset($data->id) ? $data->id : null;
         $this->bioType = isset($data->type) ? $data->type : null;
         $this->bioGender = isset($data->gender) ? $data->gender : null;
-        $this->bioCountry = isset($data->area->name) ? $data->area->name : null;
         $this->bioDisambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
 
         // Life span
@@ -575,6 +579,15 @@ class Title extends MdbBase
             }
         }
 
+        // Area
+        $this->bioArea = array();
+        if (isset($data->area->name) && !empty($data->area->name)) {
+            $this->bioArea = array(
+                'id' => $data->area->id,
+                'name' => $data->area->name
+            );
+        }
+
         // Begin area
         $this->bioAreaBegin = array();
         if (isset($data->{'begin-area'}) && !empty($data->{'begin-area'})) {
@@ -599,9 +612,9 @@ class Title extends MdbBase
             'id' => $this->bioId,
             'type' => $this->bioType,
             'gender' => $this->bioGender,
-            'country' => $this->bioCountry,
             'disambiguation' => $this->bioDisambiguation,
             'lifeSpan' => $this->bioLifeSpan,
+            'area' => $this->bioArea,
             'areaBegin' => $this->bioAreaBegin,
             'areaEnd' => $this->bioAreaEnd,
             'aliases' => $this->bioAliases
