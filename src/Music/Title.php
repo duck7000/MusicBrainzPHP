@@ -547,28 +547,28 @@ class Title extends MdbBase
     public function fetchArtistBio($artistId)
     {
         // Data request
-        $data = $this->api->doArtistBioLookup($artistId);
+        $Artistdata = $this->api->doArtistBioLookup($artistId);
 
-        $this->bioName = isset($data->name) ? $data->name : null;
-        $this->bioId = isset($data->id) ? $data->id : null;
-        $this->bioType = isset($data->type) ? $data->type : null;
-        $this->bioGender = isset($data->gender) ? $data->gender : null;
-        $this->bioDisambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
+        $this->bioName = isset($Artistdata->name) ? $Artistdata->name : null;
+        $this->bioId = isset($Artistdata->id) ? $Artistdata->id : null;
+        $this->bioType = isset($Artistdata->type) ? $Artistdata->type : null;
+        $this->bioGender = isset($Artistdata->gender) ? $Artistdata->gender : null;
+        $this->bioDisambiguation = isset($Artistdata->disambiguation) ? $Artistdata->disambiguation : null;
 
         // Life span
         $this->bioLifeSpan = array();
-        if (isset($data->{'life-span'}) && !empty($data->{'life-span'})) {
+        if (isset($Artistdata->{'life-span'}) && !empty($Artistdata->{'life-span'})) {
             $this->bioLifeSpan = array(
-                'begin' => isset($data->{'life-span'}->begin) ? $data->{'life-span'}->begin : null,
-                'end' => isset($data->{'life-span'}->end) ? $data->{'life-span'}->end : null,
-                'ended' => isset($data->{'life-span'}->ended) ? $data->{'life-span'}->ended : false
+                'begin' => isset($Artistdata->{'life-span'}->begin) ? $Artistdata->{'life-span'}->begin : null,
+                'end' => isset($Artistdata->{'life-span'}->end) ? $Artistdata->{'life-span'}->end : null,
+                'ended' => isset($Artistdata->{'life-span'}->ended) ? $Artistdata->{'life-span'}->ended : false
             );
         }
 
         // Aliases
         $this->bioAliases = array();
-        if (isset($data->aliases) && !empty($data->aliases)) {
-            foreach ($data->aliases as $alias) {
+        if (isset($Artistdata->aliases) && !empty($Artistdata->aliases)) {
+            foreach ($Artistdata->aliases as $alias) {
                 $this->bioAliases[] = array(
                     'name' => isset($alias->name) ? $alias->name : null,
                     'type' => isset($alias->type) ? $alias->type : null,
@@ -581,28 +581,28 @@ class Title extends MdbBase
 
         // Area
         $this->bioArea = array();
-        if (isset($data->area->name) && !empty($data->area->name)) {
+        if (isset($Artistdata->area->name) && !empty($Artistdata->area->name)) {
             $this->bioArea = array(
-                'id' => $data->area->id,
-                'name' => $data->area->name
+                'id' => $Artistdata->area->id,
+                'name' => $Artistdata->area->name
             );
         }
 
         // Begin area
         $this->bioAreaBegin = array();
-        if (isset($data->{'begin-area'}) && !empty($data->{'begin-area'})) {
+        if (isset($Artistdata->{'begin-area'}) && !empty($Artistdata->{'begin-area'})) {
             $this->bioAreaBegin = array(
-                'id' => isset($data->{'begin-area'}->id) ? $data->{'begin-area'}->id : null,
-                'name' => isset($data->{'begin-area'}->name) ? $data->{'begin-area'}->name : null
+                'id' => isset($Artistdata->{'begin-area'}->id) ? $Artistdata->{'begin-area'}->id : null,
+                'name' => isset($Artistdata->{'begin-area'}->name) ? $Artistdata->{'begin-area'}->name : null
             );
         }
 
         // End area
         $this->bioAreaEnd = array();
-        if (isset($data->{'end-area'}) && !empty($data->{'end-area'})) {
+        if (isset($Artistdata->{'end-area'}) && !empty($Artistdata->{'end-area'})) {
             $this->bioAreaEnd = array(
-                'id' => isset($data->{'end-area'}->id) ? $data->{'end-area'}->id : null,
-                'name' => isset($data->{'end-area'}->name) ? $data->{'end-area'}->name : null
+                'id' => isset($Artistdata->{'end-area'}->id) ? $Artistdata->{'end-area'}->id : null,
+                'name' => isset($Artistdata->{'end-area'}->name) ? $Artistdata->{'end-area'}->name : null
             );
         }
 
