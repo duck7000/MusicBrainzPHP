@@ -76,6 +76,15 @@ class MdbBase extends Config
         $this->mbID = $id;
     }
 
+    /**
+     * Set arID (Aritst Id)
+     * @param string id musicBrainz Artist ID
+     */
+    protected function setArtistId($id)
+    {
+        $this->arID = $id;
+    }
+
     #---------------------------------------------------------[ Debug helpers ]---
     protected function debug_scalar($scalar)
     {
