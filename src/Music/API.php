@@ -153,7 +153,7 @@ class Api
     public function doReleaseGroupReleasesVarious($artistId)
     {
         $baseUrl = 'https://musicbrainz.org/ws/2/artist/';
-        $incUrl = '?type=soundtrack|compilation' .
+        $incUrl = '?' .
                   '&inc=releases+various-artists' .
                   '&status=official' .
                   '&limit=100';
