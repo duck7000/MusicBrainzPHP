@@ -18,6 +18,7 @@ use Psr\SimpleCache\CacheInterface;
 class Title extends MdbBase
 {
 
+    protected $art = null;
     protected $title = null;
     protected $artist = array();
     protected $year = null;
@@ -52,6 +53,7 @@ class Title extends MdbBase
     {
         parent::__construct($config, $logger, $cache);
         $this->setid($id);
+        $this->art = new Cover();
     }
 
     /**
@@ -374,12 +376,12 @@ class Title extends MdbBase
 
         // CoverArt
         if (isset($data->{'cover-art-archive'}->count) && $data->{'cover-art-archive'}->count > 0) {
-            $this->coverArt = $this->fetchCoverArt(false);
+            $this->coverArt = $this->art->fetchCoverArt($this->mbID, false);
         }
 
         // Release Group Cover Art
         if ($this->releaseGroupId != null) {
-            $this->releaseGroupcoverArt = $this->fetchCoverArt(true);
+            $this->releaseGroupcoverArt = $this->art->fetchCoverArt($this->releaseGroupId, true);
         }
 
         // results array
