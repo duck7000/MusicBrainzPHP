@@ -79,16 +79,21 @@ class Config
      * possible types:
      *      All (returns all format types)
      *      CD
+     *      Digital Media
      *      Vinyl
      *      7\"%2BVinyl (7 Inch Vinyl)
      *      10\"%2BVinyl (10 Inch Vinyl)
      *      12\"%2BVinyl (12 Inch Vinyl)
      *      Cassette
+     *      CD-R
      *      SACD
      *      DVD
      *      Other
      *      Blu-ray
      *      miniDisc
+     *      DVD-Video
+     *      DVD-Audio
+     *      VHS
      * @var string
      */
     public $titleSearchFormat = "CD";
