@@ -41,16 +41,16 @@ class Cover extends MdbBase
      *      [front] => Array
      *           (
      *               [id] => 22307139959
-     *               [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
-     *               [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
-     *               [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837628851-500.jpg
+     *               [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *               [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *               [mediumUrl] => https://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837628851-500.jpg
      *           )
      *       [back] => Array
      *           (
      *               [id] => 22307143843
-     *               [originalUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843.jpg
-     *               [thumbUrl] => http://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-250.jpg
-     *               [mediumUrl] => http://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837629318-500.jpg
+     *               [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843.jpg
+     *               [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-250.jpg
+     *               [mediumUrl] => https://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837629318-500.jpg
      *           )
      *   )
      */
@@ -74,35 +74,35 @@ class Cover extends MdbBase
             foreach ($data->images as $value) {
                 if ($value->front == 1) {
                     $this->$arrayName['front']['id'] = isset($value->id) ? $value->id : null;
-                    $this->$arrayName['front']['originalUrl'] = isset($value->image) ? $value->image : null;
+                    $this->$arrayName['front']['originalUrl'] = isset($value->image) ? $this->checkHttp($value->image) : null;
 
                     // thumbnail 250
                     $checkSmall = $this->checkCoverArtThumb($value, 250);
                     if ($checkSmall != false) {
-                        $this->$arrayName['front']['thumbUrl'] = $value->thumbnails->$checkSmall;
+                        $this->$arrayName['front']['thumbUrl'] = $this->checkHttp($value->thumbnails->$checkSmall);
                     }
 
                     // thumbnail 500
                     $checkLarge = $this->checkCoverArtThumb($value, 500);
                     if ($checkLarge != false) {
-                        $this->$arrayName['front']['mediumUrl'] = $value->thumbnails->$checkLarge;
+                        $this->$arrayName['front']['mediumUrl'] = $this->checkHttp($value->thumbnails->$checkLarge);
                     }
                     continue;
                 }
                 if ($value->back == 1) {
                     $this->$arrayName['back']['id'] = isset($value->id) ? $value->id : null;
-                    $this->$arrayName['back']['originalUrl'] = isset($value->image) ? $value->image : null;
+                    $this->$arrayName['back']['originalUrl'] = isset($value->image) ? $this->checkHttp($value->image) : null;
 
                     // thumbnail 250
                     $checkSmall = $this->checkCoverArtThumb($value, 250);
                     if ($checkSmall != false) {
-                        $this->$arrayName['back']['thumbUrl'] = $value->thumbnails->$checkSmall;
+                        $this->$arrayName['back']['thumbUrl'] = $this->checkHttp($value->thumbnails->$checkSmall);
                     }
 
                     // thumbnail 500
                     $checkLarge = $this->checkCoverArtThumb($value, 500);
                     if ($checkLarge != false) {
-                        $this->$arrayName['back']['mediumUrl'] = $value->thumbnails->$checkLarge;
+                        $this->$arrayName['back']['mediumUrl'] = $this->checkHttp($value->thumbnails->$checkLarge);
                     }
                     continue;
                 }
@@ -143,6 +143,17 @@ class Cover extends MdbBase
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Change http to https (coverarttarget returns only http so this causes browser warnings)
+     * @param string $inputUrl http url
+     * @return https url
+     */
+    private function checkHttp($inputUrl)
+    {
+        $splitUrl = explode(":", $inputUrl, 2);
+        return $splitUrl[0] . 's:' . $splitUrl[1];
     }
 
 }
