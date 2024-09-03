@@ -1,6 +1,16 @@
 
 History for musicBrainzPHP
 ====================
+
+V1.1.1 (03-09-2024)
+* Changed cover art urls from http to https to avoid browser issues
+* TitleSearchAdvanced added more types in config
+* Cover art methods are moved to there own class and removed from Title class
+* Added Artist class and removed fetchArtistBio from Title class as it is now in Artist class
+* TitleSearchAdvanced Changed api call from fetchReleaseGroupsVarious()
+* Artist class fetchArtistBio() added area name and id
+* Artist class fetchArtistBio() added aliasses
+
 V1.1.0 (27-07-2024)
 * Added option all to TitleSearch
 * Added new method fetchArtistBio() this fetches artist info
