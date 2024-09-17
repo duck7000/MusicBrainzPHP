@@ -153,7 +153,7 @@ class Cover extends MdbBase
     private function checkHttp($inputUrl)
     {
         $splitUrl = explode(":", $inputUrl, 2);
-        return $splitUrl[0] . 's:' . $splitUrl[1];
+        return 'https:' . $splitUrl[1];
     }
 
 }
