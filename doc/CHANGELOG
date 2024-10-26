@@ -2,6 +2,10 @@
 History for musicBrainzPHP
 ====================
 
+V1.1.2 (26-10-2024)
+* Fixed bug coverArt links, now they always returns as https
+* Added musicBrainzPHP to packagist as duck7000/musicbrainz-php
+
 V1.1.1 (03-09-2024)
 * Changed cover art urls from http to https to avoid browser issues
 * TitleSearchAdvanced added more types in config
