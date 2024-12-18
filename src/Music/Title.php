@@ -241,7 +241,7 @@ class Title extends MdbBase
         $this->country = isset($data->{'release-events'}[0]->area->name) ? $data->{'release-events'}[0]->area->name : null;
         $this->primaryType = isset($data->{'release-group'}->{'primary-type'}) ? $data->{'release-group'}->{'primary-type'} : null;
         $this->releaseGroupId = isset($data->{'release-group'}->id) ? $data->{'release-group'}->id : null;
-        $this->annotion = isset($data->annotion) ? $data->annotion : null;
+        $this->annotation = isset($data->annotion) ? $data->annotion : null;
         $this->disambiguation = isset($data->disambiguation) ? $data->disambiguation : null;
 
         // Secondary Types
