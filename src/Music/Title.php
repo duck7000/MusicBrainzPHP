@@ -363,7 +363,7 @@ class Title extends MdbBase
                             'artist' => $artistTrackCredit,
                             'length' => isset($track->length) ? round($track->length / 1000) : null
                         );
-                        $this->totalLength = $this->totalLength + round($track->length / 1000);
+                        $this->totalLength = $this->totalLength + ($track->length / 1000);
                     }
                 }
                 $this->media[] = array(
@@ -393,7 +393,7 @@ class Title extends MdbBase
             'date' => $this->date,
             'firstReleaseDate' => $this->firstReleaseDate,
             'country' => $this->country,
-            'length' => $this->totalLength,
+            'length' => floor($this->totalLength),
             'barcode' => $this->barcode,
             'status' => $this->status,
             'packaging' => $this->packaging,
