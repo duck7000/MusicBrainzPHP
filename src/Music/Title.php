@@ -358,7 +358,7 @@ class Title extends MdbBase
                         }
                         $cdTracks[] = array(
                             'id' => isset($track->id) ? $track->id : null,
-                            'number' => isset($track->number) ? $track->number : null,
+                            'number' => isset($track->number) ? intval($track->number) : null,
                             'title' => isset($track->title) ? $track->title : null,
                             'artist' => $artistTrackCredit,
                             'length' => isset($track->length) ? round($track->length / 1000) : null
