@@ -393,7 +393,7 @@ class Title extends MdbBase
             'date' => $this->date,
             'firstReleaseDate' => $this->firstReleaseDate,
             'country' => $this->country,
-            'length' => floor($this->totalLength),
+            'length' => round($this->totalLength),
             'barcode' => $this->barcode,
             'status' => $this->status,
             'packaging' => $this->packaging,
