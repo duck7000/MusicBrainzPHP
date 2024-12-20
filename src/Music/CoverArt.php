@@ -18,9 +18,6 @@ use Psr\SimpleCache\CacheInterface;
 class Cover extends MdbBase
 {
 
-    protected $coverArt = array();
-    protected $releaseGroupcoverArt = array();
-
     /**
      * @param Config $config OPTIONAL override default config
      * @param LoggerInterface $logger OPTIONAL override default logger `\Imdb\Logger` with a custom one
@@ -37,78 +34,92 @@ class Cover extends MdbBase
      * @param boolean $group true: get release group cover urls, false: get release cover urls
      * @return array
      * Array
-     *   (
-     *      [front] => Array
-     *           (
-     *               [id] => 22307139959
-     *               [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
-     *               [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
-     *               [mediumUrl] => https://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837628851-500.jpg
-     *           )
-     *       [back] => Array
-     *           (
-     *               [id] => 22307143843
-     *               [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843.jpg
-     *               [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-250.jpg
-     *               [mediumUrl] => https://coverartarchive.org/release/527992ea-944f-3f5e-a078-3841f39afcec/18837629318-500.jpg
-     *           )
-     *   )
+     *      [coverArt] => Array()
+     *          [front] => Array()
+     *              [id] => 22307139959
+     *              [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *              [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *              [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *              [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
+     *          [back] => Array()
+     *              [id] => 22307143843
+     *              [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843.jpg
+     *              [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-250.jpg
+     *              [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-500.jpg
+     *              [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-1200.jpg
+     *          [booklet] => Array()
+     *              [0] => Array()
+     *                  [id] => 22307145267
+     *                  [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267.jpg
+     *                  [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-250.jpg
+     *                  [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-500.jpg
+     *                  [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-1200.jpg
+     *              [1] => Array()
+     *                  [id] => 22307146856
+     *                  [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856.jpg
+     *                  [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-250.jpg
+     *                  [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-500.jpg
+     *                  [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-1200.jpg
      */
     public function fetchCoverArt($id, $group)
     {
         // Data request
         if ($group !== false) {
             $data = $this->api->doCoverArtLookupRelGroup($id);
-            $arrayName = 'releaseGroupcoverArt';
-            if ($data === false) {
-                return $this->$arrayName;
+            if (empty($data->images)) {
+                return false;
             }
         } else {
             $data = $this->api->doCoverArtLookup($id);
-            $arrayName = 'coverArt';
-        }
-
-        if (!empty($data->images) && $data->images != null) {
-            $this->$arrayName['front'] = array();
-            $this->$arrayName['back'] = array();
-            foreach ($data->images as $value) {
-                if ($value->front == 1) {
-                    $this->$arrayName['front']['id'] = isset($value->id) ? $value->id : null;
-                    $this->$arrayName['front']['originalUrl'] = isset($value->image) ? $this->checkHttp($value->image) : null;
-
-                    // thumbnail 250
-                    $checkSmall = $this->checkCoverArtThumb($value, 250);
-                    if ($checkSmall != false) {
-                        $this->$arrayName['front']['thumbUrl'] = $this->checkHttp($value->thumbnails->$checkSmall);
-                    }
-
-                    // thumbnail 500
-                    $checkLarge = $this->checkCoverArtThumb($value, 500);
-                    if ($checkLarge != false) {
-                        $this->$arrayName['front']['mediumUrl'] = $this->checkHttp($value->thumbnails->$checkLarge);
-                    }
-                    continue;
-                }
-                if ($value->back == 1) {
-                    $this->$arrayName['back']['id'] = isset($value->id) ? $value->id : null;
-                    $this->$arrayName['back']['originalUrl'] = isset($value->image) ? $this->checkHttp($value->image) : null;
-
-                    // thumbnail 250
-                    $checkSmall = $this->checkCoverArtThumb($value, 250);
-                    if ($checkSmall != false) {
-                        $this->$arrayName['back']['thumbUrl'] = $this->checkHttp($value->thumbnails->$checkSmall);
-                    }
-
-                    // thumbnail 500
-                    $checkLarge = $this->checkCoverArtThumb($value, 500);
-                    if ($checkLarge != false) {
-                        $this->$arrayName['back']['mediumUrl'] = $this->checkHttp($value->thumbnails->$checkLarge);
-                    }
-                    continue;
-                }
+            if (empty($data->images)) {
+                return false;
             }
         }
-        return $this->$arrayName;
+        $coverArt = array();
+        foreach ($data->images as $value) {
+            if (!empty($value->front) && $value->front == 1) {
+                $type = 'front';
+            } elseif (!empty($value->back) && $value->back == 1) {
+                $type = 'back';
+            } elseif (!empty($value->types[0]) && $value->types[0] == 'Booklet') {
+                $type = 'booklet';
+            } else {
+                continue;
+            }
+            // thumbnail 250
+            $thumbUrl = null;
+            $checkSmall = $this->checkCoverArtThumb($value, 250);
+            if ($checkSmall != false) {
+                $thumbUrl= $this->checkHttp($value->thumbnails->$checkSmall);
+            }
+            // thumbnail 500
+            $mediumUrl = null;
+            $checkMedium = $this->checkCoverArtThumb($value, 500);
+            if ($checkMedium != false) {
+                $mediumUrl = $this->checkHttp($value->thumbnails->$checkMedium);
+            }
+            // thumbnail 1200
+            $largeUrl = null;
+            $checkLarge = $this->checkCoverArtThumb($value, 1200);
+            if ($checkLarge != false) {
+                $largeUrl = $this->checkHttp($value->thumbnails->$checkLarge);
+            }
+            $images = array(
+                'id' => isset($value->id) ?
+                              $value->id : null,
+                'originalUrl' => isset($value->image) ?
+                                       $this->checkHttp($value->image) : null,
+                'thumbUrl' => $thumbUrl,
+                'mediumUrl' => $mediumUrl,
+                'largeUrl' => $largeUrl
+            );
+            if ($type == 'booklet') {
+                $coverArt[$type][] = $images;
+            } else {
+                $coverArt[$type] = $images;
+            }
+        }
+        return $coverArt;
     }
 
     /**
@@ -118,35 +129,42 @@ class Cover extends MdbBase
      */
     private function checkCoverArtThumb($value, $size)
     {
+        // strval is nessecary, int number will not be accepted
         $thumbNumber = strval(250);
         $small = 'small';
         $mediumNumber = strval(500);
         $medium = 'large';
-        if(isset($value->thumbnails) && !empty($value->thumbnails)) {
-            if ($size == 250) {
-                if (isset($value->thumbnails->$thumbNumber)) {
-                    return $thumbNumber;
-                } elseif (isset($value->thumbnails->small)) {
-                    return $small;
-                } else {
-                    return false;
-                }
+        $largeNumber = strval(1200);
+        // 250 pixels version
+        if ($size == 250) {
+            if (!empty($value->thumbnails->$thumbNumber)) {
+                return $thumbNumber;
+            } elseif (!empty($value->thumbnails->small)) {
+                return $small;
             } else {
-                if (isset($value->thumbnails->$mediumNumber)) {
-                    return $mediumNumber;
-                } elseif (isset($value->thumbnails->large)) {
-                    return $medium;
-                } else {
-                    return false;
-                }
+                return false;
             }
+        // 500 pixels version
+        } elseif ($size == 500) {
+            if (!empty($value->thumbnails->$mediumNumber)) {
+                return $mediumNumber;
+            } elseif (!empty($value->thumbnails->large)) {
+                return $medium;
+            } else {
+                return false;
+            }
+        // 1200 pixels version (there is no version in text form like large or small)
         } else {
-            return false;
+            if (!empty($value->thumbnails->$largeNumber)) {
+                return $largeNumber;
+            } else {
+                return false;
+            }
         }
     }
     
     /**
-     * Change http to https (coverarttarget returns only http so this causes browser warnings)
+     * Change http to https (coverarttarget returns random http or https so this causes browser warnings)
      * @param string $inputUrl http url
      * @return https url
      */
