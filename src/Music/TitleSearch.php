@@ -26,12 +26,14 @@ class TitleSearch extends MdbBase
      *  title: string title
      *  artist: string matching artist for cd title (multiple artists returns Various Artists)
      *  format: string format of the title e.g CD
+     *  trackCount: (int)Total tracks on this release
      *  countryCode: string countryCode of release e.g US (or Continent: XE for Europe, XW for WorldWide)
      *  date: string date of release (can be year, month or day) e.g 1988, 1988-10-01, 1988-10
-     *  label: string first label of this title
+     *  label: array(id: string, name: string) all labels of this title
      *  catalogNumber: string catalognumber found on the back cover for this title
      *  barcode: string barcode found on the back cover for this title
-     *  type: string type of this title e.g Album
+     *  primaryType: string type of this title e.g Album
+     *  secondaryType: array() all secondary types of this title e.g Compilation
      *  status: string status of this title e.g original or bootleg
      * 
      */
@@ -47,26 +49,55 @@ class TitleSearch extends MdbBase
 
         // data request
         $data = $this->api->doSearch($urlSuffix);
-        
         foreach ($data->releases as $value) {
             $labelCodes = array();
-            if (isset($value->{'label-info'}) &&  $value->{'label-info'} != null) {
+            $labels = array();
+            if (!empty($value->{'label-info'})) {
                 foreach ($value->{'label-info'} as $labelCode) {
-                    $labelCodes[] = isset($labelCode->{'catalog-number'}) ? $labelCode->{'catalog-number'} : null;
+                    //catalognumbers
+                    if (!empty($labelCode->{'catalog-number'})) {
+                        $labelCodes[] = $labelCode->{'catalog-number'};
+                    }
+                    //labels
+                    $labels[] = array(
+                        'id' => isset($labelCode->label->id) ? $labelCode->label->id : null,
+                        'name' => isset($labelCode->label->name) ? $labelCode->label->name : null
+                    );
+                }
+            }
+            // secondary types
+            $secTypes = array();
+            if (!empty($value->{'release-group'}->{'secondary-types'})) {
+                foreach ($value->{'release-group'}->{'secondary-types'} as $secType) {
+                    if (!empty($secType)) {
+                        $secTypes[] = $secType;
+                    }
                 }
             }
             $results[] = array(
-                'id' => isset($value->id) ? $value->id : null,
-                'title' => isset($value->title) ? $value->title : null,
-                'artist' => isset($value->{'artist-credit'}[0]->name) ? $value->{'artist-credit'}[0]->name : null,
-                'format' => isset($value->media[0]->format) ? $value->media[0]->format : null,
-                'countryCode' => isset($value->country) ? $value->country : null,
-                'date' => isset($value->date) ? $value->date : null,
-                'label' => isset($value->{'label-info'}[0]->label->name) ? $value->{'label-info'}[0]->label->name : null,
+                'id' => isset($value->id) ?
+                              $value->id : null,
+                'title' => isset($value->title) ?
+                                 $value->title : null,
+                'artist' => isset($value->{'artist-credit'}[0]->name) ?
+                                  $value->{'artist-credit'}[0]->name : null,
+                'format' => isset($value->media[0]->format) ?
+                                  $value->media[0]->format : null,
+                'trackCount' => isset($value->{'track-count'}) ?
+                                      $value->{'track-count'} : null,
+                'countryCode' => isset($value->country) ?
+                                       $value->country : null,
+                'date' => isset($value->date) ?
+                                $value->date : null,
+                'label' => $labels,
                 'catalogNumber' => $labelCodes,
-                'barcode' => isset($value->barcode) ? $value->barcode : null,
-                'type' => isset($value->{'release-group'}->{'primary-type'}) ? $value->{'release-group'}->{'primary-type'} : null,
-                'status' => isset($value->status) ? $value->status : null
+                'barcode' => isset($value->barcode) ?
+                                   $value->barcode : null,
+                'primaryType' => isset($value->{'release-group'}->{'primary-type'}) ?
+                                       $value->{'release-group'}->{'primary-type'} : null,
+                'secondaryType' => $secTypes,
+                'status' => isset($value->status) ?
+                                  $value->status : null
             );
         }
         return $results;
