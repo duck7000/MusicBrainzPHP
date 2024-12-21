@@ -86,59 +86,74 @@ class Artist extends MdbBase
     {
         // Data request
         $Artistdata = $this->api->doArtistBioLookup($this->arID);
-
-        $this->bioName = isset($Artistdata->name) ? $Artistdata->name : null;
-        $this->bioId = isset($Artistdata->id) ? $Artistdata->id : null;
-        $this->bioType = isset($Artistdata->type) ? $Artistdata->type : null;
-        $this->bioGender = isset($Artistdata->gender) ? $Artistdata->gender : null;
-        $this->bioDisambiguation = isset($Artistdata->disambiguation) ? $Artistdata->disambiguation : null;
-
+        if (empty($Artistdata)) {
+            return false;
+        }
+        $this->bioName = isset($Artistdata->name) ?
+                               $Artistdata->name : null;
+        $this->bioId = isset($Artistdata->id) ?
+                             $Artistdata->id : null;
+        $this->bioType = isset($Artistdata->type) ?
+                               $Artistdata->type : null;
+        $this->bioGender = isset($Artistdata->gender) ?
+                                 $Artistdata->gender : null;
+        $this->bioDisambiguation = isset($Artistdata->disambiguation) ?
+                                         $Artistdata->disambiguation : null;
         // Life span
-        if (isset($Artistdata->{'life-span'}) && !empty($Artistdata->{'life-span'})) {
+        if (!empty($Artistdata->{'life-span'})) {
             $this->bioLifeSpan = array(
-                'begin' => isset($Artistdata->{'life-span'}->begin) ? $Artistdata->{'life-span'}->begin : null,
-                'end' => isset($Artistdata->{'life-span'}->end) ? $Artistdata->{'life-span'}->end : null,
-                'ended' => isset($Artistdata->{'life-span'}->ended) ? $Artistdata->{'life-span'}->ended : false
+                'begin' => isset($Artistdata->{'life-span'}->begin) ?
+                                $Artistdata->{'life-span'}->begin : null,
+                'end' => isset($Artistdata->{'life-span'}->end) ?
+                               $Artistdata->{'life-span'}->end : null,
+                'ended' => isset($Artistdata->{'life-span'}->ended) ?
+                                 $Artistdata->{'life-span'}->ended : false
             );
         }
-
         // Aliases
-        if (isset($Artistdata->aliases) && !empty($Artistdata->aliases)) {
+        if (!empty($Artistdata->aliases)) {
             foreach ($Artistdata->aliases as $alias) {
                 $this->bioAliases[] = array(
-                    'name' => isset($alias->name) ? $alias->name : null,
-                    'type' => isset($alias->type) ? $alias->type : null,
-                    'begin' => isset($alias->begin) ? $alias->begin : null,
-                    'end' => isset($alias->end) ? $alias->end : null,
-                    'locale' => isset($alias->locale) ? $alias->locale : null
+                    'name' => isset($alias->name) ?
+                                    $alias->name : null,
+                    'type' => isset($alias->type) ?
+                                    $alias->type : null,
+                    'begin' => isset($alias->begin) ?
+                                     $alias->begin : null,
+                    'end' => isset($alias->end) ?
+                                   $alias->end : null,
+                    'locale' => isset($alias->locale) ?
+                                      $alias->locale : null
                 );
             }
         }
-
         // Area
-        if (isset($Artistdata->area->name) && !empty($Artistdata->area->name)) {
+        if (!empty($Artistdata->area)) {
             $this->bioArea = array(
-                'id' => $Artistdata->area->id,
-                'name' => $Artistdata->area->name
+                'id' => isset($Artistdata->area->id) ?
+                              $Artistdata->area->id : null,
+                'name' => isset($Artistdata->area->name) ?
+                                $Artistdata->area->name : null
             );
         }
-
         // Begin area
-        if (isset($Artistdata->{'begin-area'}) && !empty($Artistdata->{'begin-area'})) {
+        if (!empty($Artistdata->{'begin-area'})) {
             $this->bioAreaBegin = array(
-                'id' => isset($Artistdata->{'begin-area'}->id) ? $Artistdata->{'begin-area'}->id : null,
-                'name' => isset($Artistdata->{'begin-area'}->name) ? $Artistdata->{'begin-area'}->name : null
+                'id' => isset($Artistdata->{'begin-area'}->id) ?
+                              $Artistdata->{'begin-area'}->id : null,
+                'name' => isset($Artistdata->{'begin-area'}->name) ?
+                                $Artistdata->{'begin-area'}->name : null
             );
         }
-
         // End area
-        if (isset($Artistdata->{'end-area'}) && !empty($Artistdata->{'end-area'})) {
+        if (!empty($Artistdata->{'end-area'})) {
             $this->bioAreaEnd = array(
-                'id' => isset($Artistdata->{'end-area'}->id) ? $Artistdata->{'end-area'}->id : null,
-                'name' => isset($Artistdata->{'end-area'}->name) ? $Artistdata->{'end-area'}->name : null
+                'id' => isset($Artistdata->{'end-area'}->id) ?
+                              $Artistdata->{'end-area'}->id : null,
+                'name' => isset($Artistdata->{'end-area'}->name) ?
+                                $Artistdata->{'end-area'}->name : null
             );
         }
-
         // results array
         $results = array(
             'name' => $this->bioName,
