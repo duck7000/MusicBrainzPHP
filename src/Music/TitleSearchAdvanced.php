@@ -86,33 +86,35 @@ class TitleSearchAdvanced extends MdbBase
      */
     public function fetchReleaseGroups($artistId, $type = "discography")
     {
+        $results = array();
         // Data request
         $data = $this->api->doReleaseGroupSearch($artistId, $type);
-
-        $results = array();
+        if (empty($data)) {
+            return $results;
+        }
         foreach ($data as $releaseGroup) {
-            $id = isset($releaseGroup->id) ? $releaseGroup->id : null;
-            $title = isset($releaseGroup->title) ? $releaseGroup->title : null;
-            $artist = isset($releaseGroup->{'artist-credit'}[0]->name) ? $releaseGroup->{'artist-credit'}[0]->name : null;
-            $date = isset($releaseGroup->{'first-release-date'}) ? $releaseGroup->{'first-release-date'} : null;
-            $totalReleasesCount = isset($releaseGroup->count) ? $releaseGroup->count : null;
-            $primaryType = isset($releaseGroup->{'primary-type'}) ? $releaseGroup->{'primary-type'} : null;
-
             // Secondary Types
             $secTypes = array();
-            if (isset($releaseGroup->{'secondary-types'}) && !empty($releaseGroup->{'secondary-types'})) {
+            if (!empty($releaseGroup->{'secondary-types'})) {
                 foreach ($releaseGroup->{'secondary-types'} as $secType) {
-                    $secTypes[] = $secType;
+                    if (!empty($secType)) {
+                        $secTypes[] = $secType;
+                    }
                 }
             }
-
             $results[] = array(
-                'id' => $id,
-                'title' => $title,
-                'artist' => $artist,
-                'date' => $date,
-                'totalReleasesCount' => $totalReleasesCount,
-                'primaryType' => $primaryType,
+                'id' => isset($releaseGroup->id) ?
+                              $releaseGroup->id : null,
+                'title' => isset($releaseGroup->title) ?
+                                 $releaseGroup->title : null,
+                'artist' => isset($releaseGroup->{'artist-credit'}[0]->name) ?
+                                  $releaseGroup->{'artist-credit'}[0]->name : null,
+                'date' => isset($releaseGroup->{'first-release-date'}) ?
+                                $releaseGroup->{'first-release-date'} : null,
+                'totalReleasesCount' => isset($releaseGroup->count) ?
+                                              $releaseGroup->count : null,
+                'primaryType' => isset($releaseGroup->{'primary-type'}) ?
+                                       $releaseGroup->{'primary-type'} : null,
                 'secondaryType' => $secTypes
             );
         }
