@@ -137,19 +137,20 @@ class TitleSearchAdvanced extends MdbBase
      */
     public function fetchReleaseGroupsVarious($artistId)
     {
+        $results = array();
         // Data request
         $data = $this->api->doReleaseGroupReleasesVarious($artistId);
-
-        $results = array();
+        if (empty($data) || empty($data->releases)) {
+            return $results;
+        }
         foreach ($data->releases as $releaseGroup) {
-            $id = isset($releaseGroup->id) ? $releaseGroup->id : null;
-            $title = isset($releaseGroup->title) ? $releaseGroup->title : null;
-            $date = isset($releaseGroup->date) ? $releaseGroup->date : null;
-
             $results[] = array(
-                'id' => $id,
-                'title' => $title,
-                'date' => $date
+                'id' => isset($releaseGroup->id) ?
+                              $releaseGroup->id : null,
+                'title' => isset($releaseGroup->title) ?
+                                 $releaseGroup->title : null,
+                'date' => isset($releaseGroup->date) ?
+                                $releaseGroup->date : null
             );
         }
         return $this->sortByDate($results);
