@@ -43,7 +43,13 @@ class TitleSearch extends MdbBase
 
         // check input parameters
         $urlSuffix = $this->checkInput($title, $artist, $barcode);
-        if ($urlSuffix === false) {
+        if (empty($urlSuffix)) {
+            return $results;
+        }
+
+        // data request
+        $data = $this->api->doSearch($urlSuffix);
+        if (empty($data) || empty($data->releases)) {
             return $results;
         }
 
