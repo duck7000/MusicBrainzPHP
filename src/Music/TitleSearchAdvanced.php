@@ -193,60 +193,63 @@ class TitleSearchAdvanced extends MdbBase
      */
     public function releaseGroupReleases($relGroupId)
     {
+        $results = array();
         // Data request
         $data = $this->api->doReleaseGroupReleases($relGroupId);
-
-        $results = array();
+        if (empty($data)) {
+            return $results;
+        }
         foreach ($data as $release) {
-            $id = isset($release->id) ? $release->id : null;
-            $title = isset($release->title) ? $release->title : null;
-            $artist = isset($release->{'artist-credit'}[0]->name) ? $release->{'artist-credit'}[0]->name : null;
-            $date = isset($release->date) ? $release->date : null;
-            $status = isset($release->status) ? $release->status : null;
-            $barcode = isset($release->barcode) ? $release->barcode : null;
-            $countryCode = isset($release->country) ? $release->country : null;
-
             // Labels
             $labels = array();
-            if (isset($release->{'label-info'}) && !empty($release->{'label-info'})) {
+            if (!empty($release->{'label-info'})) {
                 foreach ($release->{'label-info'} as $label) {
-                    $label = array(
-                        'name' => isset($label->label->name) ? $label->label->name : null,
-                        'id' => isset($label->label->id) ? $label->label->id : null,
-                        'catalog' => isset($label->{'catalog-number'}) ? $label->{'catalog-number'} : null
+                    $labels[] = array(
+                        'name' => isset($label->label->name) ?
+                                        $label->label->name : null,
+                        'id' => isset($label->label->id) ?
+                                      $label->label->id : null,
+                        'catalog' => isset($label->{'catalog-number'}) ?
+                                           $label->{'catalog-number'} : null
                     );
-                    $labels[] = $label;
                 }
             }
-
             // Media
             $media = array();
-            if (isset($release->media) && !empty($release->media)) {
+            if (!empty($release->media)) {
                 foreach ($release->media as $medium) {
                     $format = isset($medium->format) ? $medium->format : null;
                     $trackCount = isset($medium->{'track-count'}) ? $medium->{'track-count'} : null;
                     $media[] = array(
-                        'format' => $format,
-                        'trackCount' => $trackCount
+                        'format' => isset($medium->format) ?
+                                          $medium->format : null,
+                        'trackCount' => isset($medium->{'track-count'}) ?
+                                              $medium->{'track-count'} : null
                     );
                 }
             }
-
             $results[] = array(
-                'id' => $id,
-                'title' => $title,
-                'artist' => $artist,
-                'date' => $date,
-                'status' => $status,
-                'barcode' => $barcode,
-                'countryCode' => $countryCode,
+                'id' => isset($release->id) ?
+                              $release->id : null,
+                'title' => isset($release->title) ?
+                                 $release->title : null,
+                'artist' => isset($release->{'artist-credit'}[0]->name) ?
+                                  $release->{'artist-credit'}[0]->name : null,
+                'date' => isset($release->date) ?
+                                $release->date : null,
+                'status' => isset($release->status) ?
+                                  $release->status : null,
+                'barcode' => isset($release->barcode) ?
+                                   $release->barcode : null,
+                'countryCode' => isset($release->country) ?
+                                       $release->country : null,
                 'labels' => $labels,
                 'media' => $media
             );
         }
         return $this->sortByDate($results);
     }
-    
+
     /**
      * Sort $results array by date
      * @param array $array
