@@ -53,8 +53,6 @@ class TitleSearch extends MdbBase
             return $results;
         }
 
-        // data request
-        $data = $this->api->doSearch($urlSuffix);
         foreach ($data->releases as $value) {
             $labelCodes = array();
             $labels = array();
