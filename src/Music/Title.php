@@ -222,6 +222,9 @@ class Title extends MdbBase
     {
         // Data request
         $data = $this->api->doLookup($this->mbID);
+        if (empty($data)) {
+            return false;
+        }
 
         $this->title = isset($data->title) ?
                              $data->title : null;
