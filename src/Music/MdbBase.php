@@ -46,6 +46,11 @@ class MdbBase extends Config
     protected $mbID;
 
     /**
+     * @var string musicBrainz artist id
+     */
+    protected $arID;
+
+    /**
      * @param Config $config OPTIONAL override default config
      * @param LoggerInterface $logger OPTIONAL override default logger `\Imdb\Logger` with a custom one
      * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
