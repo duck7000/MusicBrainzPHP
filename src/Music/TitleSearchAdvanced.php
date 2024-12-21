@@ -32,20 +32,27 @@ class TitleSearchAdvanced extends MdbBase
         $artist = trim($artist);
         if (empty($artist)) {
             return $results;
-        } else {
-            $urlSuffix = '?query=artist:' . rawurlencode($artist);
         }
+        $urlSuffix = '?query=artist:' . rawurlencode($artist);
 
         // data request
         $data = $this->api->doArtistSearch($urlSuffix);
+        if (empty($data) || empty($data->artists)) {
+            return $results;
+        }
 
         foreach ($data->artists as $value) {
             $results[] = array(
-                'id' => isset($value->id) ? $value->id : null,
-                'name' => isset($value->name) ? $value->name : null,
-                'area' => isset($value->area->name) ? $value->area->name : null,
-                'description' => isset($value->disambiguation) ? $value->disambiguation : null,
-                'type' => isset($value->type) ? $value->type : null
+                'id' => isset($value->id) ?
+                              $value->id : null,
+                'name' => isset($value->name) ?
+                                $value->name : null,
+                'area' => isset($value->area->name) ?
+                                $value->area->name : null,
+                'description' => isset($value->disambiguation) ?
+                                       $value->disambiguation : null,
+                'type' => isset($value->type) ?
+                                $value->type : null
             );
         }
         return $results;
