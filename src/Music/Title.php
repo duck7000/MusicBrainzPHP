@@ -67,6 +67,21 @@ class Title extends MdbBase
                 * (
                     * [name] => Grace Jones
                     * [id] => b1c124b3-cf60-41a6-8699-92728c8a3fe0
+                    * [alias] => Array
+                    *   (
+                        *   [0] => AC DC
+                        *   [1] => AC-DC
+                        *   [2] => AC.DC
+                        *   [3] => AC/DC
+                        *   [4] => AC?DC
+                        *   [5] => ACDC
+                        *   [6] => AC\DC
+                        *   [7] => AC|DC
+                        *   [8] => AC⚡DC
+                        *   [9] => AC⚡︎DC
+                        *   [10] => Acca Dacca
+                        *   [11] => Akka Dakka
+                    *   )
                 * )
             * [year] => 1987
             * [date] => 1987-10-01 (this is the date of this specific release)
@@ -261,11 +276,20 @@ class Title extends MdbBase
         // Artist
         if (!empty($data->{'artist-credit'})) {
             foreach ($data->{'artist-credit'} as $credit) {
+                $aliases = array();
+                if (!empty($credit->artist->aliases)) {
+                    foreach ($credit->artist->aliases as $alias) {
+                        if (!empty($alias->name)) {
+                            $aliases[] = $alias->name;
+                        }
+                    }
+                }
                 $this->artist[] = array(
                     'name' => isset($credit->artist->name) ?
                                     $credit->artist->name : null,
                     'id' => isset($credit->artist->id) ?
-                                  $credit->artist->id : null
+                                  $credit->artist->id : null,
+                    'alias' => $aliases
                 );
             }
         }
