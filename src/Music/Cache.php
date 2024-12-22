@@ -1,6 +1,6 @@
 <?php
 #############################################################################
-# imdbphp6                                                (c) Ed (duck7000) #
+# musicBrainzPHP                                          (c) Ed (duck7000) #
 # written by Ed                                                             #
 # ------------------------------------------------------------------------- #
 # This program is free software; you can redistribute and/or modify it      #
