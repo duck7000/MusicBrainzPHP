@@ -408,7 +408,7 @@ class Title extends MdbBase
                             'id' => isset($track->id) ?
                                           $track->id : null,
                             'number' => isset($track->number) ?
-                                              intval($track->number) : null,
+                                              $track->number : null,
                             'title' => isset($track->title) ?
                                              $track->title : null,
                             'artist' => $artistTrackCredit,
