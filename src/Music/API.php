@@ -38,12 +38,12 @@ class Api
     /**
      * @var baseUrl
      */
-    private $baseUrl = 'https://musicbrainz.org/ws/2';
+    private $baseUrl = 'https://musicbrainz.org/ws/2/';
     
     /**
      * @var baseCoverUrl
      */
-    private $baseCoverUrl = 'https://coverartarchive.org';
+    private $baseCoverUrl = 'https://coverartarchive.org/';
 
     /**
      * API constructor.
@@ -65,10 +65,11 @@ class Api
      */
     public function doSearch($urlSuffix)
     {
-        $entity = '/release/';
-        $incUrl = '%20AND%20format:' . $this->config->titleSearchFormat;
+        $entity = 'release/';
         if (stripos($this->config->titleSearchFormat, "all") !== false) {
             $incUrl = '';
+        } else {
+            $incUrl = '%20AND%20format:' . $this->config->titleSearchFormat;
         }
         $incUrl .= '&limit=' . $this->config->titleSearchAmount .
                    '&fmt=json';
@@ -83,7 +84,7 @@ class Api
      */
     public function doArtistSearch($urlSuffix)
     {
-        $entity = '/artist/';
+        $entity = 'artist/';
         $incUrl = '&limit=25' .
                   '&fmt=json';
         $url = $this->baseUrl . $entity . $urlSuffix . $incUrl;
@@ -97,7 +98,7 @@ class Api
      */
     public function doArtistBioLookup($artistId)
     {
-        $entity = '/artist/';
+        $entity = 'artist/';
         $incUrl = '?&inc=aliases';
         $url = $this->baseUrl . $entity . $artistId . $incUrl;
         $releaseType = "title";
@@ -148,7 +149,7 @@ class Api
         if ($type == "all") {
             $incUrl = '&limit=100';
         }
-        $entitiy = '/release-group?query=arid:';
+        $entitiy = 'release-group?query=arid:';
         $url = $this->baseUrl . $entitiy . $artistId . $incUrl;
         $releaseType = "release-groups";
         $cacheNameExtension = '_' . $type;
@@ -162,7 +163,7 @@ class Api
      */
     public function doReleaseGroupReleasesVarious($artistId)
     {
-        $entitiy = '/artist/';
+        $entitiy = 'artist/';
         $incUrl = '?&inc=releases+various-artists' .
                   '&status=official' .
                   '&limit=100';
@@ -179,7 +180,7 @@ class Api
      */
     public function doReleaseGroupReleases($relGroupId)
     {
-        $entitiy = '/release?query=rgid:';
+        $entitiy = 'release?query=rgid:';
         $incUrl = '&limit=100';
         $url = $this->baseUrl . $entitiy . $relGroupId . $incUrl;
         $releaseType = "releases";
@@ -193,7 +194,7 @@ class Api
      */
     public function doLookup($mbID)
     {
-        $entitiy = '/release/';
+        $entitiy = 'release/';
         $incUrl = '?inc=artist-credits' .
                   '+labels' .
                   '+discids' .
@@ -204,6 +205,7 @@ class Api
                   '+url-rels' .
                   '+annotation' .
                   '+artist-rels' .
+                  '+aliases' .
                   '+area-rels';
         $url = $this->baseUrl . $entitiy . $mbID . $incUrl;
         $releaseType = "title";
@@ -217,7 +219,7 @@ class Api
      */
     public function doCoverArtLookup($mbID)
     {
-        $entitiy = '/release/';
+        $entitiy = 'release/';
         $url = $this->baseCoverUrl . $entitiy . $mbID;
         $releaseType = "title";
         $cacheNameExtension = '_mbidCover';
@@ -231,7 +233,7 @@ class Api
      */
     public function doCoverArtLookupRelGroup($rgid)
     {
-        $entitiy = '/release-group/';
+        $entitiy = 'release-group/';
         $url = $this->baseCoverUrl . $entitiy . $rgid;
         $releaseType = "title";
         $cacheNameExtension = '_rgidCover';
