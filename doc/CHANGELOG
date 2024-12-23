@@ -2,6 +2,10 @@
 History for musicBrainzPHP
 ====================
 
+V1.2.2 (23-12-2024)
+* Changed filenames of API and CoverArt to be PSR4 compliant
+* Added missing use loggerInterface in Title, Artist and Cover class
+
 V1.2.1 (22-12-2024)
 * Title class fetchData() Fixed bug annotation not been fetched
 * Title class fetchData() Fixed bug rounding errors on total play length, now it properly rounds to the correct value (in seconds)
