@@ -38,7 +38,6 @@ class Title extends MdbBase
     protected $tags = array();
     protected $labels = array();
     protected $media = array();
-    protected $totalLength = 0;
     protected $relations = array();
     protected $coverArt = array();
     protected $releaseGroupcoverArt = array();
@@ -389,6 +388,7 @@ class Title extends MdbBase
             foreach ($data->media as $medium) {
                 // Tracks
                 $cdTracks = array();
+                $tracktotal = 0;
                 if (!empty($medium->tracks)) {
                     foreach ($medium->tracks as $track) {
                         // Artist
@@ -416,7 +416,7 @@ class Title extends MdbBase
                             'length' => isset($track->length) ?
                                               round($track->length / 1000) : null
                         );
-                        $this->totalLength = $this->totalLength + ($track->length / 1000);
+                        $tracktotal = $tracktotal + ($track->length / 1000);
                     }
                 }
                 $this->media[] = array(
@@ -424,7 +424,8 @@ class Title extends MdbBase
                                            $medium->title : null,
                     'format' => isset($medium->format) ?
                                       $medium->format : null,
-                    'tracks' => $cdTracks
+                    'tracks' => $cdTracks,
+                    'totalPlayTime' => round($tracktotal)
                 );
             }
         }
@@ -451,7 +452,6 @@ class Title extends MdbBase
             'date' => $this->date,
             'firstReleaseDate' => $this->firstReleaseDate,
             'country' => $this->country,
-            'length' => round($this->totalLength),
             'barcode' => $this->barcode,
             'status' => $this->status,
             'packaging' => $this->packaging,
