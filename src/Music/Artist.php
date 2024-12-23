@@ -9,6 +9,7 @@
 
 namespace Music;
 
+use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
 /**
