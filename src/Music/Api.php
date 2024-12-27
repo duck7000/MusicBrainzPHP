@@ -78,6 +78,23 @@ class Api
     }
 
     /**
+     * Search request for TitleSearch class on discid
+     * @param string $discid musicbrainz discid
+     * @return \stdClass
+     */
+    public function doDiscidSearch($discid)
+    {
+        $entity = 'discid/';
+        $incUrl = '?inc=artists' .
+                  '+labels' .
+                  '+release-groups' .
+                  '&cdstubs=no' .
+                  '&fmt=json';
+        $url = $this->baseUrl . $entity . $discid . $incUrl;
+        return $this->execRequest($url);
+    }
+
+    /**
      * Search for specific artist name in TitleSearchAdvanced class, this is not the same as normal artist search in TitleSearch class!
      * @param string $urlSuffix
      * @return \stdClass
