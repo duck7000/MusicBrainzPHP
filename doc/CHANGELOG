@@ -2,6 +2,11 @@
 History for musicBrainzPHP
 ====================
 
+V1.3.1 (27-12-2024)
+* Title class fetchData() added totalPlayTime to each medium and removed length from output array as it is inaccurate
+* TitleSearch search() added search on discid. You can use this python script to get the discid: https://python-discid.readthedocs.io/en/latest/
+* Title class fetchData() added discids to the output array. This is an array with all known discids for this release
+
 V1.2.2 (23-12-2024)
 * Changed filenames of API and CoverArt to be PSR4 compliant
 * Added missing use loggerInterface in Title, Artist and Cover class
