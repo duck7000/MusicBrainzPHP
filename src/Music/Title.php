@@ -167,6 +167,14 @@ class Title extends MdbBase
                                             * [length] => 258
                                         * )
                                 * )
+                            * [discids] => Array
+                                * (
+                                    * [0] => 8VcyV_HgVNgXje7IgY6NndMP8Tk-
+                                    * [1] => GI8Gdv0JZhh9yZyvQMvrauUbz.I-
+                                    * [2] => IC7ydeqKPjdd8u7ptRItLGG0wZ0-
+                                * )
+                        * )
+                 * )
                         * )
                 * )
             * [relations] => Array
@@ -419,13 +427,23 @@ class Title extends MdbBase
                         $tracktotal = $tracktotal + ($track->length / 1000);
                     }
                 }
+                // Discids
+                $discids = array();
+                if (!empty($medium->discs)) {
+                    foreach ($medium->discs as $disc) {
+                        if (!empty($disc->id)) {
+                            $discids[] = $disc->id;
+                        }
+                    }
+                }
                 $this->media[] = array(
                     'mediumTitle' => isset($medium->title) ?
                                            $medium->title : null,
                     'format' => isset($medium->format) ?
                                       $medium->format : null,
                     'tracks' => $cdTracks,
-                    'totalPlayTime' => round($tracktotal)
+                    'totalPlayTime' => round($tracktotal),
+                    'discids' => $discids
                 );
             }
         }
