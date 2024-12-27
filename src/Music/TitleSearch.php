@@ -27,11 +27,11 @@ class TitleSearch extends MdbBase
      *  title: string title
      *  artist: string matching artist for cd title (multiple artists returns Various Artists)
      *  format: string format of the title e.g CD
-     *  trackCount: (int)Total tracks on this release
+     *  trackCount: (int) Total tracks on this release
      *  countryCode: string countryCode of release e.g US (or Continent: XE for Europe, XW for WorldWide)
      *  date: string date of release (can be year, month or day) e.g 1988, 1988-10-01, 1988-10
      *  label: array(id: string, name: string) all labels of this title
-     *  catalogNumber: string catalognumber found on the back cover for this title
+     *  catalogNumber: array() catalognumber found on the back cover for this title
      *  barcode: string barcode found on the back cover for this title
      *  primaryType: string type of this title e.g Album
      *  secondaryType: array() all secondary types of this title e.g Compilation
