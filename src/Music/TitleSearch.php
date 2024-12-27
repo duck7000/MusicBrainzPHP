@@ -18,7 +18,8 @@ class TitleSearch extends MdbBase
      * @param string $title input cd title
      * @param string $artist input cd artist
      * @param string $barcode input cd barcode
-     * if barcode is provided text inputs are ignored
+     * @param string $discid input discid from disc
+     * if barcode or discid is provided text inputs are ignored
      * artist and/or title can be used together or separate.
      * 
      * @return results[] array of Titles
@@ -37,18 +38,16 @@ class TitleSearch extends MdbBase
      *  status: string status of this title e.g original or bootleg
      * 
      */
-    public function search($title = '', $artist = '', $barcode = '')
+    public function search($title = '', $artist = '', $barcode = '', $discid = '')
     {
         $results = array();
-
         // check input parameters
-        $urlSuffix = $this->checkInput($title, $artist, $barcode);
+        $urlSuffix = $this->checkInput($title, $artist, $barcode, $discid);
         if (empty($urlSuffix)) {
             return $results;
         }
-
-        // data request
-        $data = $this->api->doSearch($urlSuffix);
+        $functionName = !empty($discid) ? 'doDiscidSearch' : 'doSearch';
+        $data = $this->api->$functionName($urlSuffix);
         if (empty($data) || empty($data->releases)) {
             return $results;
         }
@@ -78,6 +77,13 @@ class TitleSearch extends MdbBase
                     }
                 }
             }
+            // trackCount
+            $trackCount = null;
+            if (!empty($value->{'track-count'})) {
+                $trackCount = $value->{'track-count'};
+            } elseif (!empty($value->media[0]->{'track-count'})) {
+                $trackCount = $value->media[0]->{'track-count'};
+            }
             $results[] = array(
                 'id' => isset($value->id) ?
                               $value->id : null,
@@ -87,8 +93,7 @@ class TitleSearch extends MdbBase
                                   $value->{'artist-credit'}[0]->name : null,
                 'format' => isset($value->media[0]->format) ?
                                   $value->media[0]->format : null,
-                'trackCount' => isset($value->{'track-count'}) ?
-                                      $value->{'track-count'} : null,
+                'trackCount' => $trackCount,
                 'countryCode' => isset($value->country) ?
                                        $value->country : null,
                 'date' => isset($value->date) ?
@@ -112,15 +117,19 @@ class TitleSearch extends MdbBase
      * @param string $title input cd title
      * @param string $artist input cd artist
      * @param string $barcode input cd barcode
+     * @param string $discid input cd barcode
      * 
      * @return string urlSuffix or false
      */
-    protected function checkInput($title, $artist, $barcode)
+    protected function checkInput($title, $artist, $barcode, $discid)
     {
         $title = trim($title);
         $artist = trim($artist);
         $barcode = trim($barcode);
-        if (!empty($barcode) && $this->isValidBarcode($barcode) == true) {
+        $discid = trim($discid);
+        if (!empty($discid)) {
+            return $discid;
+        } elseif (!empty($barcode) && $this->isValidBarcode($barcode) == true) {
             return '?query=barcode:' . $barcode;
         } elseif (!empty($title) && empty($artist)) {
             return '?query=release:' . rawurlencode($title);
