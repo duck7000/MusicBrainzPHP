@@ -117,7 +117,7 @@ class TitleSearch extends MdbBase
      * @param string $title input cd title
      * @param string $artist input cd artist
      * @param string $barcode input cd barcode
-     * @param string $discid input cd barcode
+     * @param string $discid input cd discid
      * 
      * @return string urlSuffix or false
      */
