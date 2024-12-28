@@ -125,7 +125,7 @@ class TitleSearch extends MdbBase
     {
         $title = trim($title);
         $artist = trim($artist);
-        $barcode = trim($barcode);
+        $barcode = preg_replace('/\s+/', '', $barcode);
         $discid = trim($discid);
         if (!empty($discid)) {
             return $discid;
