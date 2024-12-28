@@ -19,7 +19,8 @@ class TitleSearch extends MdbBase
      * @param string $artist input cd artist
      * @param string $barcode input cd barcode
      * @param string $discid input discid from disc
-     * if barcode or discid is provided text inputs are ignored
+     * @param string $catno input catalog number from disc cover
+     * if barcode, discid or catno is provided text inputs are ignored
      * artist and/or title can be used together or separate.
      * 
      * @return results[] array of Titles
@@ -38,11 +39,11 @@ class TitleSearch extends MdbBase
      *  status: string status of this title e.g original or bootleg
      * 
      */
-    public function search($title = '', $artist = '', $barcode = '', $discid = '')
+    public function search($title = '', $artist = '', $barcode = '', $discid = '', $catno = '')
     {
         $results = array();
         // check input parameters
-        $urlSuffix = $this->checkInput($title, $artist, $barcode, $discid);
+        $urlSuffix = $this->checkInput($title, $artist, $barcode, $discid, $catno);
         if (empty($urlSuffix)) {
             return $results;
         }
@@ -118,17 +119,21 @@ class TitleSearch extends MdbBase
      * @param string $artist input cd artist
      * @param string $barcode input cd barcode
      * @param string $discid input cd discid
+     * @param string $catno input catalog number from disc cover
      * 
      * @return string urlSuffix or false
      */
-    protected function checkInput($title, $artist, $barcode, $discid)
+    protected function checkInput($title, $artist, $barcode, $discid, $catno)
     {
         $title = trim($title);
         $artist = trim($artist);
         $barcode = preg_replace('/\s+/', '', $barcode);
         $discid = trim($discid);
+        $catno = preg_replace('/\s+/', '', $catno);
         if (!empty($discid)) {
             return $discid;
+        } elseif (!empty($catno)) {
+            return '?query=catno:' . $catno;
         } elseif (!empty($barcode) && $this->isValidBarcode($barcode) == true) {
             return '?query=barcode:' . $barcode;
         } elseif (!empty($title) && empty($artist)) {
