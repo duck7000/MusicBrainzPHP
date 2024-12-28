@@ -10,6 +10,7 @@
 
 require_once __DIR__ . '/src/Psr/Log/LoggerInterface.php';
 require_once __DIR__ . '/src/Psr/SimpleCache/CacheInterface.php';
+require_once __DIR__ . '/src/Music/Exception.php';
 require_once __DIR__ . '/src/Music/Config.php';
 require_once __DIR__ . '/src/Music/Logger.php';
 require_once __DIR__ . '/src/Music/Cache.php';
