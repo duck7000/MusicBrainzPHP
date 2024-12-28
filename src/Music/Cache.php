@@ -9,6 +9,7 @@
 
 namespace Music;
 
+use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
 /**
@@ -24,23 +25,31 @@ class Cache implements CacheInterface
     protected $config;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * Cache constructor.
      * @param Config $config
+     * @param LoggerInterface $logger
+     * @throws Exception
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, LoggerInterface $logger)
     {
         $this->config = $config;
+        $this->logger = $logger;
 
         if (($this->config->cacheUse|| $this->config->cacheStore) && !is_dir($this->config->cacheDir)) {
             @mkdir($this->config->cacheDir, 0700, true);
             if (!is_dir($this->config->cacheDir)) {
-                echo 'Configured cache directory does not exist!';
-                return null;
+                $this->logger->critical("[Cache] Configured cache directory [{$this->config->cacheDir}] does not exist!");
+                throw new Exception("[Cache] Configured cache directory [{$this->config->cacheDir}] does not exist!");
             }
         }
         if ($this->config->cacheStore && !is_writable($this->config->cacheDir)) {
-            echo 'Configured cache directory lacks write permission!';
-            return null;
+            $this->logger->critical("[Cache] Configured cache directory [{$this->config->cacheDir}] lacks write permission!");
+            throw new Exception("[Cache] Configured cache directory [{$this->config->cacheDir}] lacks write permission!");
         }
 
         // @TODO add a limit on how frequently a purge can occur
@@ -65,8 +74,10 @@ class Cache implements CacheInterface
         if ($this->config->cacheUseZip) {
             $content = file_get_contents('compress.zlib://' . $fname); // This can read uncompressed files too
             if (!$content) {
+                $this->logger->debug("[Cache] Cache miss for [$key]");
                 return $default;
             }
+            $this->logger->debug("[Cache] Cache hit for [$key]");
             if ($this->config->cacheConvertZip) {
                 @$fp = fopen($fname, "r");
                 $zipchk = fread($fp, 2);
@@ -93,6 +104,7 @@ class Cache implements CacheInterface
 
         $cleanKey = $this->sanitiseKey($key);
         $fname = $this->config->cacheDir . '/' . $cleanKey;
+        $this->logger->debug("[Cache] Writing key [$key] to [$fname]");
         if ($this->config->cacheUseZip) {
             $fp = gzopen($fname, "w");
             gzputs($fp, $value);
@@ -116,7 +128,7 @@ class Cache implements CacheInterface
         }
 
         $cacheDir = $this->config->cacheDir;
-
+        $this->logger->debug("[Cache] Purging old cache entries");
         $thisdir = dir($cacheDir);
         $now = time();
         while ($file = $thisdir->read()) {
