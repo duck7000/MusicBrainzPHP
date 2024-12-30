@@ -63,10 +63,12 @@ class TitleSearch extends MdbBase
                         $labelCodes[] = $labelCode->{'catalog-number'};
                     }
                     //labels
-                    $labels[] = array(
-                        'id' => isset($labelCode->label->id) ? $labelCode->label->id : null,
-                        'name' => isset($labelCode->label->name) ? $labelCode->label->name : null
-                    );
+                    if (!empty($labelCode->label)) {
+                        $labels[] = array(
+                            'id' => isset($labelCode->label->id) ? $labelCode->label->id : null,
+                            'name' => isset($labelCode->label->name) ? $labelCode->label->name : null
+                        );
+                    }
                 }
             }
             // secondary types
