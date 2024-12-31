@@ -1,9 +1,9 @@
 <?php
 
-namespace Imdb;
+namespace Music;
 
 /**
- * Exception thrown by the IMDbPHP library
+ * Exception thrown by the MusicBrainzPHP library
  */
 class Exception extends \Exception
 {
