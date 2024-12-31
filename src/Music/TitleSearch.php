@@ -65,8 +65,10 @@ class TitleSearch extends MdbBase
                     //labels
                     if (!empty($labelCode->label)) {
                         $labels[] = array(
-                            'id' => isset($labelCode->label->id) ? $labelCode->label->id : null,
-                            'name' => isset($labelCode->label->name) ? $labelCode->label->name : null
+                            'id' => isset($labelCode->label->id) ?
+                                          $labelCode->label->id : null,
+                            'name' => isset($labelCode->label->name) ?
+                                            $labelCode->label->name : null
                         );
                     }
                 }
