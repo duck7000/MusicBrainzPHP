@@ -351,9 +351,7 @@ class Title extends MdbBase
                                                           $relation->artist->disambiguation : null
                             );
                         }
-                        $this->relations['artist'][] = array(
-                            'type' => isset($relation->type) ?
-                                            $relation->type : null,
+                        $this->relations['artist']["$relation->type"] = array(
                             'begin' => isset($relation->begin) ?
                                              $relation->begin : null,
                             'end' => isset($relation->end) ?
