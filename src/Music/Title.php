@@ -35,6 +35,7 @@ class Title extends MdbBase
     protected $releaseGroupId = null;
     protected $genres = array();
     protected $releaseGroupGenres = array();
+    protected $releaseGroupUrls = array();
     protected $tags = array();
     protected $labels = array();
     protected $media = array();
@@ -109,6 +110,14 @@ class Title extends MdbBase
                     * [0] => ballad
                     * [1] => pop
                     * [2] => schlager
+                * )
+            * [releaseGroupUrls] => Array
+                * (
+                    * [0] => array
+                        * (
+                            * [type] =>
+                            * [url] =>
+                        * )
                 * )
             * [tags] => Array
                 * (
@@ -195,20 +204,6 @@ class Title extends MdbBase
                                         * (
                                             * [0] => bass guitar
                                         * )
-                                * )
-                        * )
-
-                    * [url] => Array
-                        * (
-                            * [0] => Array
-                                * (
-                                    * [type] => amazon asin
-                                    * [url] => https://www.amazon.com/gp/product/B00008WT5C
-                                * )
-                            * [1] => Array
-                                * (
-                                    * [type] => discogs
-                                    * [url] => https://www.discogs.com/release/473692
                                 * )
                         * )
                 * )
@@ -316,6 +311,19 @@ class Title extends MdbBase
                 }
             }
         }
+        // Release-group relations external urls
+        if (!empty($data->{'release-group'}->relations)) {
+            foreach ($data->{'release-group'}->relations as $relUrl) {
+                if (!empty($relUrl->url->resource)) {
+                    $this->releaseGroupUrls[] = array(
+                        'type' => isset($relUrl->type) ?
+                                        $relUrl->type : null,
+                        'url' => isset($relUrl->url->resource) ?
+                                       $relUrl->url->resource : null
+                    );
+                }
+            }
+        }
         // Tags
         if (!empty($data->tags)) {
             foreach ($data->tags as $tag) {
@@ -357,14 +365,6 @@ class Title extends MdbBase
                                            $relation->end : null,
                             'artist' => $artist,
                             'attributes' => $attributes
-                        );
-                    }
-                    if ($relation->{'target-type'} == "url") {
-                        $this->relations['url'][] = array(
-                            'type' => isset($relation->type) ?
-                                            $relation->type : null,
-                            'url' => isset($relation->url->resource) ?
-                                           $relation->url->resource : null
                         );
                     }
                 }
@@ -475,6 +475,7 @@ class Title extends MdbBase
             'releaseGroupId' => $this->releaseGroupId,
             'genres' => $this->genres,
             'releaseGroupGenres' => $this->releaseGroupGenres,
+            'releaseGroupUrls' => $this->releaseGroupUrls,
             'tags' => $this->tags,
             'labels' => $this->labels,
             'media' => $this->media,
