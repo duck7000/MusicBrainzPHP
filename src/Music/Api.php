@@ -217,6 +217,7 @@ class Api
                   '+discids' .
                   '+recordings' .
                   '+release-groups' .
+                  '+release-group-level-rels' .
                   '+genres' .
                   '+tags' .
                   '+url-rels' .
