@@ -179,11 +179,10 @@ class Title extends MdbBase
                 * )
             * [relations] => Array
                 * (
-                    * [artist] => Array
+                    * [credits] => Array
                         * (
-                            * [0] => Array
+                            * [instrument] => Array
                                 * (
-                                    * [type] => instrument
                                     * [begin] => 1977-01
                                     * [end] => 1977-02
                                     * [artist] => Array
