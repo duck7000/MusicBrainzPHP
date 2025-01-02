@@ -263,7 +263,7 @@ class Api
      * @param string $url
      * @return \stdClass
      */
-    protected function execRequest($url)
+    public function execRequest($url)
     {
         $request = new Request($url, $this->config);
         $request->sendRequest();
