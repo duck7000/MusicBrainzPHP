@@ -318,8 +318,9 @@ class Api
             return json_decode($fromCache);
         }
 
-        // check for release or cover urls
-        if (strpos($cacheNameExtension, "Cover") !== false) {
+        // check for release, cover urls or wiki
+        if (strpos($cacheNameExtension, "Cover") !== false ||
+            strpos($cacheNameExtension, "Wiki") !== false) {
             $data = $this->execRequest($url);
         } else {
             $data = $this->execRequest($url . '&fmt=json');

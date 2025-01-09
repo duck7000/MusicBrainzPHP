@@ -105,4 +105,12 @@ class Config
      */
     public $debug = false;
 
+    /**
+     * Add wikipedia data to Title class fetchData()
+     * if true this can take a bit longer!
+     * @var boolean
+     * Default: true
+     */
+    public $addWikipedia = true;
+
 }
