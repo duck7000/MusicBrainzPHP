@@ -55,6 +55,7 @@ class Title extends MdbBase
         parent::__construct($config, $logger, $cache);
         $this->setid($id);
         $this->art = new Cover();
+        $this->wiki = new Wiki();
     }
 
     /**
@@ -458,6 +459,13 @@ class Title extends MdbBase
                 $this->releaseGroupcoverArt = $resultReleaseGroup;
             }
         }
+        // check and add wikipedia data for this release
+        if ($this->config->addWikipedia == true) {
+            $wiki = $this->wiki->checkWikipedia($this->releaseGroupUrls, $this->title, $this->artist[0]['name'], $this->mbID);
+            if (!empty($wiki)) {
+                $this->wikipedia = $wiki;
+            }
+        }
         // results array
         $results = array(
             'id' => $this->mbID,
@@ -483,7 +491,8 @@ class Title extends MdbBase
             'annotation' => $this->annotation,
             'disambiguation' => $this->disambiguation,
             'coverArt' => $this->coverArt,
-            'releaseGroupcoverArt' => $this->releaseGroupcoverArt
+            'releaseGroupcoverArt' => $this->releaseGroupcoverArt,
+            'wikipedia' => $this->wikipedia
         );
         return $results;
     }
