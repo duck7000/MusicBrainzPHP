@@ -234,6 +234,15 @@ class Title extends MdbBase
      *                  [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-250.jpg
      *                  [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-500.jpg
      *                  [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-1200.jpg
+     *      [wikipedia] => Array()
+     *          [summary] => Array()
+     *              [0] => (string)
+     *          [background] => Array()
+     *              [0] => (string)
+     *          [reception] => Array()
+     *              [0] => (string)
+     *          [personnel] => Array()
+     *              [0] => (string)
         * )
      */
     public function fetchData()
