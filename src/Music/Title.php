@@ -46,6 +46,7 @@ class Title extends MdbBase
     protected $releaseGroupcoverArt = array();
     protected $annotation = null;
     protected $disambiguation = null;
+    protected $wikipedia = array();
 
     /**
      * @param string $id musicBrainz id
