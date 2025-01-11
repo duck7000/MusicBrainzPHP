@@ -178,6 +178,7 @@ class Title extends MdbBase
                                                        * )
                                                * )
                                             * [length] => 258
+                                            * [lyric] => (string) (Linebreaks are included)
                                         * )
                                 * )
                             * [discids] => Array
