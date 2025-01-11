@@ -38,7 +38,7 @@ class Lyric extends MdbBase
      * @param string $trackArtist track artist
      * @param string $trackName track name
      * @param string $trId track id
-     * @param string $trackLenght track lenght (in seconds)
+     * @param string $trackLength track length (in seconds)
      * @return array() or false
      */
     public function getLrclibData(
@@ -46,7 +46,7 @@ class Lyric extends MdbBase
         $trackArtist,
         $trackName,
         $trId,
-        $trackLenght)
+        $trackLength)
     {
         if (!empty($albumTitle) && !empty($trackArtist) && !empty($trackName)) {
             $albumTitle = urlencode($albumTitle);
@@ -56,7 +56,7 @@ class Lyric extends MdbBase
                    'artist_name=' . $trackArtist .
                    '&track_name=' . $trackName .
                    '&album_name=' . $albumTitle .
-                   '&duration=' . $trackLenght;
+                   '&duration=' . $trackLength;
             $data = $this->api->checkCache($trId, $url, "title", "_Lyric");
             if (!empty($data->plainLyrics)) {
                 return $data->plainLyrics;
