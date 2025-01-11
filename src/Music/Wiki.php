@@ -224,7 +224,7 @@ class Wiki extends MdbBase
                         }
                     }
                     // personel
-                    if ($arrayIndex == "personnel") {
+                    if ($elementId == "personnel") {
                         if (!empty(trim(strip_tags($node->nodeValue))) &&
                             ($node->nodeName === 'ul' || $node->nodeName === 'div')
                            )
