@@ -489,7 +489,10 @@ class Title extends MdbBase
         }
         // check and add wikipedia data for this release
         if ($this->config->addWikipedia == true) {
-            $wiki = $this->wiki->checkWikipedia($this->releaseGroupUrls, $this->title, $this->artist[0]['name'], $this->mbID);
+            $wiki = $this->wiki->checkWikipedia($this->releaseGroupUrls,
+                                                $this->title,
+                                                $this->artist[0]['name'],
+                                                $this->mbID);
             if (!empty($wiki)) {
                 $this->wikipedia = $wiki;
             }
