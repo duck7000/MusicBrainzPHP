@@ -425,7 +425,7 @@ class Title extends MdbBase
                                 );
                             }
                         }
-                        $trackLenght = isset($track->length) ?
+                        $trackLength = isset($track->length) ?
                                              round($track->length / 1000) : null;
                         $trackId = isset($track->id) ?
                                          $track->id : null;
@@ -439,7 +439,7 @@ class Title extends MdbBase
                             $lyricsData = $this->lyric->getLrclibData($this->title,
                                                                       $artistTrackCredit[0]['name'],
                                                                       $trackTitle, $trackId,
-                                                                      $trackLenght);
+                                                                      $trackLength);
                             if (!empty($lyricsData)) {
                                 $lyric = $lyricsData;
                             }
@@ -449,7 +449,7 @@ class Title extends MdbBase
                             'number' => $trackNumber,
                             'title' => $trackTitle,
                             'artist' => $artistTrackCredit,
-                            'length' => $trackLenght,
+                            'length' => $trackLength,
                             'lyric' => $lyric
                         );
                         $tracktotal = $tracktotal + ($track->length / 1000);
