@@ -184,7 +184,8 @@ class Wiki extends MdbBase
                     }
                     $html = trim(strip_tags($dom->saveHTML($node)));
                     $htmlReplaced = preg_replace( '/(\[\d+\])/', '', $html);
-                    $this->wikipediaData['summary'][] = $htmlReplaced;
+                    $htmlStripped = preg_replace( '/(\[\D+\])/', '', $htmlReplaced);
+                    $this->wikipediaData['summary'][] = $htmlStripped;
                 }
             }
         }
@@ -240,7 +241,8 @@ class Wiki extends MdbBase
                                                 $value = $listItem->nodeValue;
                                             }
                                             $cleanValue =  trim(strip_tags($value));
-                                            $text[] = preg_replace( '/(\[\d+\])/', '', $cleanValue);
+                                            $htmlStripped = preg_replace( '/(\[\D+\])/', '', $cleanValue);
+                                            $text[] = preg_replace( '/(\[\d+\])/', '', $htmlStripped);
                                         }
                                     }
                                 }
@@ -253,7 +255,8 @@ class Wiki extends MdbBase
                            )
                         {
                             $cleanData =  trim(strip_tags($node->nodeValue));
-                            $text[] = preg_replace( '/(\[\d+\])/', '', $cleanData);
+                            $dataStripped = preg_replace( '/(\[\D+\])/', '', $cleanData);
+                            $text[] = preg_replace( '/(\[\d+\])/', '', $dataStripped);
                         }
                     }
                 }
