@@ -182,10 +182,7 @@ class Wiki extends MdbBase
                     if (stripos($node->getAttribute('class'), "mw-empty-elt") !== false) {
                         continue;
                     }
-                    $html = trim(strip_tags($dom->saveHTML($node)));
-                    $htmlReplaced = preg_replace( '/(\[\d+\])/', '', $html);
-                    $htmlStripped = preg_replace( '/(\[\D+\])/', '', $htmlReplaced);
-                    $this->wikipediaData['summary'][] = $htmlStripped;
+                    $this->wikipediaData['summary'][] = $this->cleanHtml($dom->saveHTML($node));
                 }
             }
         }
@@ -240,9 +237,7 @@ class Wiki extends MdbBase
                                             } else {
                                                 $value = $listItem->nodeValue;
                                             }
-                                            $cleanValue =  trim(strip_tags($value));
-                                            $htmlStripped = preg_replace( '/(\[\D+\])/', '', $cleanValue);
-                                            $text[] = preg_replace( '/(\[\d+\])/', '', $htmlStripped);
+                                            $text[] = $this->cleanHtml($value);
                                         }
                                     }
                                 }
@@ -254,9 +249,7 @@ class Wiki extends MdbBase
                             ($node->nodeName === 'p' || $node->nodeName === 'blockquote')
                            )
                         {
-                            $cleanData =  trim(strip_tags($node->nodeValue));
-                            $dataStripped = preg_replace( '/(\[\D+\])/', '', $cleanData);
-                            $text[] = preg_replace( '/(\[\d+\])/', '', $dataStripped);
+                            $text[] = $this->cleanHtml($node->nodeValue);
                         }
                     }
                 }
@@ -264,6 +257,19 @@ class Wiki extends MdbBase
             }
         }
         return $this->wikipediaData;
+    }
+
+    /**
+     * Clean up html
+     * @param string $html input html
+     * @return string
+     */
+    protected function cleanHtml($html)
+    {
+        $cleanTags =  trim(strip_tags($html));
+        $pattern = array('/(\[\D+\])/', '/(\[\d+\])/');
+        $cleanHtml = preg_replace($pattern, '', $cleanTags);
+        return $cleanHtml;
     }
 
 }
