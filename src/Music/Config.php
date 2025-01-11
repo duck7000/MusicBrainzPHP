@@ -113,4 +113,12 @@ class Config
      */
     public $addWikipedia = true;
 
+    /**
+     * Add lyrics data to Title class fetchData()
+     * if true this can take a bit longer!
+     * @var boolean
+     * Default: true
+     */
+    public $addLyricsData = true;
+
 }

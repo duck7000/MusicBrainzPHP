@@ -320,6 +320,7 @@ class Api
 
         // check for release, cover urls or wiki
         if (strpos($cacheNameExtension, "Cover") !== false ||
+            strpos($cacheNameExtension, "Lyric") !== false ||
             strpos($cacheNameExtension, "Wiki") !== false) {
             $data = $this->execRequest($url);
         } else {
