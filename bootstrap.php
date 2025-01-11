@@ -23,3 +23,4 @@ require_once __DIR__ . '/src/Music/Cover.php';
 require_once __DIR__ . '/src/Music/TitleSearch.php';
 require_once __DIR__ . '/src/Music/TitleSearchAdvanced.php';
 require_once __DIR__ . '/src/Music/Wiki.php';
+require_once __DIR__ . '/src/Music/Lyric.php';

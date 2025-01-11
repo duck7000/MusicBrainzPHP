@@ -20,6 +20,8 @@ class Title extends MdbBase
 {
 
     protected $art = null;
+    protected $wiki = null;
+    protected $lyric = null;
     protected $title = null;
     protected $artist = array();
     protected $year = null;
@@ -56,6 +58,7 @@ class Title extends MdbBase
         $this->setid($id);
         $this->art = new Cover();
         $this->wiki = new Wiki();
+        $this->lyric = new Lyric();
     }
 
     /**
@@ -420,16 +423,32 @@ class Title extends MdbBase
                                 );
                             }
                         }
+                        $trackLenght = isset($track->length) ?
+                                             round($track->length / 1000) : null;
+                        $trackId = isset($track->id) ?
+                                         $track->id : null;
+                        $trackTitle = isset($track->title) ?
+                                            $track->title : null;
+                        $trackNumber = isset($track->number) ?
+                                             $track->number : null;
+                        // check and add lyrics for this track
+                        $lyric = null;
+                        if ($this->config->addLyricsData == true) {
+                            $lyricsData = $this->lyric->getLrclibData($this->title,
+                                                                      $artistTrackCredit[0]['name'],
+                                                                      $trackTitle, $trackId,
+                                                                      $trackLenght);
+                            if (!empty($lyricsData)) {
+                                $lyric = $lyricsData;
+                            }
+                        }
                         $cdTracks[] = array(
-                            'id' => isset($track->id) ?
-                                          $track->id : null,
-                            'number' => isset($track->number) ?
-                                              $track->number : null,
-                            'title' => isset($track->title) ?
-                                             $track->title : null,
+                            'id' => $trackId,
+                            'number' => $trackNumber,
+                            'title' => $trackTitle,
                             'artist' => $artistTrackCredit,
-                            'length' => isset($track->length) ?
-                                              round($track->length / 1000) : null
+                            'length' => $trackLenght,
+                            'lyric' => $lyric
                         );
                         $tracktotal = $tracktotal + ($track->length / 1000);
                     }
