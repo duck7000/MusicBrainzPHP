@@ -52,6 +52,7 @@ class Wiki extends MdbBase
      * @param array $releaseGroupUrls input urls
      * @param string $inputTitle release title
      * @param string $inputArtist release artist
+     * @param string $reId release id
      * @return array wikipedia text or false
      */
     public function checkWikipedia($releaseGroupUrls, $inputTitle, $inputArtist, $reId)
