@@ -212,7 +212,8 @@ class Wiki extends MdbBase
                 {
                     continue;
                 }
-                $arrayIndex = lcfirst(str_replace('_', '', ucwords($elementId, '_')));
+                // in case anyone does want camelCase instead of snake_case as array index
+                //$arrayIndex = lcfirst(str_replace('_', '', ucwords($elementId, '_')));
                 $text = array();
                 while(($node = $node->nextSibling)) {
                     if ($node->nodeName === 'div') {
@@ -256,7 +257,7 @@ class Wiki extends MdbBase
                         }
                     }
                 }
-                $this->wikipediaData[$arrayIndex] = $text;
+                $this->wikipediaData[$elementId] = $text;
             }
         }
         return $this->wikipediaData;
