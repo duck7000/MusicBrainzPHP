@@ -241,6 +241,7 @@ class Wiki extends MdbBase
                                             $text[] = $this->cleanHtml($value);
                                         }
                                     }
+                                    $this->wikipediaData[$elementId] = $text;
                                 }
                             }
                         }
@@ -251,10 +252,10 @@ class Wiki extends MdbBase
                            )
                         {
                             $text[] = $this->cleanHtml($node->nodeValue);
+                            $this->wikipediaData[$elementId] = $text;
                         }
                     }
                 }
-                $this->wikipediaData[$elementId] = $text;
             }
         }
         return $this->wikipediaData;
