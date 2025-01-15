@@ -59,7 +59,7 @@ class Lyric extends MdbBase
                    '&duration=' . $trackLength;
             $data = $this->api->checkCache($trId, $url, "title", "_Lyric");
             if (!empty($data->plainLyrics)) {
-                return $data->plainLyrics;
+                return trim($data->plainLyrics);
             }
         }
         return false;
