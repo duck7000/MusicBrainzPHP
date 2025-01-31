@@ -133,10 +133,13 @@ class Wiki extends MdbBase
            )
         {
             if (($wikipediaUrl = $data->entities->$qid->sitelinks->enwiki->url)) {
-                if (($posWikipediaUrl = strripos(rtrim($wikipediaUrl, "/"), "/"))) {
-                    $wikipediaId = substr($wikipediaUrl, $posWikipediaUrl + 1);
-                    if (($returnValue = $this->getWikipediaText($wikipediaId, $reId))) {
-                        return $returnValue;
+                if (($parseUrlParts = parse_url(rtrim($wikipediaUrl, "/")))) {
+                    $urlParts = explode('/', ltrim($parseUrlParts['path'], "/"), 2);
+                    if (isset($urlParts[1]) && !empty($urlParts[1])) {
+                        $wikipediaId = $urlParts[1];
+                        if (($returnValue = $this->getWikipediaText($wikipediaId, $reId))) {
+                            return $returnValue;
+                        }
                     }
                 }
             }
