@@ -275,6 +275,7 @@ class Wiki extends MdbBase
      */
     protected function cleanHtml($html)
     {
+        $html = preg_replace('/<\s*style.+?<\s*\/\s*style.*?>/si', '', $html);
         $cleanTags =  trim(strip_tags($html));
         $pattern = array('/(\[\D+\])/', '/(\[\d+\])/');
         $cleanHtml = preg_replace($pattern, '', $cleanTags);
