@@ -226,7 +226,11 @@ class Wiki extends MdbBase
                         }
                     }
                     // personel
-                    if (stripos($elementId, "Personnel") !== false) {
+                    if (stripos($elementId, "Personnel") !== false ||
+                        stripos($elementId, "Credits") !== false
+                       )
+                    {
+                        $elementId = 'Personnel';
                         if (!empty(trim(strip_tags($node->nodeValue))) &&
                             ($node->nodeName === 'ul' || $node->nodeName === 'div')
                            )
