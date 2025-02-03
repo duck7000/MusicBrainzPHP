@@ -61,15 +61,17 @@ class Api
     /**
      * Search request for TitleSearch class
      * @param string $urlSuffix
+     * @param string $format override default format from config
      * @return \stdClass
      */
-    public function doSearch($urlSuffix)
+    public function doSearch($urlSuffix, $format)
     {
+        $setFormat = empty($format) ? $this->config->titleSearchFormat : $format;
         $entity = 'release/';
-        if (stripos($this->config->titleSearchFormat, "all") !== false) {
+        if (stripos($setFormat, "all") !== false) {
             $incUrl = '';
         } else {
-            $incUrl = '%20AND%20format:' . $this->config->titleSearchFormat;
+            $incUrl = '%20AND%20format:' . $setFormat;
         }
         $incUrl .= '&limit=' . $this->config->titleSearchAmount .
                    '&fmt=json';

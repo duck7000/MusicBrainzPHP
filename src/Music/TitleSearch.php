@@ -20,6 +20,7 @@ class TitleSearch extends MdbBase
      * @param string $barcode input cd barcode
      * @param string $discid input discid from disc
      * @param string $catno input catalog number from disc cover
+     * @param string $format input format to override default config format
      * if barcode, discid or catno is provided text inputs are ignored
      * artist and/or title can be used together or separate.
      * 
@@ -39,7 +40,7 @@ class TitleSearch extends MdbBase
      *  status: string status of this title e.g original or bootleg
      * 
      */
-    public function search($title = '', $artist = '', $barcode = '', $discid = '', $catno = '')
+    public function search($title = '', $artist = '', $barcode = '', $discid = '', $catno = '', $format = '')
     {
         $results = array();
         // check input parameters
@@ -47,8 +48,11 @@ class TitleSearch extends MdbBase
         if (empty($urlSuffix)) {
             return $results;
         }
-        $functionName = !empty($discid) ? 'doDiscidSearch' : 'doSearch';
-        $data = $this->api->$functionName($urlSuffix);
+        if (!empty($discid)) {
+            $data = $this->api->doDiscidSearch($urlSuffix);
+        } else {
+            $data = $this->api->doSearch($urlSuffix, $format);
+        }
         if (empty($data) || empty($data->releases)) {
             return $results;
         }
