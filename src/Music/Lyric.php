@@ -55,8 +55,10 @@ class Lyric extends MdbBase
             $url = $this->lrclibApiUrl .
                    'artist_name=' . $trackArtist .
                    '&track_name=' . $trackName .
-                   '&album_name=' . $albumTitle .
-                   '&duration=' . $trackLength;
+                   '&album_name=' . $albumTitle;
+            if (!empty($trackLength)) {
+                $url .= '&duration=' . $trackLength;
+            }
             $data = $this->api->checkCache($trId, $url, "title", "_Lyric");
             if (!empty($data->plainLyrics)) {
                 return trim($data->plainLyrics);
