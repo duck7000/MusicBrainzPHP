@@ -2,6 +2,22 @@
 History for musicBrainzPHP
 ====================
 
+V1.3.2 (09-02-2025)
+* TitleSearch class added preg_replace on barcode to remove spaces
+* TitleSearch class added search on catalog number
+* Cache class added missing logger and added extra debug info
+* Added missing Exception class
+* TitleSearch class fixed bug whern there are no labels
+* Exception class fixed wrong namespace
+* Title class fetchData() made relations['artist'] a categorized array
+* Title class fetchData() fixed bug missing [] and renamed artist to credits
+* Api class doLookup() added release-group-level-rels to get release group relations
+* Title class fetchData() added releaseGoupUrls
+* Title class fetchData() added wikipedia info
+* Title class fetchData() added lyrics to tracks
+* TitleSearch class added $format parameter to be able to override default config format
+* Fixed numerous bugs in Wiki and Lyric classes
+
 V1.3.1 (27-12-2024)
 * Title class fetchData() added totalPlayTime to each medium and removed length from output array as it is inaccurate
 * TitleSearch search() added search on discid. You can use this python script to get the discid: https://python-discid.readthedocs.io/en/latest/
