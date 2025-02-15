@@ -16,10 +16,13 @@ Quick Start
 * Search for cd title, artist or barcode
 ```php
 $music = new \Music\TitleSearch();
-$results = $music->search("", "", "724383065820"); // example with barcode (title and artist are ignored)
-$results = $music->search("who made who", "AC/DC", ""); // example with CD title and artist
-$results = $music->search("who made who", "", ""); // example with CD title only
-$results = $music->search("", "AC/DC", ""); // example with artist only
+$results = $music->search("", "", "724383065820", "", "", ""); // example with barcode (title and artist are ignored)
+$results = $music->search("", "", "", "ys9FSMFAFYjQIkkVXrd3iIs6s.o-", "", ""); // example with discid only
+$results = $music->search("who made who", "AC/DC", "", "", "", ""); // example with CD title and artist
+$results = $music->search("who made who", "", "", "", "", ""); // example with CD title only
+$results = $music->search("", "AC/DC", "", "", "", ""); // example with artist only
+$results = $music->search("", "", "", "", "12345-2", ""); // example with CD catalog number only
+$results = $music->search("who made who", "", "", "", "", "Vinyl"); // example with format override
 ```
 
 
