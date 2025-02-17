@@ -209,6 +209,7 @@ class Wiki extends MdbBase
                     stripos($elementId, "Bibliography") !== false ||
                     stripos($elementId, "See_also") !== false ||
                     stripos($elementId, "Release_history") !== false ||
+                    stripos($elementId, "Awards") !== false ||
                     stripos($elementId, "External_links") !== false
                    )
                 {
