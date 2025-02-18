@@ -3,9 +3,9 @@ musicBrainzPHP
 
 PHP library for retrieving CD information from musicBrainz API.<br>
 Retrieve most of the information you can see on musicBrainz page of specific title.<br>
-Search for titles on musicBrainz by barcode, artist or title<br>
+Search for title, artist, barcode, musicBrainz discid, catalog number or override format<br>
 Get front and back cover art image urls. from coverartarchive.org<br>
-Search is default for CD (change in config).<br>
+Search is default for CD (change in config) or override in TitleSearch class search().<br>
 All info is in the wikipages, every class and method is described there!
 
 
@@ -36,7 +36,7 @@ Get the files with one of:
 * [Zip/Tar download]
 
 ### Requirements
-* PHP >= 7.4 - 8.1 (all versions < 8.0 are end of life)
+* PHP >= 7.4 - 8.3 (all versions < 8.0 are end of life)
 * PHP cURL extension
 
 
