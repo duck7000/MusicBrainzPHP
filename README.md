@@ -13,7 +13,7 @@ Quick Start
 ===========
 
 * If you're not using composer or an autoloader include `bootstrap.php`.
-* Search for cd title, artist or barcode
+* Search for cd title, artist, barcode, musicBrainz discid, catalog number or override format
 ```php
 $music = new \Music\TitleSearch();
 $results = $music->search("", "", "724383065820", "", "", ""); // example with barcode (title and artist are ignored)
@@ -46,7 +46,7 @@ Options
 musicBrainz has a few options in config:
 
 Default user agent (this must be something that identifies the user and program!) possible ban!<br>
-Default search: CD (this can be others too like vinyl)<br>
+Default search: CD (this can be others too like vinyl) (this can be overriden in TitleSearch class search()<br>
 Default search limit: 25 (range = 1-100 including 1 and 100)<br>
 
 
