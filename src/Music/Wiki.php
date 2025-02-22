@@ -260,7 +260,7 @@ class Wiki extends MdbBase
                             ($node->nodeName === 'p' || $node->nodeName === 'blockquote')
                            )
                         {
-                            $text[] = $this->cleanHtml($node->nodeValue);
+                            $text[] = $this->cleanHtml($dom->saveHTML($node));
                             $this->wikipediaData[$elementId] = $text;
                         }
                     }
