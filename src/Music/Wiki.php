@@ -158,6 +158,7 @@ class Wiki extends MdbBase
                         '?action=parse' .
                         '&page=' . $wikipediaId .
                         '&prop=text' .
+                        '&redirects=1' .
                         $this->formatJson;
         $data = $this->api->checkCache($reId, $wikipediaUrl, "title", "_WikiText");
         if (!empty($data) && ($textData = $data->parse->text->{'*'})) {
