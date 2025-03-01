@@ -27,6 +27,7 @@ use Psr\SimpleCache\CacheInterface;
  *      See_also
  *      Release_history
  *      External_links
+ *      Awards
  * @author ed (github user: duck7000)
  */
 class Wiki extends MdbBase
