@@ -36,7 +36,7 @@ class Artist extends MdbBase
      * @param Config $config OPTIONAL override default config
      * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
-    public function __construct($id, Config $config = null, LoggerInterface $logger = null, CacheInterface $cache = null)
+    public function __construct(string $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
         parent::__construct($config, $logger, $cache);
         $this->setArtistId($id);
