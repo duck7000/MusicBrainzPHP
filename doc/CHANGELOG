@@ -2,6 +2,13 @@
 History for musicBrainzPHP
 ====================
 
+V1.3.3 (14-03-2025)
+* Fixed several PHP 8.4 deprecation warnings
+* Wiki class fixed bug style elements not always removed
+* Wiki class fixed bug page redirect not followed which resulted in no data been fetched
+* Wiki class added Awards to the skip list, so it is skipped from the output array
+* Updated readme
+
 V1.3.2 (09-02-2025)
 * TitleSearch class added preg_replace on barcode to remove spaces
 * TitleSearch class added search on catalog number
