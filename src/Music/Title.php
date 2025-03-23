@@ -476,17 +476,19 @@ class Title extends MdbBase
             }
         }
         // CoverArt
-        if (!empty($data->{'cover-art-archive'}->count)) {
-            $resultTitle = $this->art->fetchCoverArt($this->mbID, false);
-            if (!empty($resultTitle)) {
-                $this->coverArt = $resultTitle;
+        if ($this->config->addCoverImages == true) {
+            if (!empty($data->{'cover-art-archive'}->count)) {
+                $resultTitle = $this->art->fetchCoverArt($this->mbID, false);
+                if (!empty($resultTitle)) {
+                    $this->coverArt = $resultTitle;
+                }
             }
-        }
-        // Release Group Cover Art
-        if (!empty($this->releaseGroupId)) {
-            $resultReleaseGroup = $this->art->fetchCoverArt($this->releaseGroupId, true);
-            if (!empty($resultReleaseGroup)) {
-                $this->releaseGroupcoverArt = $resultReleaseGroup;
+            // Release Group Cover Art
+            if (!empty($this->releaseGroupId)) {
+                $resultReleaseGroup = $this->art->fetchCoverArt($this->releaseGroupId, true);
+                if (!empty($resultReleaseGroup)) {
+                    $this->releaseGroupcoverArt = $resultReleaseGroup;
+                }
             }
         }
         // check and add wikipedia data for this release

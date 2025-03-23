@@ -121,4 +121,12 @@ class Config
      */
     public $addLyricsData = true;
 
+    /**
+     * Add cover images to Title class fetchData()
+     * if true this can take a bit longer!
+     * @var boolean
+     * Default: true
+     */
+    public $addCoverImages = false;
+
 }
