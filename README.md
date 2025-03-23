@@ -36,7 +36,7 @@ Get the files with one of:
 * [Zip/Tar download]
 
 ### Requirements
-* PHP >= 7.4 - 8.3 (all versions < 8.0 are end of life)
+* PHP >= 7.4 - 8.4 (all versions < 8.0 are end of life)
 * PHP cURL extension
 
 
