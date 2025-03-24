@@ -2,6 +2,11 @@
 History for musicBrainzPHP
 ====================
 
+V1.3.4 (24-03-2025)
+* Title class made cover images optional through a config setting, default: true (include images)
+* Lyric class added uncensoring to lyric text, this is optional and set in config, default: true (uncensor words)
+* Updated readme for php 8.4
+
 V1.3.3 (14-03-2025)
 * Fixed several PHP 8.4 deprecation warnings
 * Wiki class fixed bug style elements not always removed
