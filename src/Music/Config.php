@@ -129,4 +129,11 @@ class Config
      */
     public $addCoverImages = false;
 
+    /**
+     * Uncensor lyric text in Title class fetchData()
+     * @var boolean
+     * Default: true
+     */
+    public $uncensor = true;
+
 }

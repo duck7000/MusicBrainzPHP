@@ -48,6 +48,18 @@ class Lyric extends MdbBase
         $trId,
         $trackLength)
     {
+        $replace = array(
+            'f*ck' => 'fuck',
+            'f**ck' => 'fuck',
+            'f**k' => 'fuck',
+            'F*ck' => 'Fuck',
+            'F**ck' => 'Fuck',
+            'F**k' => 'Fuck',
+            'sh*t' => 'shit',
+            's**t' => 'shit',
+            'Sh*t' => 'Shit',
+            'S**t' => 'Shit'
+        );
         if (!empty($albumTitle) && !empty($trackArtist) && !empty($trackName)) {
             $albumTitle = urlencode($albumTitle);
             $trackArtist = urlencode($trackArtist);
@@ -61,7 +73,11 @@ class Lyric extends MdbBase
             }
             $data = $this->api->checkCache($trId, $url, "title", "_Lyric");
             if (!empty($data->plainLyrics)) {
-                return trim($data->plainLyrics);
+                if ($this->config->uncensor == true) {
+                    return strtr(trim($data->plainLyrics), $replace);
+                } else {
+                    return trim($data->plainLyrics);
+                }
             }
         }
         return false;
