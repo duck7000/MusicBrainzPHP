@@ -72,12 +72,14 @@ class Lyric extends MdbBase
                 $url .= '&duration=' . $trackLength;
             }
             $data = $this->api->checkCache($trId, $url, "title", "_Lyric");
-            if (!empty($data->plainLyrics)) {
+            if (isset($data->plainLyrics) && $data->plainLyrics != '') {
                 if ($this->config->uncensor == true) {
                     return strtr(trim($data->plainLyrics), $replace);
                 } else {
                     return trim($data->plainLyrics);
                 }
+            } elseif (isset($data->instrumental)) {
+                return 'Instrumental';
             }
         }
         return false;
