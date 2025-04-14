@@ -80,7 +80,7 @@ class Lyric extends MdbBase
                 }
             } elseif (isset($data->instrumental)) {
                 return 'Instrumental';
-            } else {
+            } elseif ($this->config->apiSearch == true) {
                 $searchData = $this->api->checkCache($trId, $searchUrl, "title", "_Lyric");
                 if (is_array($searchData) && count($searchData) > 0) {
                     return $this->config->uncensor == true ?
