@@ -71,22 +71,25 @@ class Lyric extends MdbBase
             if (!empty($trackLength)) {
                 $url .= '&duration=' . $trackLength;
             }
+            $searchUrl = $this->lrclibApiSearchUrl .
+                   'track_name=' . $trackName .
+                   '&artist_name=' . $trackArtist;
             $data = $this->api->checkCache($trId, $url, "title", "_Lyric");
             if (isset($data->plainLyrics) && $data->plainLyrics != '') {
-                if ($this->config->uncensor == true) {
+                if ($this->config->uncensor === true) {
                     return strtr(trim($data->plainLyrics), $replace);
                 } else {
                     return trim($data->plainLyrics);
                 }
-            } elseif (isset($data->instrumental)) {
+            } elseif (isset($data->instrumental) && $data->instrumental === true) {
                 return 'Instrumental';
-            } elseif ($this->config->apiSearch == true) {
+            } elseif ($this->config->apiSearch === true) {
                 $searchData = $this->api->checkCache($trId, $searchUrl, "title", "_Lyric");
                 if (is_array($searchData) && count($searchData) > 0) {
-                    return $this->config->uncensor == true ?
+                    return $this->config->uncensor === true ?
                            strtr(trim($searchData[0]->plainLyrics), $replace) :
                            trim($searchData[0]->plainLyrics);
-                } elseif (isset($searchData[0]->instrumental)) {
+                } elseif (isset($searchData[0]->instrumental) && $searchData[0]->instrumental === true) {
                     return 'Instrumental';
                 }
             }
