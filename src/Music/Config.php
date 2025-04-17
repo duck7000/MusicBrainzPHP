@@ -145,4 +145,11 @@ class Config
      */
     public $apiSearch = true;
 
+    /**
+     * Throw Exception if something goes wrong with the api call
+     * True: throws Exception, false: returns empty object
+     * @var boolean
+     */
+    public $throwHttpExceptions = false;
+
 }

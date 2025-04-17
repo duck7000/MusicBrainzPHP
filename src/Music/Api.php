@@ -278,7 +278,11 @@ class Api
                 "[API] Failed to retrieve query. Response headers:{headers}. Response body:{body}",
                 array('headers' => $request->getLastResponseHeaders(), 'body' => $request->getResponseBody())
             );
-            throw new \Exception("Failed to retrieve query");
+            if ($this->config->throwHttpExceptions) {
+                throw new \Exception("Failed to retrieve query");
+            } else {
+                return new \StdClass();
+            }
         }
     }
 
