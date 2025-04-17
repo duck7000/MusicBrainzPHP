@@ -21,6 +21,7 @@ class Lyric extends MdbBase
 {
 
     protected $lrclibApiUrl = 'https://lrclib.net/api/get?';
+    protected $lrclibApiSearchUrl = 'https://lrclib.net/api/search?';
 
     /**
      * @param Config $config OPTIONAL override default config
