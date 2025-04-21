@@ -14,7 +14,8 @@ use Psr\SimpleCache\CacheInterface;
 
 /**
  * Get lyrics from lrclib for this MusicBrainz release
- * It includes plaintext lyrics, timed lyrics are available
+ * It includes plaintext lyrics, timed lyrics are available but not included
+ * $replace is used for uncensoring censored words
  * @author ed (github user: duck7000)
  */
 class Lyric extends MdbBase
@@ -22,6 +23,18 @@ class Lyric extends MdbBase
 
     protected $lrclibApiUrl = 'https://lrclib.net/api/get?';
     protected $lrclibApiSearchUrl = 'https://lrclib.net/api/search?';
+    protected $replace = array(
+                'f*ck' => 'fuck',
+                'f**ck' => 'fuck',
+                'f**k' => 'fuck',
+                'F*ck' => 'Fuck',
+                'F**ck' => 'Fuck',
+                'F**k' => 'Fuck',
+                'sh*t' => 'shit',
+                's**t' => 'shit',
+                'Sh*t' => 'Shit',
+                'S**t' => 'Shit'
+            );
 
     /**
      * @param Config $config OPTIONAL override default config
@@ -38,29 +51,17 @@ class Lyric extends MdbBase
      * @param string $albumTitle release album title
      * @param string $trackArtist track artist
      * @param string $trackName track name
-     * @param string $trId track id
+     * @param string $trackId track id number from MusicBrainz
      * @param string $trackLength track length (in seconds)
-     * @return array() or false
+     * @return string lyric text or false
      */
     public function getLrclibData(
         $albumTitle,
         $trackArtist,
         $trackName,
-        $trId,
+        $trackId,
         $trackLength)
     {
-        $replace = array(
-            'f*ck' => 'fuck',
-            'f**ck' => 'fuck',
-            'f**k' => 'fuck',
-            'F*ck' => 'Fuck',
-            'F**ck' => 'Fuck',
-            'F**k' => 'Fuck',
-            'sh*t' => 'shit',
-            's**t' => 'shit',
-            'Sh*t' => 'Shit',
-            'S**t' => 'Shit'
-        );
         if (!empty($albumTitle) && !empty($trackArtist) && !empty($trackName)) {
             $albumTitle = urlencode($albumTitle);
             $trackArtist = urlencode($trackArtist);
@@ -72,27 +73,66 @@ class Lyric extends MdbBase
             if (!empty($trackLength)) {
                 $url .= '&duration=' . $trackLength;
             }
-            $searchUrl = $this->lrclibApiSearchUrl .
-                   'track_name=' . $trackName .
-                   '&artist_name=' . $trackArtist;
-            $data = $this->api->checkCache($trId, $url, "title", "_Lyric");
-            if (isset($data->plainLyrics) && $data->plainLyrics != '') {
-                if ($this->config->uncensor === true) {
-                    return strtr(trim($data->plainLyrics), $replace);
-                } else {
-                    return trim($data->plainLyrics);
+            $results = $this->exactMatchApiCall($trackId, $url);
+            if ($results !== false) {
+                return $results;
+            }
+            if ($this->config->apiSearch === true) {
+                $searchUrl = $this->lrclibApiSearchUrl . 'track_name=' . $trackName . '&artist_name=' . $trackArtist;
+                $searchResults = $this->searchApiCall($trackId, $searchUrl);
+                if ($searchResults !== false) {
+                    return $searchResults;
                 }
-            } elseif (isset($data->instrumental) && $data->instrumental === true) {
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Uncensor lyrics data
+     * @param string $inputLyrics input censored lyrics text
+     * @return string uncensored lyrics text
+     */
+    private function removeCensoring($inputLyrics)
+    {
+        if ($this->config->uncensor === true) {
+            return strtr(trim($inputLyrics), $this->replace);
+        } else {
+            return trim($inputLyrics);
+        }
+    }
+
+    /**
+     * Get and process api call data
+     * @param string $trackId Id tracknumber from MusicBrainz
+     * @param string $url api call url
+     * @return string if lyrics data found, false otherwise
+     */
+    private function exactMatchApiCall($trackId, $url)
+    {
+        $data = $this->api->checkCache($trackId, $url, "title", "_Lyric");
+        if (isset($data->plainLyrics) && $data->plainLyrics != '') {
+            return $this->removeCensoring($data->plainLyrics);
+        } elseif (isset($data->instrumental) && $data->instrumental === true) {
+            return 'Instrumental';
+        }
+        return false;
+    }
+
+    /**
+     * Get and process api search call data (if there is no exact match)
+     * @param string $trackId Id tracknumber from MusicBrainz
+     * @param string $searchUrl api call search url
+     * @return string if lyrics data found, false otherwise
+     */
+    private function searchApiCall($trackId, $searchUrl)
+    {
+        $searchData = $this->api->checkCache($trackId, $searchUrl, "title", "_Lyric");
+        if (is_array($searchData) && count($searchData) > 0) {
+            if (isset($searchData[0]->plainLyrics) && $searchData[0]->plainLyrics != '') {
+                return $this->removeCensoring($searchData[0]->plainLyrics);
+            } elseif (isset($searchData[0]->instrumental) && $searchData[0]->instrumental === true) {
                 return 'Instrumental';
-            } elseif ($this->config->apiSearch === true) {
-                $searchData = $this->api->checkCache($trId, $searchUrl, "title", "_Lyric");
-                if (is_array($searchData) && count($searchData) > 0) {
-                    return $this->config->uncensor === true ?
-                           strtr(trim($searchData[0]->plainLyrics), $replace) :
-                           trim($searchData[0]->plainLyrics);
-                } elseif (isset($searchData[0]->instrumental) && $searchData[0]->instrumental === true) {
-                    return 'Instrumental';
-                }
             }
         }
         return false;
