@@ -62,6 +62,7 @@ class TitleSearchAdvanced extends MdbBase
      * Search for all releasegroups of specific artistId
      * @param string $artistId
      * @param string $type Include only this type in search, exclude all others
+     * @param string $sortOrder ASC or DESC, Default: ASC
      * values for $type:
      *      album (only studio albums with primarytype album)
      *      discography (only offical, EP and musicBrainz website defaults are included)
@@ -84,7 +85,7 @@ class TitleSearchAdvanced extends MdbBase
      *           )
      *     )
      */
-    public function fetchReleaseGroups($artistId, $type = "discography")
+    public function fetchReleaseGroups($artistId, $type = "discography", $sortOrder = 'ASC')
     {
         $results = array();
         // Data request
@@ -118,12 +119,13 @@ class TitleSearchAdvanced extends MdbBase
                 'secondaryType' => $secTypes
             );
         }
-        return $this->sortByDate($results);
+        return $this->sortByDate($results, $sortOrder);
     }
 
     /**
      * Search for all Various Artists releasegroups of specific artistId
      * @param string $artistId
+     * @param string $sortOrder ASC or DESC, Default: ASC
      * @return array
      * Array
      *   (
@@ -135,7 +137,7 @@ class TitleSearchAdvanced extends MdbBase
      *           )
      *     )
      */
-    public function fetchReleaseGroupsVarious($artistId)
+    public function fetchReleaseGroupsVarious($artistId, $sortOrder = 'ASC')
     {
         $results = array();
         // Data request
@@ -153,12 +155,13 @@ class TitleSearchAdvanced extends MdbBase
                                 $releaseGroup->date : null
             );
         }
-        return $this->sortByDate($results);
+        return $this->sortByDate($results, $sortOrder);
     }
 
     /**
      * Fetch all releases from specific releaseGroupId
      * @param $relGroupId releaseGroup id found with fetchReleaseGroups()
+     * @param string $sortOrder ASC or DESC, Default: ASC
      * @return array
      * Array
         * (
@@ -191,7 +194,7 @@ class TitleSearchAdvanced extends MdbBase
                 * )
      *     )
      */
-    public function releaseGroupReleases($relGroupId)
+    public function releaseGroupReleases($relGroupId, $sortOrder = 'ASC')
     {
         $results = array();
         // Data request
@@ -247,27 +250,42 @@ class TitleSearchAdvanced extends MdbBase
                 'media' => $media
             );
         }
-        return $this->sortByDate($results);
+        return $this->sortByDate($results, $sortOrder);
     }
 
     /**
      * Sort $results array by date
      * @param array $array
+     * @param string $sortOrder ASC or DESC
      * @return sorted array
      */
-    protected function sortByDate($array)
+    protected function sortByDate($array, $sortOrder)
     {
-        // sort array by date
-        usort($array, function($a, $b) {
-            $ad = $a['date'];
-            $bd = $b['date'];
+        if ($sortOrder == 'DESC') {
+            // sort array by date
+            usort($array, function($a, $b) {
+                $ad = $a['date'];
+                $bd = $b['date'];
 
-            if ($ad == $bd) {
-            return 0;
-            }
+                if ($ad == $bd) {
+                return 0;
+                }
 
-            return $ad < $bd ? -1 : 1;
-        });
+                return $ad > $bd ? -1 : 1;
+            });
+        } else {
+            // sort array by date
+            usort($array, function($a, $b) {
+                $ad = $a['date'];
+                $bd = $b['date'];
+
+                if ($ad == $bd) {
+                return 0;
+                }
+
+                return $ad < $bd ? -1 : 1;
+            });
+        }
         return $array;
     }
 
