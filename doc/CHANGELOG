@@ -2,6 +2,13 @@
 History for musicBrainzPHP
 ====================
 
+V1.3.5 (26-06-2025)
+* Lyric class added instrumental, so if a song is instrumental it now returns 'instrumental' instead of nothing.
+* Config class fixed bug addCoverImage default value back to true
+* Lyric class added API search so if a exact match fails search is used to try to find a match (this is set in config)
+* Config class added setting for throw exception or empty object if something fails
+* TitleSearchAdvanced class added sortOrder parameter to all methods except artist() so the user can override the default ASC to DESC order
+
 V1.3.4 (24-03-2025)
 * Title class made cover images optional through a config setting, default: true (include images)
 * Lyric class added uncensoring to lyric text, this is optional and set in config, default: true (uncensor words)
