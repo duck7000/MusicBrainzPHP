@@ -65,7 +65,7 @@ class TitleSearchAdvanced extends MdbBase
      * @param string $sortOrder ASC or DESC, Default: ASC
      * values for $type:
      *      album (only studio albums with primarytype album)
-     *      discography (only offical, EP and musicBrainz website defaults are included)
+     *      discography (musicBrainz website defaults are included, Singles are excluded)
      *      all (all releasegroups)
      * @return array
      * Array
@@ -94,6 +94,12 @@ class TitleSearchAdvanced extends MdbBase
             return $results;
         }
         foreach ($data as $releaseGroup) {
+            if (!empty($releaseGroup->{'secondary-types'}) && $type == "album") {
+                continue;
+            }
+            if ($releaseGroup->{'primary-type'} == 'Single' && $type == "discography") {
+                continue;
+            }
             // Secondary Types
             $secTypes = array();
             if (!empty($releaseGroup->{'secondary-types'})) {
@@ -112,8 +118,6 @@ class TitleSearchAdvanced extends MdbBase
                                   $releaseGroup->{'artist-credit'}[0]->name : null,
                 'date' => isset($releaseGroup->{'first-release-date'}) ?
                                 $releaseGroup->{'first-release-date'} : null,
-                'totalReleasesCount' => isset($releaseGroup->count) ?
-                                              $releaseGroup->count : null,
                 'primaryType' => isset($releaseGroup->{'primary-type'}) ?
                                        $releaseGroup->{'primary-type'} : null,
                 'secondaryType' => $secTypes

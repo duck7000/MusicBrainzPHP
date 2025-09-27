@@ -130,8 +130,8 @@ class Api
      * @param string $artistId
      * @param string $type Include only this type in search, exclude all others
      * values for $type:
-     *      album (only studio albums with primarytype album)
-     *      discography (only offical, EP and musicBrainz website defaults are included)
+     *      album (musicBrainz website defaults with primarytype album only)
+     *      discography (musicBrainz website defaults are included)
      *      all (all releasegroups)
      * if more than 100 items paging is required and will take a long time!)
      * @return array()
@@ -139,36 +139,22 @@ class Api
     public function doReleaseGroupSearch($artistId, $type)
     {
         if ($type == "album") {
-            $incUrl = '%20AND%20primarytype:album'.
-                      '%20NOT%20primarytype:single'.
-                      '%20NOT%20primarytype:ep'.
-                      '%20NOT%20primarytype:broadcast'.
-                      '%20NOT%20primarytype:other'.
-                      '%20NOT%20secondarytype:live'.
-                      '%20NOT%20secondarytype:compilation'.
-                      '%20NOT%20secondarytype:remix'.
-                      '%20NOT%20secondarytype:interview'.
-                      '%20NOT%20secondarytype:soundtrack'.
-                      '%20NOT%20secondarytype:spokenword'.
-                      '%20NOT%20secondarytype:audiobook'.
-                      '%20NOT%20secondarytype:demo'.
-                      '%20NOT%20secondarytype:mixtape/street'.
-                      '%20NOT%20secondarytype:dj-mix'.
-                      '%20NOT%20secondarytype:audio%20drama'.
+            $incUrl = '&release-group-status=website-default'.
+                      '&inc=artist-credits'.
+                      '&type=album' .
                       '&limit=100';
         }
         if ($type == "discography") {
-            $incUrl = '%20AND%20status:official'.
-                      '%20NOT%20primarytype:single'.
-                      '%20NOT%20primarytype:broadcast'.
-                      '%20NOT%20primarytype:other'.
-                      '&release-group-status:website-default'.
+            $incUrl = '&release-group-status=website-default'.
+                      '&inc=artist-credits'.
                       '&limit=100';
         }
         if ($type == "all") {
-            $incUrl = '&limit=100';
+            $incUrl = '&release-group-status=all'.
+                      '&inc=artist-credits'.
+                      '&limit=100';
         }
-        $entitiy = 'release-group?query=arid:';
+        $entitiy = 'release-group?&artist=';
         $url = $this->baseUrl . $entitiy . $artistId . $incUrl;
         $releaseType = "release-groups";
         $cacheNameExtension = '_' . $type;
@@ -295,16 +281,16 @@ class Api
      */
     public function paging($data, $url, $releaseType)
     {
-        $totalCount = $data->count;
-        $initReleaseCount = count($data->$releaseType);
-        $ReleaseGroups = array();
-        $ReleaseGroups = array_merge($ReleaseGroups, $data->$releaseType);
+        $totalCount = $releaseType == "release-groups" ? $data->{"release-group-count"} : $data->count;
+        $initReleaseCount = count($data->{"$releaseType"});
+        $releaseGroups = array();
+        $releaseGroups = array_merge($releaseGroups, $data->{"$releaseType"});
         for ($offset = $initReleaseCount; $offset < $totalCount; $offset += 100) {
             sleep(1);
             $request = $this->execRequest($url . '&offset=' . $offset . '&fmt=json');
-            $ReleaseGroups = array_merge($ReleaseGroups, $request->$releaseType);
+            $releaseGroups = array_merge($releaseGroups, $request->{"$releaseType"});
         }
-        return $ReleaseGroups;
+        return $releaseGroups;
     }
 
     /**
@@ -333,20 +319,20 @@ class Api
             $data = $this->execRequest($url . '&fmt=json');
         }
 
-        // check if it is a single release or release groups
+        // check which releaseType is set
         if ($releaseType == "title") {
             $this->cache->set($key, json_encode($data));
             return $data;
+        }
+        $totalReturnCount = $releaseType == "release-groups" ? $data->{"release-group-count"} : $data->count;
+        if ($totalReturnCount <= 100) {
+            $results = $data->{"$releaseType"};
+            $this->cache->set($key, json_encode($results));
+            return $results;
         } else {
-            if ($data->count <= 100) {
-                $results = $data->$releaseType;
-                $this->cache->set($key, json_encode($results));
-                return $results;
-            } else {
-                $results = $this->paging($data, $url, $releaseType);
-                $this->cache->set($key, json_encode($results));
-                return $results;
-            }
+            $results = $this->paging($data, $url, $releaseType);
+            $this->cache->set($key, json_encode($results));
+            return $results;
         }
     }
 
