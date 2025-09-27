@@ -170,8 +170,7 @@ class Api
     {
         $entitiy = 'artist/';
         $incUrl = '?&inc=releases+various-artists' .
-                  '&status=official' .
-                  '&limit=100';
+                  '&status=official';
         $url = $this->baseUrl . $entitiy . $artistId . $incUrl;
         $releaseType = "title";
         $cacheNameExtension = '_various';
