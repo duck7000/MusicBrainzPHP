@@ -3,7 +3,7 @@ History for musicBrainzPHP
 ====================
 
 V1.3.6 (28-09-2025)
-* TitleSearchAdvanced class fixed fetchReleaseGroups() as it was not getting the right items and did get dupes
+* TitleSearchAdvanced class fixed fetchReleaseGroups() as it was not getting the right items and did get duplicates
 
 V1.3.5 (26-06-2025)
 * Lyric class added instrumental, so if a song is instrumental it now returns 'instrumental' instead of nothing.
