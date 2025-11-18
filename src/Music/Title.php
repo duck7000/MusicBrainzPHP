@@ -438,7 +438,7 @@ class Title extends MdbBase
                         if ($this->config->addLyricsData == true) {
                             $lyricsData = $this->lyric->getLrclibData($this->title,
                                                                       $artistTrackCredit[0]['name'],
-                                                                      $trackTitle, $trackId,
+                                                                      $trackTitle,
                                                                       $trackLength);
                             if (!empty($lyricsData)) {
                                 $lyric = $lyricsData;
