@@ -288,6 +288,7 @@ class Api
             sleep(1);
             $request = $this->execRequest($url . '&offset=' . $offset . '&fmt=json');
             $releaseGroups = array_merge($releaseGroups, $request->{"$releaseType"});
+            unset($request);
         }
         return $releaseGroups;
     }
