@@ -59,7 +59,6 @@ class Title extends MdbBase
         $this->setid($id);
         $this->art = new Cover();
         $this->wiki = new Wiki();
-        $this->lyric = new Lyric();
     }
 
     /**
@@ -179,7 +178,6 @@ class Title extends MdbBase
                                                        * )
                                                * )
                                             * [length] => 258
-                                            * [lyric] => (string) (Linebreaks are included)
                                         * )
                                 * )
                             * [discids] => Array
@@ -433,24 +431,12 @@ class Title extends MdbBase
                                             $track->title : null;
                         $trackNumber = isset($track->number) ?
                                              $track->number : null;
-                        // check and add lyrics for this track
-                        $lyric = null;
-                        if ($this->config->addLyricsData == true) {
-                            $lyricsData = $this->lyric->getLrclibData($this->title,
-                                                                      $artistTrackCredit[0]['name'],
-                                                                      $trackTitle,
-                                                                      $trackLength);
-                            if (!empty($lyricsData)) {
-                                $lyric = $lyricsData;
-                            }
-                        }
                         $cdTracks[] = array(
                             'id' => $trackId,
                             'number' => $trackNumber,
                             'title' => $trackTitle,
                             'artist' => $artistTrackCredit,
-                            'length' => $trackLength,
-                            'lyric' => $lyric
+                            'length' => $trackLength
                         );
                         $tracktotal = $tracktotal + ($track->length / 1000);
                     }
