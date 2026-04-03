@@ -20,8 +20,6 @@ class Title extends MdbBase
 {
 
     protected $art = null;
-    protected $wiki = null;
-    protected $lyric = null;
     protected $title = null;
     protected $artist = array();
     protected $year = null;

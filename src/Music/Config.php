@@ -114,15 +114,6 @@ class Config
     public $addCoverImages = true;
 
     /**
-     * Include api search if exaxt api match fails in Title class fetchData()
-     * This setting is to include the possibilty to include the search part of the external API
-     * Warning: if this is set to true it will increase search time drasticly
-     * @var boolean
-     * Default: true
-     */
-    public $apiSearch = true;
-
-    /**
      * Throw Exception if something goes wrong with the api call
      * True: throws Exception, false: returns empty object
      * @var boolean
