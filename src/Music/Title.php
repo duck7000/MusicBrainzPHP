@@ -46,7 +46,6 @@ class Title extends MdbBase
     protected $releaseGroupcoverArt = array();
     protected $annotation = null;
     protected $disambiguation = null;
-    protected $wikipedia = array();
 
     /**
      * @param string $id musicBrainz id
@@ -58,7 +57,6 @@ class Title extends MdbBase
         parent::__construct($config, $logger, $cache);
         $this->setid($id);
         $this->art = new Cover();
-        $this->wiki = new Wiki();
     }
 
     /**
@@ -237,15 +235,6 @@ class Title extends MdbBase
      *                  [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-250.jpg
      *                  [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-500.jpg
      *                  [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-1200.jpg
-     *      [wikipedia] => Array()
-     *          [summary] => Array()
-     *              [0] => (string)
-     *          [background] => Array()
-     *              [0] => (string)
-     *          [reception] => Array()
-     *              [0] => (string)
-     *          [personnel] => Array()
-     *              [0] => (string)
         * )
      */
     public function fetchData()
@@ -477,16 +466,6 @@ class Title extends MdbBase
                 }
             }
         }
-        // check and add wikipedia data for this release
-        if ($this->config->addWikipedia == true) {
-            $wiki = $this->wiki->checkWikipedia($this->releaseGroupUrls,
-                                                $this->title,
-                                                $this->artist[0]['name'],
-                                                $this->mbID);
-            if (!empty($wiki)) {
-                $this->wikipedia = $wiki;
-            }
-        }
         // results array
         $results = array(
             'id' => $this->mbID,
@@ -512,8 +491,7 @@ class Title extends MdbBase
             'annotation' => $this->annotation,
             'disambiguation' => $this->disambiguation,
             'coverArt' => $this->coverArt,
-            'releaseGroupcoverArt' => $this->releaseGroupcoverArt,
-            'wikipedia' => $this->wikipedia
+            'releaseGroupcoverArt' => $this->releaseGroupcoverArt
         );
         return $results;
     }

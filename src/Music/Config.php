@@ -106,35 +106,12 @@ class Config
     public $debug = false;
 
     /**
-     * Add wikipedia data to Title class fetchData()
-     * if true this can take a bit longer!
-     * @var boolean
-     * Default: true
-     */
-    public $addWikipedia = true;
-
-    /**
-     * Add lyrics data to Title class fetchData()
-     * if true this can take a bit longer!
-     * @var boolean
-     * Default: true
-     */
-    public $addLyricsData = true;
-
-    /**
      * Add cover images to Title class fetchData()
      * if true this can take a bit longer!
      * @var boolean
      * Default: true
      */
     public $addCoverImages = true;
-
-    /**
-     * Uncensor lyric text in Title class fetchData()
-     * @var boolean
-     * Default: true
-     */
-    public $uncensor = true;
 
     /**
      * Include api search if exaxt api match fails in Title class fetchData()
