@@ -6,7 +6,7 @@ Retrieve most of the information you can see on musicBrainz page of specific tit
 Search for title, artist, barcode, musicBrainz discid, catalog number or override format<br>
 Get front and back cover art image urls. from coverartarchive.org<br>
 Search is default for CD (change in config) or override in TitleSearch class search().<br>
-All info is in the wikipages, every class and method is described there!
+All info is in the wikipages, https://github.com/duck7000/MusicBrainzPHP/wiki
 
 
 Quick Start
