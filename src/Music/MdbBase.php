@@ -1,4 +1,5 @@
 <?php
+
 #############################################################################
 # musicBrainzPHP                                ed (github user: duck7000)  #
 # written by ed (github user: duck7000)                                     #
@@ -20,24 +21,9 @@ class MdbBase extends Config
 {
     public $version = '1.3.6';
 
-    /**
-     * @var CacheInterface
-     */
     protected $cache;
-
-    /**
-     * @var LoggerInterface
-     */
     protected $logger;
-
-    /**
-     * @var Config
-     */
     protected $config;
-
-    /**
-     * @var GraphQL
-     */
     protected $api;
 
     /**
@@ -75,6 +61,7 @@ class MdbBase extends Config
     /**
      * Set mbID
      * @param string id musicBrainz ID
+     * @return void
      */
     protected function setid($id)
     {
@@ -84,6 +71,7 @@ class MdbBase extends Config
     /**
      * Set arID (Aritst Id)
      * @param string id musicBrainz Artist ID
+     * @return void
      */
     protected function setArtistId($id)
     {
@@ -91,18 +79,19 @@ class MdbBase extends Config
     }
 
     #---------------------------------------------------------[ Debug helpers ]---
-    protected function debug_scalar($scalar)
+    protected function debugScalar($scalar)
     {
         $this->logger->error($scalar);
     }
 
-    protected function debug_object($object)
+    protected function debugObject($object)
     {
         $this->logger->error('{object}', array('object' => $object));
     }
 
-    protected function debug_html($html)
+    protected function debugHtml($html)
     {
         $this->logger->error(htmlentities($html));
     }
+
 }

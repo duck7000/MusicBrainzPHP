@@ -32,7 +32,7 @@ class Request
         $this->ch = curl_init($url);
         curl_setopt($this->ch, CURLOPT_ENCODING, "");
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($this->ch, CURLOPT_HEADERFUNCTION, array(&$this, "callback_CURLOPT_HEADERFUNCTION"));
+        curl_setopt($this->ch, CURLOPT_HEADERFUNCTION, array(&$this, "callbackCurloptHeaderFunction"));
         curl_setopt($this->ch, CURLOPT_USERAGENT, $this->config->userAgent);
         curl_setopt($this->ch, CURLOPT_TIMEOUT, 90);
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, true);
@@ -46,6 +46,7 @@ class Request
 
     /**
      * Send a request to the website
+     * @return bool
      */
     public function sendRequest()
     {
@@ -60,7 +61,7 @@ class Request
 
     /**
      * Get the Response body
-     * @return string page
+     * @return string
      */
     public function getResponseBody()
     {
@@ -69,7 +70,7 @@ class Request
 
     /**
      * HTTP status code of the last response
-     * @return int|null null if last request failed
+     * @return int|null
      */
     public function getStatus()
     {
@@ -90,7 +91,7 @@ class Request
         return $this->responseHeaders;
     }
 
-    private function callback_CURLOPT_HEADERFUNCTION($ch, $str)
+    private function callbackCurloptHeaderFunction($ch, $str)
     {
         $len = strlen($str);
         if ($len) {
@@ -101,7 +102,7 @@ class Request
     
     /**
      * Get the URL to redirect to if a 30* was returned
-     * @return string|null URL to redirect to if 300, otherwise null
+     * @return string|null
      */
     public function getRedirect()
     {
@@ -122,4 +123,5 @@ class Request
             }
         }
     }
+
 }
