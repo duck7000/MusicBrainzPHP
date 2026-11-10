@@ -44,7 +44,6 @@ class Artist extends MdbBase
 
     /**
      * Fetch all info from artist (Bio)
-     * @param string $artistId
      * @return array
      *      [name]              string AC/DC
      *      [id]                string 66c662b6-6e2f-4930-8610-912e24c63ed1
