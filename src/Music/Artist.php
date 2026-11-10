@@ -1,4 +1,5 @@
 <?php
+
 #############################################################################
 # musicBrainzPHP                                ed (github user: duck7000)  #
 # written by ed (github user: duck7000)                                     #
@@ -19,7 +20,6 @@ use Psr\SimpleCache\CacheInterface;
 class Artist extends MdbBase
 {
 
-    // Artist Bio
     protected $bioName = null;
     protected $bioId = null;
     protected $bioType = null;
@@ -46,49 +46,39 @@ class Artist extends MdbBase
      * Fetch all info from artist (Bio)
      * @param string $artistId
      * @return array
-     * Array
-        * (
-            * [name] => AC/DC
-            * [id] => 66c662b6-6e2f-4930-8610-912e24c63ed1
-            * [type] => Group
-            * [gender] => 
-            * [country] => Australia
-            * [disambiguation] => Australian hard rock band
-            * [lifeSpan] => Array
-                * (
-                    * [begin] => 1973-11
-                    * [end] => 
-                    * [ended] => (boolean, true if artist/group is ended/died)
-                * )
-            * [area] => Array
-                * (
-                    * [id] => f61848ab-0ba0-4534-8b71-d9c7c03e854c
-                    * [name] => Salford
-                * )
-            * [areaBegin] => Array
-                * (
-                    * [id] => f61848ab-0ba0-4534-8b71-d9c7c03e854c
-                    * [name] => Salford
-                * )
-            * [areaEnd] => Array
-                * (
-                * )
-            * [aliases] => array
-                * (
-                    * [name] => Manson Marilyn
-                    * [type] => Search hint
-                    * [begin] => 
-                    * [end] => 
-                    * [locale] => 
-                * )
-        * )
+     *      [name]              string AC/DC
+     *      [id]                string 66c662b6-6e2f-4930-8610-912e24c63ed1
+     *      [type]              string Group
+     *      [gender]            string
+     *      [country]           string Australia
+     *      [disambiguation]    string Australian hard rock band
+     *      [lifeSpan]  array()
+     *          [begin]     string 1973-11
+     *          [end]       string
+     *          [ended]     bool (true if artist/group is ended/died)
+     *      [area]  array()
+     *          [id]        string f61848ab-0ba0-4534-8b71-d9c7c03e854c
+     *          [name]      string Salford
+     *      [areaBegin]  array()
+     *          [id]    string f61848ab-0ba0-4534-8b71-d9c7c03e854c
+     *          [name]  string Salford
+     *      [areaEnd]  array()
+     *          [id]    string f61848ab-0ba0-4534-8b71-d9c7c03e854c
+     *          [name]  string Salford
+     *      [aliases]  array()
+     *          [name]      string Manson Marilyn
+     *          [type]      string Search hint
+     *          [begin]     string
+     *          [end]       string
+     *          [locale]    string
      */
-    public function fetchArtistBio()
+    public function fetchArtistBio(): array
     {
+        $results = array();
         // Data request
         $Artistdata = $this->api->doArtistBioLookup($this->arID);
         if (empty($Artistdata)) {
-            return false;
+            return $results;
         }
         $this->bioName = isset($Artistdata->name) ?
                                $Artistdata->name : null;
@@ -104,7 +94,7 @@ class Artist extends MdbBase
         if (!empty($Artistdata->{'life-span'})) {
             $this->bioLifeSpan = array(
                 'begin' => isset($Artistdata->{'life-span'}->begin) ?
-                                $Artistdata->{'life-span'}->begin : null,
+                                 $Artistdata->{'life-span'}->begin : null,
                 'end' => isset($Artistdata->{'life-span'}->end) ?
                                $Artistdata->{'life-span'}->end : null,
                 'ended' => isset($Artistdata->{'life-span'}->ended) ?
