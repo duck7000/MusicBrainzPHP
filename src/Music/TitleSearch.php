@@ -21,26 +21,11 @@ class TitleSearch extends MdbBase
      * @param string $discid input discid from disc
      * @param string $catno input catalog number from disc cover
      * @param string $format input format to override default config format
-     * if barcode, discid or catno is provided text inputs are ignored
-     * artist and/or title can be used together or separate.
-     * 
-     * @return results[] array of Titles
-     *  id: string title id
-     *  title: string title
-     *  artist: string matching artist for cd title (multiple artists returns Various Artists)
-     *  format: string format of the title e.g CD
-     *  trackCount: (int) Total tracks on this release
-     *  countryCode: string countryCode of release e.g US (or Continent: XE for Europe, XW for WorldWide)
-     *  date: string date of release (can be year, month or day) e.g 1988, 1988-10-01, 1988-10
-     *  label: array(id: string, name: string) all labels of this title
-     *  catalogNumber: array() catalognumber found on the back cover for this title
-     *  barcode: string barcode found on the back cover for this title
-     *  primaryType: string type of this title e.g Album
-     *  secondaryType: array() all secondary types of this title e.g Compilation
-     *  status: string status of this title e.g original or bootleg
-     * 
+     * @note if barcode, discid or catno is provided text inputs are ignored
+     * @note artist and/or title can be used together or separate.
+     * @return array
      */
-    public function search($title = '', $artist = '', $barcode = '', $discid = '', $catno = '', $format = '')
+    public function search($title = '', $artist = '', $barcode = '', $discid = '', $catno = '', $format = ''): array
     {
         $results = array();
         // check input parameters
@@ -56,7 +41,6 @@ class TitleSearch extends MdbBase
         if (empty($data) || empty($data->releases)) {
             return $results;
         }
-
         foreach ($data->releases as $value) {
             $labelCodes = array();
             $labels = array();
@@ -128,8 +112,7 @@ class TitleSearch extends MdbBase
      * @param string $barcode input cd barcode
      * @param string $discid input cd discid
      * @param string $catno input catalog number from disc cover
-     * 
-     * @return string urlSuffix or false
+     * @return string|bool
      */
     protected function checkInput($title, $artist, $barcode, $discid, $catno)
     {
@@ -158,9 +141,8 @@ class TitleSearch extends MdbBase
 
     /**
      * Check if $barcode is valid in terms of digits only and specific length
-     * @param string $barcode
-     * 
-     * @return boolean, true if valid
+     * @param string|int $barcode
+     * @return bool
      */
     protected function isValidBarcode($barcode)
     {

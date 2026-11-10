@@ -16,31 +16,21 @@ class TitleSearchAdvanced extends MdbBase
     /**
      * Search only in artist category/entity of musicBrainz! This is different from the normal search for artist
      * @param string $artist input artist name
-     * 
-     * @return results[] array of Artists
-     *  id: string artist/group id
-     *  name: string artist/group name
-     *  area: string area like Australia
-     *  description: string short description of this artist/group
-     *  type: string type like group or person
-     * 
+     * @return array
      */
     public function searchArtist($artist = '')
     {
         $results = array();
-
         $artist = trim($artist);
         if (empty($artist)) {
             return $results;
         }
         $urlSuffix = '?query=artist:' . rawurlencode($artist);
-
         // data request
         $data = $this->api->doArtistSearch($urlSuffix);
         if (empty($data) || empty($data->artists)) {
             return $results;
         }
-
         foreach ($data->artists as $value) {
             $results[] = array(
                 'id' => isset($value->id) ?
@@ -59,33 +49,26 @@ class TitleSearchAdvanced extends MdbBase
     }
 
     /**
-     * Search for all releasegroups of specific artistId
+     * Search for all releasegroups from specific artistId
      * @param string $artistId
-     * @param string $type Include only this type in search, exclude all others
+     * @param string $type Include only this type in search
      * @param string $sortOrder ASC or DESC, Default: ASC
      * values for $type:
-     *      album (only studio albums with primarytype album)
+     *      album       (only studio albums with primarytype album)
      *      discography (musicBrainz website defaults are included, Singles are excluded)
-     *      all (all releasegroups)
+     *      all         (all releasegroups)
      * @return array
-     * Array
-     *   (
-     *       [0] => Array
-     *           (
-     *               [id] => 2b81e645-4586-4456-843a-9bc19a217470
-     *               [title] => High Voltage
-     *               [artist] => AC/DC
-     *               [date] => 1975-02-17
-     *               [totalReleasesCount] => 8
-     *               [primaryType] => Album
-     *               [secondaryType] => Array
-     *                  (
-     *                      [0] => Live
-     *                  )
-     *           )
-     *     )
+     *      [0] array()
+     *          [id]                    string 2b81e645-4586-4456-843a-9bc19a217470
+     *          [title]                 string High Voltage
+     *          [artist]                string AC/DC
+     *          [date]                  string 1975-02-17
+     *          [totalReleasesCount]    int 8
+     *          [primaryType]           string Album
+     *          [secondaryType] array()
+     *              [0] string Live
      */
-    public function fetchReleaseGroups($artistId, $type = "discography", $sortOrder = 'ASC')
+    public function fetchReleaseGroups($artistId, $type = "discography", $sortOrder = 'ASC'): array
     {
         $results = array();
         // Data request
@@ -131,17 +114,12 @@ class TitleSearchAdvanced extends MdbBase
      * @param string $artistId
      * @param string $sortOrder ASC or DESC, Default: ASC
      * @return array
-     * Array
-     *   (
-     *       [0] => Array
-     *           (
-     *               [id] => 2b81e645-4586-4456-843a-9bc19a217470
-     *               [title] => High Voltage
-     *               [date] => 1975-02-17
-     *           )
-     *     )
+     *      [0] array()
+     *          [id]    string 2b81e645-4586-4456-843a-9bc19a217470
+     *          [title] string High Voltage
+     *          [date]  string 1975-02-17
      */
-    public function fetchReleaseGroupsVarious($artistId, $sortOrder = 'ASC')
+    public function fetchReleaseGroupsVarious($artistId, $sortOrder = 'ASC'): array
     {
         $results = array();
         // Data request
@@ -167,38 +145,25 @@ class TitleSearchAdvanced extends MdbBase
      * @param $relGroupId releaseGroup id found with fetchReleaseGroups()
      * @param string $sortOrder ASC or DESC, Default: ASC
      * @return array
-     * Array
-        * (
-            * [0] => Array
-                * (
-                    * [id] => ddee5911-8a13-41e6-88db-6534a5f4fc46
-                    *[title] => High Voltage
-                    * [artist] => AC/DC
-                    * [date] => 1975-02-17
-                    * [status] => Official
-                    * [barcode] => 
-                    * [countryCode] => AU
-                    * [labels] => Array
-                        * (
-                            * [0] => Array
-                                * (
-                                    * [name] => Albert Productions
-                                    * [id] => ff70518a-f935-4b34-9f04-c099c644554b
-                                    * [catalog] => APLP-009
-                                * )
-                        * )
-                    * [media] => Array
-                        * (
-                            * [0] => Array
-                                * (
-                                    * [format] => 12" Vinyl
-                                    * [trackCount] => 8
-                                * )
-                        * )
-                * )
-     *     )
+     *      [0] array()
+     *          [id]            string ddee5911-8a13-41e6-88db-6534a5f4fc46
+     *          [title]         string High Voltage
+     *          [artist]        string AC/DC
+     *          [date]          string 1975-02-17
+     *          [status]        string Official
+     *          [barcode]       int
+     *          [countryCode]   string AU
+     *          [labels] array()
+     *              [0] array()
+     *                  [name]      string Albert Productions
+     *                  [id]        string ff70518a-f935-4b34-9f04-c099c644554b
+     *                  [catalog]   string APLP-009
+     *          [media] array()
+     *              [0] array()
+     *                  [format]     string 12" Vinyl
+     *                  [trackCount] string 8
      */
-    public function releaseGroupReleases($relGroupId, $sortOrder = 'ASC')
+    public function releaseGroupReleases($relGroupId, $sortOrder = 'ASC'): array
     {
         $results = array();
         // Data request
@@ -225,8 +190,10 @@ class TitleSearchAdvanced extends MdbBase
             $media = array();
             if (!empty($release->media)) {
                 foreach ($release->media as $medium) {
-                    $format = isset($medium->format) ? $medium->format : null;
-                    $trackCount = isset($medium->{'track-count'}) ? $medium->{'track-count'} : null;
+                    $format = isset($medium->format) ?
+                                    $medium->format : null;
+                    $trackCount = isset($medium->{'track-count'}) ?
+                                        $medium->{'track-count'} : null;
                     $media[] = array(
                         'format' => isset($medium->format) ?
                                           $medium->format : null,
@@ -259,11 +226,11 @@ class TitleSearchAdvanced extends MdbBase
 
     /**
      * Sort $results array by date
-     * @param array $array
+     * @param array $array to sorted array
      * @param string $sortOrder ASC or DESC
-     * @return sorted array
+     * @return array
      */
-    protected function sortByDate($array, $sortOrder)
+    protected function sortByDate($array, $sortOrder): array
     {
         if ($sortOrder == 'DESC') {
             // sort array by date
@@ -274,7 +241,6 @@ class TitleSearchAdvanced extends MdbBase
                 if ($ad == $bd) {
                 return 0;
                 }
-
                 return $ad > $bd ? -1 : 1;
             });
         } else {
@@ -282,11 +248,9 @@ class TitleSearchAdvanced extends MdbBase
             usort($array, function($a, $b) {
                 $ad = $a['date'];
                 $bd = $b['date'];
-
                 if ($ad == $bd) {
                 return 0;
                 }
-
                 return $ad < $bd ? -1 : 1;
             });
         }
