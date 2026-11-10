@@ -1,4 +1,5 @@
 <?php
+
 #############################################################################
 # musicBrainzPHP                                          (c) Ed (duck7000) #
 # written by Ed                                                             #
@@ -19,14 +20,7 @@ use Psr\SimpleCache\CacheInterface;
  */
 class Cache implements CacheInterface
 {
-    /**
-     * @var Config
-     */
     protected $config;
-
-    /**
-     * @var LoggerInterface
-     */
     protected $logger;
 
     /**
@@ -39,7 +33,6 @@ class Cache implements CacheInterface
     {
         $this->config = $config;
         $this->logger = $logger;
-
         if (($this->config->cacheUse|| $this->config->cacheStore) && !is_dir($this->config->cacheDir)) {
             @mkdir($this->config->cacheDir, 0700, true);
             if (!is_dir($this->config->cacheDir)) {
@@ -51,13 +44,13 @@ class Cache implements CacheInterface
             $this->logger->critical("[Cache] Configured cache directory [{$this->config->cacheDir}] lacks write permission!");
             throw new Exception("[Cache] Configured cache directory [{$this->config->cacheDir}] lacks write permission!");
         }
-
         // @TODO add a limit on how frequently a purge can occur
         $this->purge();
     }
 
     /**
      * @inheritdoc
+     * @return null|string
      */
     public function get($key, $default = null)
     {
@@ -70,7 +63,6 @@ class Cache implements CacheInterface
         if (!file_exists($fname)) {
             return $default;
         }
-
         if ($this->config->cacheUseZip) {
             $content = file_get_contents('compress.zlib://' . $fname); // This can read uncompressed files too
             if (!$content) {
@@ -95,13 +87,13 @@ class Cache implements CacheInterface
 
     /**
      * @inheritdoc
+     * @return string|bool
      */
     public function set($key, $value, $ttl = null)
     {
         if (!$this->config->cacheStore) {
             return false;
         }
-
         $cleanKey = $this->sanitiseKey($key);
         $fname = $this->config->cacheDir . '/' . $cleanKey;
         $this->logger->debug("[Cache] Writing key [$key] to [$fname]");
@@ -112,14 +104,13 @@ class Cache implements CacheInterface
         } else { // no zip
             file_put_contents($fname, $value);
         }
-
         return true;
     }
 
     /**
      * This method looks for files older than the cache_expire set in the
      * \Imdb\Config and removes them
-     *
+     * @return void
      */
     public function purge()
     {
@@ -148,6 +139,7 @@ class Cache implements CacheInterface
 
     /**
      * Replace characters the OS won't like using with the filesystem
+     * @return string
      */
     protected function sanitiseKey($key)
     {
@@ -184,4 +176,5 @@ class Cache implements CacheInterface
     {
         return false;
     }
+
 }

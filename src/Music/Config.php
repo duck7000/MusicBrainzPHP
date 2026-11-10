@@ -27,27 +27,27 @@ class Config
 
     /**
      * Use cached pages if available?
-     * @var boolean
+     * @var bool
      */
     public $cacheUse = false;
 
     /**
      * Store the pages retrieved for later use?
-     * @var boolean
+     * @var bool
      */
     public $cacheStore = false;
 
     /**
      * Use zip compression for caching the retrieved html-files?
      * @see $converttozip if you're changing from false to true
-     * @var boolean
+     * @var bool
      */
     public $cacheUseZip = false;
 
     /**
      * Convert non-zip cache-files to zip
      * You might want to use this if you weren't gzipping your cache files, but now are. They will be rewritten when they're used
-     * @var boolean
+     * @var bool
      */
     public $cacheConvertZip = false;
 
@@ -55,7 +55,7 @@ class Config
      * Cache expiration time - cached pages older than this value (in seconds) will
      * be automatically deleted.
      * If 0 cached pages will never expire
-     * @var integer
+     * @var int
      */
     public $cacheExpire = 604800;
 
@@ -98,25 +98,23 @@ class Config
      */
     public $titleSearchFormat = "CD";
 
-    // Debug config
     /**
-     * Debug mode true or false
-     * @var boolean
+     * Debug mode?
+     * @var bool
      */
     public $debug = false;
 
     /**
      * Add cover images to Title class fetchData()
      * if true this can take a bit longer!
-     * @var boolean
-     * Default: true
+     * @var bool
      */
     public $addCoverImages = true;
 
     /**
      * Throw Exception if something goes wrong with the api call
      * True: throws Exception, false: returns empty object
-     * @var boolean
+     * @var bool
      */
     public $throwHttpExceptions = false;
 
