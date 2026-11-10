@@ -1,4 +1,5 @@
 <?php
+
 #############################################################################
 # musicBrainzPHP                                ed (github user: duck7000)  #
 # written by ed (github user: duck7000)                                     #
@@ -60,187 +61,116 @@ class Title extends MdbBase
     /**
      * Fetch all data of a mbID
      * @return array
-     * Array
-        * (
-            * [id] => 095e2e2e-60c4-4f9f-a14a-2cc1b468bf66
-            * [title] => Nightclubbing
-            * [artist] => Array
-                * (
-                    * [name] => Grace Jones
-                    * [id] => b1c124b3-cf60-41a6-8699-92728c8a3fe0
-                    * [alias] => Array
-                    *   (
-                        *   [0] => AC DC
-                        *   [1] => AC-DC
-                        *   [2] => AC.DC
-                        *   [3] => AC/DC
-                        *   [4] => AC?DC
-                        *   [5] => ACDC
-                        *   [6] => AC\DC
-                        *   [7] => AC|DC
-                        *   [8] => AC⚡DC
-                        *   [9] => AC⚡︎DC
-                        *   [10] => Acca Dacca
-                        *   [11] => Akka Dakka
-                    *   )
-                * )
-            * [year] => 1987
-            * [date] => 1987-10-01 (this is the date of this specific release)
-            * [firstReleaseDate] => 1980-07-25 (this is the release group first release date)
-            * [country] => Europe
-            * [length] => 2288
-            * [barcode] => 4007192534814
-            * [annotation] => Manufactured in Germany by Record Service GmbH, Alsdorf.
-            * [disambiguation] => price code CA 835
-            * [status] => Official
-            * [packaging] => Jewel Case
-            * [primaryType] => Album
-            * [secondaryTypes] => Array
-                * (
-                    * [0] => Compilation
-                * )
-            * [releaseGroupId] => c9673ff0-15b5-394d-a5ec-3d2a27dfce83
-            * [genres] => Array
-                * (
-                    * [0] => art pop
-                    * [1] => dub
-                * )
-            * [releaseGroupGenres] => Array
-                * (
-                    * [0] => ballad
-                    * [1] => pop
-                    * [2] => schlager
-                * )
-            * [releaseGroupUrls] => Array
-                * (
-                    * [0] => array
-                        * (
-                            * [type] =>
-                            * [url] =>
-                        * )
-                * )
-            * [tags] => Array
-                * (
-                    * [0] => art pop
-                    * [1] => dub
-                * )
-            * [labels] => Array
-                * (
-                    * [0] => Array
-                        * (
-                            * [name] => Island
-                            * [id] => dfd92cd3-4888-46d2-b968-328b1feb2642
-                            * [type] => Imprint
-                            * [code] => 407
-                            * [catalog] => 253 481
-                        * )
-                        * 
-                    * [1] => Array
-                        * (
-                            * [name] => Island
-                            * [id] => dfd92cd3-4888-46d2-b968-328b1feb2642
-                            * [type] => Imprint
-                            * [code] => 407
-                            * [catalog] => CID 9624 (90 093-2)
-                        * )
-                        * 
-                * )
-            * [media] => Array
-                * (
-                    * [0] => Array
-                        * (
-                            * [mediumTitle] => live from atlantic studios
-                            * [format] => CD
-                            * [tracks] => Array
-                                * (
-                                    * [0] => Array
-                                        * (
-                                            * [id] => 5f76ca86-a0ab-4674-acdf-aa8a19042100
-                                            * [number] => 1
-                                            * [title] => Walking in the Rain
-                                            * [artist] => Array
-                                               * (
-                                                   * [0] => Array
-                                                       * (
-                                                           * [name] => Kutmasta Kurt
-                                                           * [id] => abf9f319-da2f-4fdf-a3e4-40c4d0b0075d
-                                                           * [joinphrase] =>  feat. 
-                                                       * )
-                                                   * [1] => Array
-                                                       * (
-                                                           * [name] => Motion Man
-                                                           * [id] => 1cee1f74-179d-446d-8347-de31e8202f2b
-                                                           * [joinphrase] =>
-                                                       * )
-                                               * )
-                                            * [length] => 258
-                                        * )
-                                * )
-                            * [discids] => Array
-                                * (
-                                    * [0] => 8VcyV_HgVNgXje7IgY6NndMP8Tk-
-                                    * [1] => GI8Gdv0JZhh9yZyvQMvrauUbz.I-
-                                    * [2] => IC7ydeqKPjdd8u7ptRItLGG0wZ0-
-                                * )
-                        * )
-                 * )
-                        * )
-                * )
-            * [relations] => Array
-                * (
-                    * [credits] => Array
-                        * (
-                            * [instrument] => Array
-                                * (
-                                    * [begin] => 1977-01
-                                    * [end] => 1977-02
-                                    * [artist] => Array
-                                        * (
-                                            * [name] => Mark Evans
-                                            * [id] => 6d3da6cf-d443-4ebc-9eac-98456bc2def3
-                                            * [disambiguation] => Australian bass guitarist
-                                        * )
-                                    * [attributes] => Array
-                                        * (
-                                            * [0] => bass guitar
-                                        * )
-                                * )
-                        * )
-                * )
-     *      [coverArt] => Array()
-     *          [front] => Array()
-     *              [id] => 22307139959
-     *              [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
-     *              [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
-     *              [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
-     *              [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
-     *          [back] => Array()
-     *              [id] => 22307143843
-     *              [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843.jpg
-     *              [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-250.jpg
-     *              [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-500.jpg
-     *              [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-1200.jpg
-     *          [booklet] => Array()
-     *              [0] => Array()
-     *                  [id] => 22307145267
-     *                  [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267.jpg
-     *                  [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-250.jpg
-     *                  [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-500.jpg
-     *                  [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-1200.jpg
-     *              [1] => Array()
-     *                  [id] => 22307146856
-     *                  [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856.jpg
-     *                  [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-250.jpg
-     *                  [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-500.jpg
-     *                  [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-1200.jpg
-        * )
+     *      [id] string 095e2e2e-60c4-4f9f-a14a-2cc1b468bf66
+     *      [title] string Nightclubbing
+     *      [artist] array()
+     *          [name]      string Grace Jones
+     *          [id]        string b1c124b3-cf60-41a6-8699-92728c8a3fe0
+     *          [alias]     array()
+     *              [0] string AC DC
+     *              [1] string AC-DC
+     *              [2] string AC.DC
+     *              [3] string AC/DC
+     *              [4] string AC?DC
+     *      [year]              int 1987
+     *      [date]              string 1987-10-01 (this is the date of this specific release)
+     *      [firstReleaseDate]  string 1980-07-25 (this is the release group first release date)
+     *      [country]           string Europe
+     *      [length]            int 2288
+     *      [barcode]           int 4007192534814
+     *      [annotation]        string Manufactured in Germany by Record Service GmbH, Alsdorf.
+     *      [disambiguation]    string price code CA 835
+     *      [status]            string Official
+     *      [packaging]         string Jewel Case
+     *      [primaryType]       string Album
+     *      [secondaryTypes]    array()
+     *          [0] string Compilation
+     *      [releaseGroupId] string c9673ff0-15b5-394d-a5ec-3d2a27dfce83
+     *      [genres] array()
+     *          [0] => art pop
+     *          [1] => dub
+     *      [releaseGroupGenres] array()
+     *          [0] string ballad
+     *          [1] string pop
+     *          [2] string schlager
+     *      [releaseGroupUrls] => Array
+     *          [0] => array()
+     *              [type] string
+     *              [url] string
+     *      [tags] array()
+     *          [0] string art pop
+     *          [1] string dub
+     *      [labels] array()
+     *          [0] array()
+     *              [name]      string Island
+     *              [id]        string dfd92cd3-4888-46d2-b968-328b1feb2642
+     *              [type]      string Imprint
+     *              [code]      string 407
+     *              [catalog]   string 253 481
+     *      [media] array()
+     *          [0] array()
+     *              [mediumTitle]   string live from atlantic studios
+     *              [format]        string CD
+     *              [tracks] array()
+     *                  [0] array()
+     *                      [id]        string 5f76ca86-a0ab-4674-acdf-aa8a19042100
+     *                      [number]    int 1
+     *                      [title]     string Walking in the Rain
+     *                      [artist]    array()
+     *                          [0] array()
+     *                              [name]          string Kutmasta Kurt
+     *                              [id]            string abf9f319-da2f-4fdf-a3e4-40c4d0b0075d
+     *                              [joinphrase]    string feat.
+     *              [length] int 258
+     *              [discids] array()
+     *                  [0] string 8VcyV_HgVNgXje7IgY6NndMP8Tk-
+     *                  [1] string GI8Gdv0JZhh9yZyvQMvrauUbz.I-
+     *                  [2] string IC7ydeqKPjdd8u7ptRItLGG0wZ0-
+     *      [relations] array()
+     *          [credits] array()
+     *              [instrument] array()
+     *                  [begin] string 1977-01
+     *                  [end]   string 1977-02
+     *                  [artist] array()
+     *                      [name]              string Mark Evans
+     *                      [id]                string 6d3da6cf-d443-4ebc-9eac-98456bc2def3
+     *                      [disambiguation]    string Australian bass guitarist
+     *                  [attributes] array()
+     *                      [0] string bass guitar
+     *      [coverArt]  array()
+     *          [front] array()
+     *              [id]            string 22307139959
+     *              [originalUrl]   string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *              [thumbUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *              [mediumUrl]     string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *              [largeUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
+     *          [back] array()
+     *              [id]            string 22307139959
+     *              [originalUrl]   string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *              [thumbUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *              [mediumUrl]     string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *              [largeUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
+     *          [booklet] array()
+     *              [0] array()
+     *                  [id]            string 22307139959
+     *                  [originalUrl]   string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *                  [thumbUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *                  [mediumUrl]     string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *                  [largeUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
+     *              [1] array()
+     *                  [id]            string 22307139959
+     *                  [originalUrl]   string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *                  [thumbUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *                  [mediumUrl]     string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *                  [largeUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
      */
-    public function fetchData()
+    public function fetchData(): array
     {
+        $results = array();
         // Data request
         $data = $this->api->doLookup($this->mbID);
         if (empty($data)) {
-            return false;
+            return $results;
         }
 
         $this->title = isset($data->title) ?
