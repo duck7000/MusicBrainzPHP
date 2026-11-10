@@ -1,4 +1,5 @@
 <?php
+
 #############################################################################
 # musicBrainzPHP                                ed (github user: duck7000)  #
 # written by ed (github user: duck7000)                                     #
@@ -31,52 +32,51 @@ class Cover extends MdbBase
 
     /**
      * Fetch Cover art from coverartarchive.org
-     * @param $id string release or release group id
-     * @param boolean $group true: get release group cover urls, false: get release cover urls
+     * @param string $id release or release group id
+     * @param bool $group true: get release group cover urls, false: get release cover urls
      * @return array
-     * Array
-     *      [coverArt] => Array()
-     *          [front] => Array()
-     *              [id] => 22307139959
-     *              [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
-     *              [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
-     *              [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
-     *              [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
-     *          [back] => Array()
-     *              [id] => 22307143843
-     *              [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843.jpg
-     *              [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-250.jpg
-     *              [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-500.jpg
-     *              [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307143843-1200.jpg
-     *          [booklet] => Array()
-     *              [0] => Array()
-     *                  [id] => 22307145267
-     *                  [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267.jpg
-     *                  [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-250.jpg
-     *                  [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-500.jpg
-     *                  [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307145267-1200.jpg
-     *              [1] => Array()
-     *                  [id] => 22307146856
-     *                  [originalUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856.jpg
-     *                  [thumbUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-250.jpg
-     *                  [mediumUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-500.jpg
-     *                  [largeUrl] => https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307146856-1200.jpg
+     *      [coverArt]  array()
+     *          [front] array()
+     *              [id]            string 22307139959
+     *              [originalUrl]   string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *              [thumbUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *              [mediumUrl]     string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *              [largeUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
+     *          [back] array()
+     *              [id]            string 22307139959
+     *              [originalUrl]   string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *              [thumbUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *              [mediumUrl]     string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *              [largeUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
+     *          [booklet] array()
+     *              [0] array()
+     *                  [id]            string 22307139959
+     *                  [originalUrl]   string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *                  [thumbUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *                  [mediumUrl]     string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *                  [largeUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
+     *              [1] array()
+     *                  [id]            string 22307139959
+     *                  [originalUrl]   string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959.jpg
+     *                  [thumbUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-250.jpg
+     *                  [mediumUrl]     string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-500.jpg
+     *                  [largeUrl]      string https://coverartarchive.org/release/095e2e2e-60c4-4f9f-a14a-2cc1b468bf66/22307139959-1200.jpg
      */
-    public function fetchCoverArt($id, $group)
+    public function fetchCoverArt($id, $group): array
     {
+        $coverArt = array();
         // Data request
         if ($group !== false) {
             $data = $this->api->doCoverArtLookupRelGroup($id);
             if (empty($data->images)) {
-                return false;
+                return $coverArt;
             }
         } else {
             $data = $this->api->doCoverArtLookup($id);
             if (empty($data->images)) {
-                return false;
+                return $coverArt;
             }
         }
-        $coverArt = array();
         foreach ($data->images as $value) {
             if (!empty($value->front) && $value->front == 1) {
                 $type = 'front';
@@ -126,7 +126,7 @@ class Cover extends MdbBase
     /**
      * Check if array thumbnails has text or number keys e.g (small versus 250 or large versus 500)
      * @param int $size wanted size like 250 or 500
-     * @return thumbnail fieldname
+     * @return string|bool
      */
     private function checkCoverArtThumb($value, $size)
     {
@@ -167,7 +167,7 @@ class Cover extends MdbBase
     /**
      * Change http to https (coverarttarget returns random http or https so this causes browser warnings)
      * @param string $inputUrl http url
-     * @return https url
+     * @return string
      */
     private function checkHttp($inputUrl)
     {
