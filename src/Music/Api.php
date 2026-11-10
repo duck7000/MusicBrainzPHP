@@ -20,28 +20,17 @@ use Psr\SimpleCache\CacheInterface;
 class Api
 {
 
-    /**
-     * @var CacheInterface
-     */
     private $cache;
-
-    /**
-     * @var LoggerInterface
-     */
     private $logger;
-
-    /**
-     * @var Config
-     */
     private $config;
     
     /**
-     * @var baseUrl
+     * @var base musicbrainz url
      */
     private $baseUrl = 'https://musicbrainz.org/ws/2/';
     
     /**
-     * @var baseCoverUrl
+     * @var base musicbrainz cover url
      */
     private $baseCoverUrl = 'https://coverartarchive.org/';
 
@@ -62,11 +51,12 @@ class Api
      * Search request for TitleSearch class
      * @param string $urlSuffix
      * @param string $format override default format from config
-     * @return \stdClass
+     * @return object|bool
      */
     public function doSearch($urlSuffix, $format)
     {
-        $setFormat = empty($format) ? $this->config->titleSearchFormat : $format;
+        $setFormat = empty($format) ?
+                           $this->config->titleSearchFormat : $format;
         $entity = 'release/';
         if (stripos($setFormat, "all") !== false) {
             $incUrl = '';
@@ -82,7 +72,7 @@ class Api
     /**
      * Search request for TitleSearch class on discid
      * @param string $discid musicbrainz discid
-     * @return \stdClass
+     * @return object|bool
      */
     public function doDiscidSearch($discid)
     {
@@ -97,9 +87,10 @@ class Api
     }
 
     /**
-     * Search for specific artist name in TitleSearchAdvanced class, this is not the same as normal artist search in TitleSearch class!
+     * Search for specific artist name in TitleSearchAdvanced class
+     * @note This is not the same as normal artist search in TitleSearch class!
      * @param string $urlSuffix
-     * @return \stdClass
+     * @return object|bool
      */
     public function doArtistSearch($urlSuffix)
     {
@@ -134,7 +125,7 @@ class Api
      *      discography (musicBrainz website defaults are included)
      *      all (all releasegroups)
      * if more than 100 items paging is required and will take a long time!)
-     * @return array()
+     * @return array
      */
     public function doReleaseGroupSearch($artistId, $type)
     {
@@ -276,7 +267,7 @@ class Api
      * @param object $data initial result of start query
      * @param string $url the complete url from initial request
      * @param string $releaseType release type from url string like release or release-groups
-     * @array
+     * @return array
      */
     public function paging($data, $url, $releaseType)
     {
